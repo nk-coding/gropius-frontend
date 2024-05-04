@@ -1,6 +1,7 @@
 // Plugins
 import vue from "@vitejs/plugin-vue";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+import Fonts from "unplugin-fonts/vite";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -22,6 +23,16 @@ export default defineConfig({
             autoImport: true,
             styles: {
                 configFile: "src/styles/settings.scss"
+            }
+        }),
+        Fonts({
+            fontsource: {
+                families: [
+                    {
+                        name: "Roboto",
+                        weights: [100, 300, 400, 500, 700, 900]
+                    }
+                ]
             }
         })
     ],
@@ -52,6 +63,6 @@ export default defineConfig({
         }
     },
     optimizeDeps: {
-        exclude: ["vuetify", "@github/task-lists-element"],
+        exclude: ["vuetify", "@github/task-lists-element"]
     }
 });

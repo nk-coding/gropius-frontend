@@ -5,6 +5,7 @@
  */
 
 // Components
+import "unfonts.css";
 import App from "./App.vue";
 
 // Composables
