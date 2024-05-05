@@ -1932,6 +1932,30 @@ export type BooleanFilterInput = {
     in?: InputMaybe<Array<Scalars["Boolean"]["input"]>>;
 };
 
+/** Input for the bulkCreateComponent mutation */
+export type BulkCreateComponentInput = {
+    /** The input for the createComponent mutation */
+    components: Array<CreateComponentInput>;
+};
+
+export type BulkCreateComponentPayload = {
+    __typename?: "BulkCreateComponentPayload";
+    /** The created Components */
+    components: Array<Component>;
+};
+
+/** Input to create multiple Components */
+export type BulkCreateRelationInput = {
+    /** The input for the createRelation mutation */
+    relations: Array<CreateRelationInput>;
+};
+
+export type BulkCreateRelationPayload = {
+    __typename?: "BulkCreateRelationPayload";
+    /** The created Relations */
+    relations: Array<Relation>;
+};
+
 /** Input for the changeAssignmentType mutation */
 export type ChangeAssignmentTypeInput = {
     /** The id of the Assignment of which the type is updated */
@@ -4230,6 +4254,28 @@ export type GlobalPermissionUsersArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+/** The connection type for GlobalPermission. */
+export type GlobalPermissionConnection = {
+    __typename?: "GlobalPermissionConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<GlobalPermissionEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<GlobalPermission>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type GlobalPermissionEdge = {
+    __typename?: "GlobalPermissionEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: GlobalPermission;
+};
+
 /** Filter used to filter GlobalPermission */
 export type GlobalPermissionFilterInput = {
     /** Filter by allUsers */
@@ -4249,6 +4295,24 @@ export type GlobalPermissionFilterInput = {
     /** Filter by users */
     users?: InputMaybe<GropiusUserListFilterInput>;
 };
+
+/** Defines the order of a GlobalPermission list */
+export type GlobalPermissionOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<GlobalPermissionOrderField>;
+};
+
+/** Fields a list of GlobalPermission can be sorted by */
+export enum GlobalPermissionOrderField {
+    /** Order by allUsers */
+    AllUsers = "ALL_USERS",
+    /** Order by id */
+    Id = "ID",
+    /** Order by name */
+    Name = "NAME"
+}
 
 /**
  * A user of the Gropius System.
@@ -10141,48 +10205,6 @@ export enum MarkerType {
     Triangle = "TRIANGLE"
 }
 
-/**
- * An aggregated IssueRelation.
- *     IssueRelations are aggregated by both start and end Issue.
- *
- */
-export type MetaAggregatedIssueRelation = BaseNode &
-    Node & {
-        __typename?: "MetaAggregatedIssueRelation";
-        count: Scalars["Int"]["output"];
-        end: Component;
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        issueRelations: IssueRelationConnection;
-        start: Component;
-    };
-
-/**
- * An aggregated IssueRelation.
- *     IssueRelations are aggregated by both start and end Issue.
- *
- */
-export type MetaAggregatedIssueRelationHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
- * An aggregated IssueRelation.
- *     IssueRelations are aggregated by both start and end Issue.
- *
- */
-export type MetaAggregatedIssueRelationIssueRelationsArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<IssueRelationFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationOrder>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
 /** Interface for all types which support templates describing user writeable fields. */
 export type MutableTemplatedNode = {
     /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -10263,6 +10285,17 @@ export type Mutation = {
      *
      */
     addLabelToTrackable: AddLabelToTrackablePayload;
+    /**
+     * Creates multiple Components, requires CAN_CREATE_COMPONENTS.
+     *         Automatically generates a default ComponentPermission which grants the authenticated user READ and ADMIN
+     *
+     */
+    bulkCreateComponent: BulkCreateComponentPayload;
+    /**
+     * Creates multiple Relations, requires RELATE_FROM_COMPONENT on the Component associated with start.
+     *
+     */
+    bulkCreateRelation: BulkCreateRelationPayload;
     /**
      * Changes the type of an Assignment, requires MANAGE_ISSUES on any of the Trackables the Issue the Assignment
      *         is part of is on.
@@ -10749,6 +10782,14 @@ export type MutationAddLabelToIssueArgs = {
 
 export type MutationAddLabelToTrackableArgs = {
     input: AddLabelToTrackableInput;
+};
+
+export type MutationBulkCreateComponentArgs = {
+    input: BulkCreateComponentInput;
+};
+
+export type MutationBulkCreateRelationArgs = {
+    input: BulkCreateRelationInput;
 };
 
 export type MutationChangeAssignmentTypeArgs = {
@@ -12004,6 +12045,8 @@ export type Query = {
     components: ComponentConnection;
     /** The current authenticated user */
     currentUser?: Maybe<GropiusUser>;
+    /** Query for nodes of type GlobalPermission */
+    globalPermissions: GlobalPermissionConnection;
     /** Checks if the current user has a specific global permission */
     hasGlobalPermission: Scalars["Boolean"]["output"];
     /** Query for nodes of type IMSTemplate */
@@ -12091,6 +12134,16 @@ export type QueryComponentsArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ComponentOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QueryGlobalPermissionsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GlobalPermissionFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GlobalPermissionOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -15860,7 +15913,6 @@ export type FirstAssignmentTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -16044,7 +16096,6 @@ export type GetComponentQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
-        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | { __typename?: "Project"; id: string }
@@ -16260,7 +16311,6 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
-        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | { __typename?: "Project"; id: string }
@@ -16389,7 +16439,6 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -16543,7 +16592,6 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -16731,7 +16779,6 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -16838,7 +16885,6 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -16937,7 +16983,6 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
-        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | { __typename?: "Project"; id: string }
@@ -17045,7 +17090,6 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -17122,6 +17166,87 @@ export type CreateComponentVersionMutation = {
     };
 };
 
+export type GetGlobalPermissionListQueryVariables = Exact<{
+    orderBy: GlobalPermissionOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+}>;
+
+export type GetGlobalPermissionListQuery = {
+    __typename?: "Query";
+    globalPermissions: {
+        __typename?: "GlobalPermissionConnection";
+        totalCount: number;
+        nodes: Array<{
+            __typename?: "GlobalPermission";
+            id: string;
+            name: string;
+            description: string;
+            entries: Array<PermissionEntry>;
+            allUsers: boolean;
+            users: { __typename?: "GropiusUserConnection"; totalCount: number };
+        }>;
+    };
+};
+
+export type GetFilteredGlobalPermissionListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type GetFilteredGlobalPermissionListQuery = {
+    __typename?: "Query";
+    searchGlobalPermissions: Array<{
+        __typename?: "GlobalPermission";
+        id: string;
+        name: string;
+        description: string;
+        entries: Array<PermissionEntry>;
+        allUsers: boolean;
+        users: { __typename?: "GropiusUserConnection"; totalCount: number };
+    }>;
+};
+
+export type DefaultGlobalPermissionInfoFragment = {
+    __typename?: "GlobalPermission";
+    id: string;
+    name: string;
+    description: string;
+    entries: Array<PermissionEntry>;
+    allUsers: boolean;
+    users: { __typename?: "GropiusUserConnection"; totalCount: number };
+};
+
+export type DeleteGlobalPermissionMutationVariables = Exact<{
+    globalPermission: Scalars["ID"]["input"];
+}>;
+
+export type DeleteGlobalPermissionMutation = {
+    __typename?: "Mutation";
+    deleteGlobalPermission: { __typename: "DeleteNodePayload" };
+};
+
+export type UpdateGlobalPermissionMutationVariables = Exact<{
+    input: UpdateGlobalPermissionInput;
+}>;
+
+export type UpdateGlobalPermissionMutation = {
+    __typename?: "Mutation";
+    updateGlobalPermission: { __typename: "UpdateGlobalPermissionPayload" };
+};
+
+export type CreateGlobalPermissionMutationVariables = Exact<{
+    input: CreateGlobalPermissionInput;
+}>;
+
+export type CreateGlobalPermissionMutation = {
+    __typename?: "Mutation";
+    createGlobalPermission: {
+        __typename?: "CreateGlobalPermissionPayload";
+        globalPermission: { __typename?: "GlobalPermission"; id: string };
+    };
+};
+
 export type GetProjectGraphQueryVariables = Exact<{
     project: Scalars["ID"]["input"];
 }>;
@@ -17184,7 +17309,6 @@ export type GetProjectGraphQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -17945,7 +18069,6 @@ export type GetIssueListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -19524,7 +19647,6 @@ export type GetIssueQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -19911,7 +20033,6 @@ export type FirstIssuesQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -20061,7 +20182,6 @@ export type FirstIssuePrioritiesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20293,7 +20413,6 @@ export type FirstIssueRelationTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20475,7 +20594,6 @@ export type FirstIssueStatesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20636,7 +20754,6 @@ export type GetIssueTemplateQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20765,7 +20882,6 @@ export type FirstIssueTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20888,7 +21004,6 @@ export type GetLabelListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -21050,7 +21165,6 @@ export type FirstLabelsQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -21159,7 +21273,6 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -21384,7 +21497,6 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -21553,7 +21665,6 @@ export type GetProjectQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
-        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | {
@@ -21667,7 +21778,6 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -21822,7 +21932,6 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
-        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -23674,6 +23783,7 @@ export type GetCurrentUserQuery = {
     currentUser?: {
         __typename?: "GropiusUser";
         email?: string | null;
+        isAdmin: boolean;
         id: string;
         username: string;
         displayName: string;
@@ -23756,6 +23866,18 @@ export const DefaultComponentVersionInfoFragmentDoc = gql`
         name
         description
         __typename
+    }
+`;
+export const DefaultGlobalPermissionInfoFragmentDoc = gql`
+    fragment DefaultGlobalPermissionInfo on GlobalPermission {
+        id
+        name
+        description
+        entries
+        allUsers
+        users {
+            totalCount
+        }
     }
 `;
 export const StrokeStyleInfoFragmentDoc = gql`
@@ -25014,6 +25136,48 @@ export const CreateComponentVersionDocument = gql`
         }
     }
 `;
+export const GetGlobalPermissionListDocument = gql`
+    query getGlobalPermissionList($orderBy: GlobalPermissionOrder!, $count: Int!, $skip: Int!) {
+        globalPermissions(orderBy: $orderBy, first: $count, skip: $skip) {
+            nodes {
+                ...DefaultGlobalPermissionInfo
+            }
+            totalCount
+        }
+    }
+    ${DefaultGlobalPermissionInfoFragmentDoc}
+`;
+export const GetFilteredGlobalPermissionListDocument = gql`
+    query getFilteredGlobalPermissionList($query: String!, $count: Int!) {
+        searchGlobalPermissions(query: $query, first: $count) {
+            ...DefaultGlobalPermissionInfo
+        }
+    }
+    ${DefaultGlobalPermissionInfoFragmentDoc}
+`;
+export const DeleteGlobalPermissionDocument = gql`
+    mutation deleteGlobalPermission($globalPermission: ID!) {
+        deleteGlobalPermission(input: { id: $globalPermission }) {
+            __typename
+        }
+    }
+`;
+export const UpdateGlobalPermissionDocument = gql`
+    mutation updateGlobalPermission($input: UpdateGlobalPermissionInput!) {
+        updateGlobalPermission(input: $input) {
+            __typename
+        }
+    }
+`;
+export const CreateGlobalPermissionDocument = gql`
+    mutation createGlobalPermission($input: CreateGlobalPermissionInput!) {
+        createGlobalPermission(input: $input) {
+            globalPermission {
+                id
+            }
+        }
+    }
+`;
 export const GetProjectGraphDocument = gql`
     query getProjectGraph($project: ID!) {
         node(id: $project) {
@@ -25824,6 +25988,7 @@ export const GetCurrentUserDocument = gql`
         currentUser {
             ...DefaultUserInfo
             email
+            isAdmin
         }
         canCreateProjects: hasGlobalPermission(permission: CAN_CREATE_PROJECTS)
         canCreateComponents: hasGlobalPermission(permission: CAN_CREATE_COMPONENTS)
@@ -26318,6 +26483,82 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentVersion",
+                "mutation",
+                variables
+            );
+        },
+        getGlobalPermissionList(
+            variables: GetGlobalPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetGlobalPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetGlobalPermissionListQuery>(GetGlobalPermissionListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getGlobalPermissionList",
+                "query",
+                variables
+            );
+        },
+        getFilteredGlobalPermissionList(
+            variables: GetFilteredGlobalPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredGlobalPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredGlobalPermissionListQuery>(
+                        GetFilteredGlobalPermissionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredGlobalPermissionList",
+                "query",
+                variables
+            );
+        },
+        deleteGlobalPermission(
+            variables: DeleteGlobalPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteGlobalPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteGlobalPermissionMutation>(DeleteGlobalPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteGlobalPermission",
+                "mutation",
+                variables
+            );
+        },
+        updateGlobalPermission(
+            variables: UpdateGlobalPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateGlobalPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateGlobalPermissionMutation>(UpdateGlobalPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateGlobalPermission",
+                "mutation",
+                variables
+            );
+        },
+        createGlobalPermission(
+            variables: CreateGlobalPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateGlobalPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateGlobalPermissionMutation>(CreateGlobalPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createGlobalPermission",
                 "mutation",
                 variables
             );

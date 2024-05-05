@@ -2,6 +2,7 @@ query getCurrentUser {
     currentUser {
         ...DefaultUserInfo
         email
+        isAdmin
     }
 
     canCreateProjects: hasGlobalPermission(permission: CAN_CREATE_PROJECTS)

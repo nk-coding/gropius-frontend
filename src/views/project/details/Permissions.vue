@@ -16,7 +16,6 @@
 import { ItemManager } from "@/components/PaginatedList.vue";
 import PermissionList, {
     CreatePermissionFunctionInput,
-    UpdatePermissionFunction,
     UpdatePermissionFunctionInput
 } from "@/components/PermissionList.vue";
 import ImportProjectPermissionDialog from "@/components/dialog/ImportProjectPermissionDialog.vue";
@@ -57,8 +56,8 @@ const itemManager: ItemManager<DefaultProjectPermissionInfoFragment, keyof typeo
                 skip: page * count,
                 project: projectId.value
             });
-            const labels = (res.node as NodeReturnType<"getProjectPermissionList", "Project">).permissions;
-            return [labels.nodes, labels.totalCount];
+            const permissions = (res.node as NodeReturnType<"getProjectPermissionList", "Project">).permissions;
+            return [permissions.nodes, permissions.totalCount];
         } else {
             const res = await client.getFilteredProjectPermissionList({
                 query: filter,

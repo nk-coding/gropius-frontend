@@ -26,6 +26,18 @@ const routes: RouteRecordRaw[] = [
                 path: "imss",
                 name: "imss",
                 component: () => import("../views/home/Imss.vue")
+            },
+            {
+                path: "admin",
+                name: "admin",
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "admin-permissions",
+                        component: () => import("../views/admin/Permissions.vue")
+                    }
+                ]
             }
         ]
     },
@@ -40,7 +52,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "details",
-                component: () => import("../views/component/details/Details.vue"),
+                component: () => import("../views/RouterOnly.vue"),
                 children: [
                     {
                         path: "",
@@ -109,7 +121,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "details",
-                component: () => import("../views/project/details/Details.vue"),
+                component: () => import("../views/RouterOnly.vue"),
                 children: [
                     {
                         path: "",

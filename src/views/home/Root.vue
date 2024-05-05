@@ -1,5 +1,10 @@
 <template>
-    <BaseLayout :title-segments="titleSegments" :tabs="tabs" :right-sidebar-items="rightSidebarItems">
+    <BaseLayout
+        :title-segments="titleSegments"
+        :tabs="tabs"
+        :right-sidebar-items="rightSidebarItems"
+        :left-sidebar-items="leftSidebarItems"
+    >
         <template #content>
             <router-view />
         </template>
@@ -20,12 +25,18 @@ const store = useAppStore();
 
 const titleSegments = [{ name: "Gropius", path: "/" }];
 
-const tabs: TabSegment[] = [
-    { name: "Home", path: "/" },
-    { name: "Components", path: "/components" },
-    { name: "Projects", path: "/projects" },
-    { name: "IMSs", path: "/imss" }
-];
+const tabs = computed(() => {
+    const tabs = [
+        { name: "Home", path: "/" },
+        { name: "Components", path: "/components" },
+        { name: "Projects", path: "/projects" },
+        { name: "IMSs", path: "/imss" }
+    ];
+    if (store.user?.isAdmin) {
+        tabs.push({ name: "Admin", path: "/admin" });
+    }
+    return tabs;
+});
 
 const rightSidebarItems = computed(() => {
     if (route.name === "home") {
@@ -54,6 +65,12 @@ const rightSidebarItems = computed(() => {
                 disabled = !(store.user?.canCreateIMSs ?? false);
                 break;
             }
+            case "admin-permissions": {
+                name = "permission";
+                eventName = "create-permission";
+                disabled = false;
+                break;
+            }
             default: {
                 throw new Error("Unknown route");
             }
@@ -71,6 +88,23 @@ const rightSidebarItems = computed(() => {
                 }
             ]
         ];
+    }
+});
+
+const leftSidebarItems = computed(() => {
+    if (route.name?.toString().startsWith("admin")) {
+        return [
+            [
+                {
+                    icon: "mdi-shield-lock",
+                    name: "Access",
+                    color: "secondary",
+                    to: { name: "admin-permissions" }
+                }
+            ]
+        ];
+    } else {
+        return [];
     }
 });
 </script>
