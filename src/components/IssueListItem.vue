@@ -4,11 +4,14 @@
             <IssueIcon :issue="item" height="40px" class="mr-2 flex-0-0" />
         </template>
         <template #append>
-            <div class="mr-7 user-stack-container">
+            <div class="mr-6" v-if="item.priority != undefined">
+                <IssuePriority :priority="item.priority ?? undefined" size="small" />
+            </div>
+            <div class="mr-6 user-stack-container" v-if="item.assignments.nodes.length > 0">
                 <UserStack
                     :users="item.assignments.nodes.map((assignment) => assignment.user)"
                     size="small"
-                    class="pa-3"
+                    class="pr-3"
                 />
             </div>
             <div class="text-medium-emphasis icon-container d-flex align-center">
@@ -59,6 +62,7 @@ import ListItem from "./ListItem.vue";
 import RelativeTimeWrapper from "./RelativeTimeWrapper.vue";
 import Label from "./info/Label.vue";
 import User from "./info/User.vue";
+import IssuePriority from "./info/IssuePriority.vue";
 
 const props = defineProps({
     item: {

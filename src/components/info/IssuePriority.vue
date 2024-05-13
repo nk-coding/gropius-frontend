@@ -1,5 +1,5 @@
 <template>
-    <v-chip v-if="priority != undefined" color="primary" rounded="pill">
+    <v-chip v-if="priority != undefined" color="primary" rounded="pill" prepend-icon="mdi-alert-rhombus-outline">
         {{ priority.name }}
         <v-tooltip activator="parent" location="bottom">
             {{ priority.description }}

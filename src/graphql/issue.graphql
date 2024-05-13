@@ -216,6 +216,9 @@ fragment IssueListItemInfo on Issue {
             }
         }
     }
+    priority {
+        ...DefaultIssuePriorityInfo
+    }
 }
 
 fragment ParticipatingIssueListItemInfo on Issue {

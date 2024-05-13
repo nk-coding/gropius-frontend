@@ -16214,6 +16214,13 @@ export type GetComponentDetailsQuery = {
                                     };
                           }>;
                       };
+                      priority?: {
+                          __typename?: "IssuePriority";
+                          id: string;
+                          name: string;
+                          description: string;
+                          value: number;
+                      } | null;
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       state: { __typename?: "IssueState"; isOpen: boolean };
@@ -16274,6 +16281,13 @@ export type GetComponentDetailsQuery = {
                                     };
                           }>;
                       };
+                      priority?: {
+                          __typename?: "IssuePriority";
+                          id: string;
+                          name: string;
+                          description: string;
+                          value: number;
+                      } | null;
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       state: { __typename?: "IssueState"; isOpen: boolean };
@@ -18155,6 +18169,13 @@ export type GetIssueListQuery = {
                                     };
                           }>;
                       };
+                      priority?: {
+                          __typename?: "IssuePriority";
+                          id: string;
+                          name: string;
+                          description: string;
+                          value: number;
+                      } | null;
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       state: { __typename?: "IssueState"; isOpen: boolean };
@@ -18262,6 +18283,13 @@ export type GetIssueListQuery = {
                                     };
                           }>;
                       };
+                      priority?: {
+                          __typename?: "IssuePriority";
+                          id: string;
+                          name: string;
+                          description: string;
+                          value: number;
+                      } | null;
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       state: { __typename?: "IssueState"; isOpen: boolean };
@@ -18331,6 +18359,13 @@ export type GetFilteredIssueListQuery = {
                       };
             }>;
         };
+        priority?: {
+            __typename?: "IssuePriority";
+            id: string;
+            name: string;
+            description: string;
+            value: number;
+        } | null;
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
@@ -18406,6 +18441,13 @@ export type GetParticipatingIssueListQuery = {
                               };
                     }>;
                 };
+                priority?: {
+                    __typename?: "IssuePriority";
+                    id: string;
+                    name: string;
+                    description: string;
+                    value: number;
+                } | null;
                 incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                 outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                 state: { __typename?: "IssueState"; isOpen: boolean };
@@ -18459,6 +18501,13 @@ export type GetParticipatingFilteredIssueListQuery = {
                       };
             }>;
         };
+        priority?: {
+            __typename?: "IssuePriority";
+            id: string;
+            name: string;
+            description: string;
+            value: number;
+        } | null;
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
@@ -20037,6 +20086,7 @@ export type IssueListItemInfoFragment = {
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         }>;
     };
+    priority?: { __typename?: "IssuePriority"; id: string; name: string; description: string; value: number } | null;
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     state: { __typename?: "IssueState"; isOpen: boolean };
@@ -20073,6 +20123,7 @@ export type ParticipatingIssueListItemInfoFragment = {
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         }>;
     };
+    priority?: { __typename?: "IssuePriority"; id: string; name: string; description: string; value: number } | null;
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     state: { __typename?: "IssueState"; isOpen: boolean };
@@ -24305,6 +24356,14 @@ export const DefaultLabelInfoFragmentDoc = gql`
         color
     }
 `;
+export const DefaultIssuePriorityInfoFragmentDoc = gql`
+    fragment DefaultIssuePriorityInfo on IssuePriority {
+        id
+        name
+        description
+        value
+    }
+`;
 export const IssueListItemInfoFragmentDoc = gql`
     fragment IssueListItemInfo on Issue {
         id
@@ -24329,10 +24388,14 @@ export const IssueListItemInfoFragmentDoc = gql`
                 }
             }
         }
+        priority {
+            ...DefaultIssuePriorityInfo
+        }
     }
     ${DefaultUserInfoFragmentDoc}
     ${DefaultIssueIconInfoFragmentDoc}
     ${DefaultLabelInfoFragmentDoc}
+    ${DefaultIssuePriorityInfoFragmentDoc}
 `;
 export const ParticipatingIssueListItemInfoFragmentDoc = gql`
     fragment ParticipatingIssueListItemInfo on Issue {
@@ -24695,14 +24758,6 @@ export const OutgoingRelationTypeChangedEventTimelineInfoFragmentDoc = gql`
     }
     ${RelationTypeChangedEventTimelineInfoFragmentDoc}
     ${OutgoingRelationTimelineInfoFragmentDoc}
-`;
-export const DefaultIssuePriorityInfoFragmentDoc = gql`
-    fragment DefaultIssuePriorityInfo on IssuePriority {
-        id
-        name
-        description
-        value
-    }
 `;
 export const IssuePriorityTimelineInfoFragmentDoc = gql`
     fragment IssuePriorityTimelineInfo on IssuePriority {
