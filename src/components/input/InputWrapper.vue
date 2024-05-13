@@ -3,7 +3,7 @@
         <v-form ref="editForm" v-model="formValid" class="flex-1-1-0">
             <slot :modelValue="valueCopy" />
         </v-form>
-        <IconButton class="mt-1 ml-1" :disabled="!hasUnsavedChanges" @click="save">
+        <IconButton v-if="!readonly" class="mt-1 ml-1" :disabled="!hasUnsavedChanges" @click="save">
             <v-icon icon="mdi-content-save" />
             <v-tooltip activator="parent">Save</v-tooltip>
         </IconButton>
@@ -15,6 +15,10 @@ import { ref, toRaw, watch } from "vue";
 const props = defineProps({
     modelValue: {
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 });
 

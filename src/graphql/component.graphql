@@ -72,6 +72,7 @@ query getComponentGeneralDetails($id: ID!) {
                     value
                 }
             }
+            admin: hasPermission(permission: ADMIN)
         }
     }
 }

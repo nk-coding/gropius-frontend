@@ -1,18 +1,29 @@
 <template>
     <div class="pa-4 full-height" v-if="project != undefined">
         <DetailCompartment name="General">
-            <InputWrapper v-model="project.name" v-slot="{ modelValue }" @save="save({ name: $event })">
-                <v-text-field v-model="modelValue.value" label="Name" />
+            <InputWrapper
+                v-model="project.name"
+                v-slot="{ modelValue }"
+                @save="save({ name: $event })"
+                :readonly="!project.admin"
+            >
+                <v-text-field v-model="modelValue.value" label="Name" :readonly="!project.admin" />
             </InputWrapper>
-            <InputWrapper v-model="project.description" v-slot="{ modelValue }" @save="save({ description: $event })">
-                <v-textarea v-model="modelValue.value" label="Description" />
+            <InputWrapper
+                v-model="project.description"
+                v-slot="{ modelValue }"
+                @save="save({ description: $event })"
+                :readonly="!project.admin"
+            >
+                <v-textarea v-model="modelValue.value" label="Description" :readonly="!project.admin" />
             </InputWrapper>
             <InputWrapper
                 v-model="project.repositoryURL"
                 v-slot="{ modelValue }"
                 @save="save({ repositoryURL: $event })"
+                :readonly="!project.admin"
             >
-                <v-text-field v-model="modelValue.value" label="Repository URL" />
+                <v-text-field v-model="modelValue.value" label="Repository URL" :readonly="!project.admin" />
             </InputWrapper>
         </DetailCompartment>
     </div>

@@ -1,18 +1,29 @@
 <template>
     <div class="pa-4 full-height" v-if="component != undefined">
         <DetailCompartment name="General">
-            <InputWrapper v-model="component.name" v-slot="{ modelValue }" @save="save({ name: $event })">
-                <v-text-field v-model="modelValue.value" label="Name" />
+            <InputWrapper
+                v-model="component.name"
+                v-slot="{ modelValue }"
+                @save="save({ name: $event })"
+                :readonly="!component.admin"
+            >
+                <v-text-field v-model="modelValue.value" label="Name" :readonly="!component.admin" />
             </InputWrapper>
-            <InputWrapper v-model="component.description" v-slot="{ modelValue }" @save="save({ description: $event })">
-                <v-textarea v-model="modelValue.value" label="Description" />
+            <InputWrapper
+                v-model="component.description"
+                v-slot="{ modelValue }"
+                @save="save({ description: $event })"
+                :readonly="!component.admin"
+            >
+                <v-textarea v-model="modelValue.value" label="Description" :readonly="!component.admin" />
             </InputWrapper>
             <InputWrapper
                 v-model="component.repositoryURL"
                 v-slot="{ modelValue }"
                 @save="save({ repositoryURL: $event })"
+                :readonly="!component.admin"
             >
-                <v-text-field v-model="modelValue.value" label="Repository URL" />
+                <v-text-field v-model="modelValue.value" label="Repository URL" :readonly="!component.admin" />
             </InputWrapper>
         </DetailCompartment>
         <DetailCompartment name="Templated Fields" class="mt-4">
@@ -23,6 +34,7 @@
                 v-for="templatedField in templatedFields"
                 :key="templatedField.name"
                 v-model="templatedField.value"
+                :readonly="!component.admin"
                 v-slot="{ modelValue }"
                 @save="save({ templatedFields: [{ name: templatedField.name, value: $event }] })"
             >
@@ -30,6 +42,7 @@
                     :schema="templatedField.schema"
                     :root-schema="templatedField.schema"
                     v-model="modelValue.value"
+                    :readonly="!component.admin"
                 />
             </InputWrapper>
         </DetailCompartment>

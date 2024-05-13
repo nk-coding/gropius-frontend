@@ -16390,6 +16390,7 @@ export type GetComponentGeneralDetailsQuery = {
               description: string;
               repositoryURL?: any | null;
               id: string;
+              admin: boolean;
               templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
               template: {
                   __typename?: "ComponentTemplate";
@@ -21984,7 +21985,14 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "Label"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
-        | { __typename?: "Project"; name: string; description: string; repositoryURL?: any | null; id: string }
+        | {
+              __typename?: "Project";
+              name: string;
+              description: string;
+              repositoryURL?: any | null;
+              id: string;
+              admin: boolean;
+          }
         | { __typename?: "ProjectPermission"; id: string }
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
@@ -25283,6 +25291,7 @@ export const GetComponentGeneralDetailsDocument = gql`
                         value
                     }
                 }
+                admin: hasPermission(permission: ADMIN)
             }
         }
     }
@@ -26220,6 +26229,7 @@ export const GetProjectGeneralDetailsDocument = gql`
                 name
                 description
                 repositoryURL
+                admin: hasPermission(permission: ADMIN)
             }
         }
     }
