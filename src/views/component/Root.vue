@@ -102,7 +102,7 @@ const leftSidebarItems = computed(() => {
 });
 
 const rightSidebarItems = computed(() => {
-    if (route.name == "component-issues") {
+    if (route.name == "component-issues" || route.name == "component-issue") {
         return [
             [
                 {

@@ -46,6 +46,7 @@ fragment DefaultComponentVersionInfo on ComponentVersion {
     id
     name
     description
+    version
     __typename
 }
 

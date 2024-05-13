@@ -1,4 +1,5 @@
 <template>
+    <IssueDialogs />
     <div v-if="issue" class="pl-3 pt-3 full-height d-flex flex-column">
         <div class="mb-5">
             <div class="d-flex">
@@ -377,16 +378,16 @@
                         />
                     </template>
                 </EditableCompartment>
-                <v-divider class="mx-2" />
-                <TemplatedFieldEditableCompartment
-                    v-for="field in templatedFields"
-                    :key="field.name"
-                    :name="field.name"
-                    :schema="field.schema"
-                    :model-value="field.value"
-                    :editable="!!issue.manageIssues"
-                    @save="updateTemplatedField(field.name, $event)"
-                />
+                <template v-for="field in templatedFields" :key="field.name">
+                    <v-divider class="mx-2" />
+                    <TemplatedFieldEditableCompartment
+                        :name="field.name"
+                        :schema="field.schema"
+                        :model-value="field.value"
+                        :editable="!!issue.manageIssues"
+                        @save="updateTemplatedField(field.name, $event)"
+                    />
+                </template>
             </v-sheet>
         </div>
     </div>
@@ -439,6 +440,7 @@ import AffectedByIssue from "@/components/info/AffectedByIssue.vue";
 import TemplatedFieldEditableCompartment from "@/components/TemplatedFieldEditableCompartment.vue";
 import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
 import TrackableAutocomplete from "@/components/input/TrackableAutocomplete.vue";
+import IssueDialogs from "@/components/IssueDialogs.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 

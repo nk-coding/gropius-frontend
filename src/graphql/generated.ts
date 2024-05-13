@@ -16939,7 +16939,13 @@ export type GetComponentVersionsQuery = {
               id: string;
               versions: {
                   __typename?: "ComponentVersionConnection";
-                  nodes: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
+                  nodes: Array<{
+                      __typename: "ComponentVersion";
+                      id: string;
+                      name: string;
+                      description: string;
+                      version: string;
+                  }>;
               };
           }
         | { __typename?: "ComponentPermission"; id: string }
@@ -17141,6 +17147,7 @@ export type DefaultComponentVersionInfoFragment = {
     id: string;
     name: string;
     description: string;
+    version: string;
 };
 
 export type SearchComponentVersionsQueryVariables = Exact<{
@@ -17151,7 +17158,13 @@ export type SearchComponentVersionsQueryVariables = Exact<{
 
 export type SearchComponentVersionsQuery = {
     __typename?: "Query";
-    searchComponentVersions: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
+    searchComponentVersions: Array<{
+        __typename: "ComponentVersion";
+        id: string;
+        name: string;
+        description: string;
+        version: string;
+    }>;
 };
 
 export type CreateComponentVersionMutationVariables = Exact<{
@@ -23865,6 +23878,7 @@ export const DefaultComponentVersionInfoFragmentDoc = gql`
         id
         name
         description
+        version
         __typename
     }
 `;

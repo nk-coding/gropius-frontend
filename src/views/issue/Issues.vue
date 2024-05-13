@@ -13,8 +13,7 @@
         <template #search-append>
             <IssueStateSegmentedButton v-model="issueStateIndices" />
         </template>
-        <CreateIssueDialog :trackable="trackableId" @created-issue="(issue: IdObject) => selectIssue(issue)" />
-        <ImportIssueDialog :trackable="trackableId" @imported-issue="(issue: IdObject) => selectIssue(issue)" />
+        <IssueDialogs />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -23,11 +22,10 @@ import { computed, ref } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { IssueListItemInfoFragment, IssueOrderField, OrderDirection } from "@/graphql/generated";
-import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
-import ImportIssueDialog from "@/components/dialog/ImportIssueDialog.vue";
 import { IdObject } from "@/util/types";
+import IssueDialogs from "@/components/IssueDialogs.vue";
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = IssueListItemInfoFragment;
@@ -86,10 +84,6 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
         }
     }
 };
-
-function selectIssue(issue: IdObject) {
-    router.push(issueRoute(issue));
-}
 
 function issueRoute(issue: IdObject): RouteLocationRaw {
     return {

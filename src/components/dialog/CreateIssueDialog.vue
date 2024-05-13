@@ -174,6 +174,8 @@ watch(templateValue, (newValue, oldValue) => {
 
 onEvent("create-issue", () => {
     resetForm();
+    typePath.value = undefined;
+    isOpen.value = undefined;
     createIssueDialog.value = true;
 });
 
