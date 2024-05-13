@@ -1,7 +1,7 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-triangle" :item="item">
         added an <span class="text-high-emphasis">outgoing relation</span>
-        <template v-if="item.type"> with type <Type :type="item.type" /> </template>
+        <template v-if="item.type"> with type <Type :type="item.initialType ?? undefined" /> </template>
         <template v-if="item.relatedIssue" #content>
             <Issue :issue="item.relatedIssue" />
         </template>

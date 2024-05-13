@@ -1,6 +1,7 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-account" :item="item">
-        assigned <User :user="item.user" /> <template v-if="item.type">as <Type :type="item.type" /></template>
+        assigned <User :user="item.user" />
+        <template v-if="item.type">as <Type :type="item.initialType ?? undefined" /></template>
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">

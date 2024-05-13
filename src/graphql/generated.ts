@@ -15790,6 +15790,7 @@ export type RemoveAssignmentMutation = {
                 __typename: "Assignment";
                 id: string;
                 createdAt: any;
+                initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
                 createdBy:
                     | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                     | {
@@ -15830,6 +15831,7 @@ export type CreateAssignmentMutation = {
             __typename: "Assignment";
             id: string;
             createdAt: any;
+            initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -15966,6 +15968,7 @@ export type ChangeAssignmentTypeMutation = {
                 __typename: "Assignment";
                 id: string;
                 createdAt: any;
+                initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
                 createdBy:
                     | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                     | {
@@ -18675,6 +18678,12 @@ export type GetIssueQuery = {
                             __typename: "Assignment";
                             id: string;
                             createdAt: any;
+                            initialType?: {
+                                __typename?: "AssignmentType";
+                                id: string;
+                                name: string;
+                                description: string;
+                            } | null;
                             createdBy:
                                 | {
                                       __typename?: "GropiusUser";
@@ -18720,6 +18729,12 @@ export type GetIssueQuery = {
                                 __typename: "Assignment";
                                 id: string;
                                 createdAt: any;
+                                initialType?: {
+                                    __typename?: "AssignmentType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                                 createdBy:
                                     | {
                                           __typename?: "GropiusUser";
@@ -18970,6 +18985,12 @@ export type GetIssueQuery = {
                             __typename: "IssueRelation";
                             id: string;
                             createdAt: any;
+                            initialType?: {
+                                __typename?: "IssueRelationType";
+                                id: string;
+                                name: string;
+                                description: string;
+                            } | null;
                             createdBy:
                                 | {
                                       __typename?: "GropiusUser";
@@ -19214,6 +19235,12 @@ export type GetIssueQuery = {
                                 __typename: "Assignment";
                                 id: string;
                                 createdAt: any;
+                                initialType?: {
+                                    __typename?: "AssignmentType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                                 createdBy:
                                     | {
                                           __typename?: "GropiusUser";
@@ -19712,6 +19739,12 @@ export type GetIssueQuery = {
                       __typename: "Assignment";
                       id: string;
                       createdAt: any;
+                      initialType?: {
+                          __typename?: "AssignmentType";
+                          id: string;
+                          name: string;
+                          description: string;
+                      } | null;
                       createdBy:
                           | {
                                 __typename?: "GropiusUser";
@@ -20428,6 +20461,7 @@ export type CreateIssueRelationMutation = {
             __typename: "IssueRelation";
             id: string;
             createdAt: any;
+            initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22344,6 +22378,7 @@ type DefaultTimelineItemInfo_Assignment_Fragment = {
     __typename: "Assignment";
     id: string;
     createdAt: any;
+    initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22361,6 +22396,7 @@ type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
         __typename: "Assignment";
         id: string;
         createdAt: any;
+        initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
         createdBy:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22464,6 +22500,7 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
     __typename: "IssueRelation";
     id: string;
     createdAt: any;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22595,6 +22632,7 @@ type DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment = {
         __typename: "Assignment";
         id: string;
         createdAt: any;
+        initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
         createdBy:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23216,6 +23254,7 @@ export type AssignmentTimelineInfoFragment = {
     __typename: "Assignment";
     id: string;
     createdAt: any;
+    initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23233,6 +23272,7 @@ export type AssignmentTypeChangedEventTimelineInfoFragment = {
         __typename: "Assignment";
         id: string;
         createdAt: any;
+        initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
         createdBy:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23336,6 +23376,7 @@ export type IssueRelationTimelineInfoFragment = {
     __typename: "IssueRelation";
     id: string;
     createdAt: any;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23493,6 +23534,7 @@ export type RemovedAssignmentEventTimelineInfoFragment = {
         __typename: "Assignment";
         id: string;
         createdAt: any;
+        initialType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
         createdBy:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23797,7 +23839,7 @@ export type TrackableTimelineInfoFragment =
     | TrackableTimelineInfo_Component_Fragment
     | TrackableTimelineInfo_Project_Fragment;
 
-export type AssignmenTypeTimelineInfoFragment = {
+export type AssignmentTypeTimelineInfoFragment = {
     __typename?: "AssignmentType";
     id: string;
     name: string;
@@ -24471,19 +24513,23 @@ export const DefaultAssignmentInfoFragmentDoc = gql`
     ${UserTimelineInfoFragmentDoc}
     ${DefaultAssignmentTypeInfoFragmentDoc}
 `;
+export const AssignmentTypeTimelineInfoFragmentDoc = gql`
+    fragment AssignmentTypeTimelineInfo on AssignmentType {
+        ...DefaultAssignmentTypeInfo
+    }
+    ${DefaultAssignmentTypeInfoFragmentDoc}
+`;
 export const AssignmentTimelineInfoFragmentDoc = gql`
     fragment AssignmentTimelineInfo on Assignment {
         ...TimelineItemInfo
         ...DefaultAssignmentInfo
+        initialType {
+            ...AssignmentTypeTimelineInfo
+        }
     }
     ${TimelineItemInfoFragmentDoc}
     ${DefaultAssignmentInfoFragmentDoc}
-`;
-export const AssignmenTypeTimelineInfoFragmentDoc = gql`
-    fragment AssignmenTypeTimelineInfo on AssignmentType {
-        ...DefaultAssignmentTypeInfo
-    }
-    ${DefaultAssignmentTypeInfoFragmentDoc}
+    ${AssignmentTypeTimelineInfoFragmentDoc}
 `;
 export const AssignmentTypeChangedEventTimelineInfoFragmentDoc = gql`
     fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
@@ -24492,15 +24538,15 @@ export const AssignmentTypeChangedEventTimelineInfoFragmentDoc = gql`
             ...AssignmentTimelineInfo
         }
         newAssignmentType: newType {
-            ...AssignmenTypeTimelineInfo
+            ...AssignmentTypeTimelineInfo
         }
         oldAssignmentType: oldType {
-            ...AssignmenTypeTimelineInfo
+            ...AssignmentTypeTimelineInfo
         }
     }
     ${TimelineItemInfoFragmentDoc}
     ${AssignmentTimelineInfoFragmentDoc}
-    ${AssignmenTypeTimelineInfoFragmentDoc}
+    ${AssignmentTypeTimelineInfoFragmentDoc}
 `;
 export const CommentTimelineInfoFragmentDoc = gql`
     fragment CommentTimelineInfo on Comment {
@@ -24632,9 +24678,13 @@ export const IssueRelationTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTimelineInfo on IssueRelation {
         ...TimelineItemInfo
         ...OutgoingRelationTimelineInfo
+        initialType {
+            ...IssueRelationTypeTimelineInfo
+        }
     }
     ${TimelineItemInfoFragmentDoc}
     ${OutgoingRelationTimelineInfoFragmentDoc}
+    ${IssueRelationTypeTimelineInfoFragmentDoc}
 `;
 export const OutgoingRelationTypeChangedEventTimelineInfoFragmentDoc = gql`
     fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {

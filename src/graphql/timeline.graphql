@@ -144,6 +144,9 @@ fragment AddedToTrackableEventTimelineInfo on AddedToTrackableEvent {
 fragment AssignmentTimelineInfo on Assignment {
     ...TimelineItemInfo
     ...DefaultAssignmentInfo
+    initialType {
+        ...AssignmentTypeTimelineInfo    
+    }
 }
 
 fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
@@ -152,10 +155,10 @@ fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
         ...AssignmentTimelineInfo
     }
     newAssignmentType: newType {
-        ...AssignmenTypeTimelineInfo
+        ...AssignmentTypeTimelineInfo
     }
     oldAssignmentType: oldType {
-        ...AssignmenTypeTimelineInfo
+        ...AssignmentTypeTimelineInfo
     }
 }
 
@@ -195,6 +198,9 @@ fragment IssueCommentTimelineInfo on IssueComment {
 fragment IssueRelationTimelineInfo on IssueRelation {
     ...TimelineItemInfo
     ...OutgoingRelationTimelineInfo
+    initialType {
+        ...IssueRelationTypeTimelineInfo
+    }
 }
 
 fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
@@ -372,7 +378,7 @@ fragment TrackableTimelineInfo on Trackable {
     ...DefaultTrackableInfo
 }
 
-fragment AssignmenTypeTimelineInfo on AssignmentType {
+fragment AssignmentTypeTimelineInfo on AssignmentType {
     ...DefaultAssignmentTypeInfo
 }
 
