@@ -15,11 +15,12 @@
 import BaseLayout from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { asyncComputed } from "@vueuse/core";
-import { computed, provide } from "vue";
+import { computed, provide, ref } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { eventBusKey, trackableKey } from "@/util/keys";
 import { inject } from "vue";
+import { onEvent } from "@/util/eventBus";
 
 type Project = NodeReturnType<"getProject", "Project">;
 
@@ -28,11 +29,17 @@ const route = useRoute();
 const projectId = computed(() => route.params.trackable as string);
 const eventBus = inject(eventBusKey);
 
+const titleSegmentDependency = ref(0);
+onEvent("title-segment-changed", () => {
+    titleSegmentDependency.value++;
+});
+
 const project = asyncComputed(
     async () => {
         if (!projectId.value) {
             return null;
         }
+        titleSegmentDependency.value;
         const res = await withErrorMessage(() => client.getProject({ id: projectId.value }), "Error loading project");
         return res.node as Project;
     },

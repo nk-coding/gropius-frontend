@@ -1272,6 +1272,8 @@ export type Assignment = AuditedNode &
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
+        /** The initial type of Assignment, e.g. REVIEWER. Allowed types are defined by the IssueTemplate. */
+        initialType?: Maybe<AssignmentType>;
         /** The Issue this TimelineItem is part of. */
         issue?: Maybe<Issue>;
         /** The DateTime this entity was last modified at. */
@@ -1328,6 +1330,8 @@ export type AssignmentFilterInput = {
     createdBy?: InputMaybe<UserFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    initialType?: InputMaybe<AssignmentTypeFilterInput>;
     /** Filters for nodes where the related node match this filter */
     issue?: InputMaybe<IssueFilterInput>;
     /** Filter by lastModifiedAt */
@@ -9137,6 +9141,8 @@ export type IssueRelation = AuditedNode &
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
+        /** The initial type of the relation, e.g. DUPLICATES. Allowed types are defined by the IssueTemplate. */
+        initialType?: Maybe<IssueRelationType>;
         /** The Issue this TimelineItem is part of. */
         issue?: Maybe<Issue>;
         /** The DateTime this entity was last modified at. */
@@ -9215,6 +9221,8 @@ export type IssueRelationFilterInput = {
     createdBy?: InputMaybe<UserFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    initialType?: InputMaybe<IssueRelationTypeFilterInput>;
     /** Filters for nodes where the related node match this filter */
     issue?: InputMaybe<IssueFilterInput>;
     /** Filter by lastModifiedAt */
@@ -16339,6 +16347,107 @@ export type GetComponentDetailsQuery = {
         | null;
 };
 
+export type GetComponentGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetComponentGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | {
+              __typename?: "Component";
+              name: string;
+              description: string;
+              repositoryURL?: any | null;
+              id: string;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              template: {
+                  __typename?: "ComponentTemplate";
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+          }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
 export type SearchComponentsQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
@@ -16357,6 +16466,15 @@ export type CreateComponentMutationVariables = Exact<{
 export type CreateComponentMutation = {
     __typename?: "Mutation";
     createComponent: { __typename?: "CreateComponentPayload"; component: { __typename?: "Component"; id: string } };
+};
+
+export type UpdateComponentMutationVariables = Exact<{
+    input: UpdateComponentInput;
+}>;
+
+export type UpdateComponentMutation = {
+    __typename?: "Mutation";
+    updateComponent: { __typename?: "UpdateComponentPayload"; component: { __typename?: "Component"; id: string } };
 };
 
 export type GetComponentPermissionListQueryVariables = Exact<{
@@ -21717,6 +21835,96 @@ export type GetProjectQuery = {
         | null;
 };
 
+export type GetProjectGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetProjectGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; name: string; description: string; repositoryURL?: any | null; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
 export type CreateProjectMutationVariables = Exact<{
     input: CreateProjectInput;
 }>;
@@ -21724,6 +21932,15 @@ export type CreateProjectMutationVariables = Exact<{
 export type CreateProjectMutation = {
     __typename?: "Mutation";
     createProject: { __typename?: "CreateProjectPayload"; project: { __typename?: "Project"; id: string } };
+};
+
+export type UpdateProjectMutationVariables = Exact<{
+    input: UpdateProjectInput;
+}>;
+
+export type UpdateProjectMutation = {
+    __typename?: "Mutation";
+    updateProject: { __typename?: "UpdateProjectPayload"; project: { __typename?: "Project"; id: string } };
 };
 
 export type GetProjectPermissionListQueryVariables = Exact<{
@@ -24943,6 +25160,28 @@ export const GetComponentDetailsDocument = gql`
     }
     ${IssueListItemInfoFragmentDoc}
 `;
+export const GetComponentGeneralDetailsDocument = gql`
+    query getComponentGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Component {
+                name
+                description
+                repositoryURL
+                templatedFields {
+                    name
+                    value
+                }
+                template {
+                    templateFieldSpecifications {
+                        name
+                        value
+                    }
+                }
+            }
+        }
+    }
+`;
 export const SearchComponentsDocument = gql`
     query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterInput) {
         searchComponents(query: $query, first: $count, filter: $filter) {
@@ -24954,6 +25193,15 @@ export const SearchComponentsDocument = gql`
 export const CreateComponentDocument = gql`
     mutation createComponent($input: CreateComponentInput!) {
         createComponent(input: $input) {
+            component {
+                id
+            }
+        }
+    }
+`;
+export const UpdateComponentDocument = gql`
+    mutation updateComponent($input: UpdateComponentInput!) {
+        updateComponent(input: $input) {
             component {
                 id
             }
@@ -25859,9 +26107,30 @@ export const GetProjectDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
+export const GetProjectGeneralDetailsDocument = gql`
+    query getProjectGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Project {
+                name
+                description
+                repositoryURL
+            }
+        }
+    }
+`;
 export const CreateProjectDocument = gql`
     mutation createProject($input: CreateProjectInput!) {
         createProject(input: $input) {
+            project {
+                id
+            }
+        }
+    }
+`;
+export const UpdateProjectDocument = gql`
+    mutation updateProject($input: UpdateProjectInput!) {
+        updateProject(input: $input) {
             project {
                 id
             }
@@ -26212,6 +26481,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        getComponentGeneralDetails(
+            variables: GetComponentGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentGeneralDetailsQuery>(GetComponentGeneralDetailsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponentGeneralDetails",
+                "query",
+                variables
+            );
+        },
         searchComponents(
             variables: SearchComponentsQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -26238,6 +26522,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponent",
+                "mutation",
+                variables
+            );
+        },
+        updateComponent(
+            variables: UpdateComponentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateComponentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateComponentMutation>(UpdateComponentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateComponent",
                 "mutation",
                 variables
             );
@@ -27391,6 +27690,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        getProjectGeneralDetails(
+            variables: GetProjectGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetProjectGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetProjectGeneralDetailsQuery>(GetProjectGeneralDetailsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getProjectGeneralDetails",
+                "query",
+                variables
+            );
+        },
         createProject(
             variables: CreateProjectMutationVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -27402,6 +27716,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProject",
+                "mutation",
+                variables
+            );
+        },
+        updateProject(
+            variables: UpdateProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateProjectMutation>(UpdateProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateProject",
                 "mutation",
                 variables
             );

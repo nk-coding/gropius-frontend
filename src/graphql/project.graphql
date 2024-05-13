@@ -42,8 +42,27 @@ query getProject($id: ID!) {
     }
 }
 
+query getProjectGeneralDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on Project {
+            name
+            description
+            repositoryURL
+        }
+    }
+}
+
 mutation createProject($input: CreateProjectInput!) {
     createProject(input: $input) {
+        project {
+            id
+        }
+    }
+}
+
+mutation updateProject($input: UpdateProjectInput!) {
+    updateProject(input: $input) {
         project {
             id
         }

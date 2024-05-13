@@ -15,12 +15,13 @@
 import BaseLayout from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { computedAsync } from "@vueuse/core";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { inject } from "vue";
 import { eventBusKey, trackableKey } from "@/util/keys";
 import { provide } from "vue";
+import { onEvent } from "@/util/eventBus";
 
 type Component = NodeReturnType<"getComponent", "Component">;
 
@@ -29,11 +30,17 @@ const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
 const eventBus = inject(eventBusKey);
 
+const titleSegmentDependency = ref(0);
+onEvent("title-segment-changed", () => {
+    titleSegmentDependency.value++;
+});
+
 const component = computedAsync(
     async () => {
         if (!componentId.value) {
             return null;
         }
+        titleSegmentDependency.value;
         const res = await withErrorMessage(
             () => client.getComponent({ id: componentId.value }),
             "Error loading component"

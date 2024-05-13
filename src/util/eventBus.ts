@@ -14,6 +14,7 @@ export type Events = {
     "import-permission": undefined;
     "add-component-version-to-project": undefined;
     "layout-component-graph": undefined;
+    "title-segment-changed": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {

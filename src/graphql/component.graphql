@@ -55,6 +55,27 @@ query getComponentDetails($id: ID!) {
     }
 }
 
+query getComponentGeneralDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on Component {
+            name
+            description
+            repositoryURL
+            templatedFields {
+                name
+                value
+            }
+            template {
+                templateFieldSpecifications {
+                    name
+                    value
+                }
+            }
+        }
+    }
+}
+
 query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterInput) {
     searchComponents(query: $query, first: $count, filter: $filter) {
         ...DefaultTrackableInfo
@@ -63,6 +84,14 @@ query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterIn
 
 mutation createComponent($input: CreateComponentInput!) {
     createComponent(input: $input) {
+        component {
+            id
+        }
+    }
+}
+
+mutation updateComponent($input: UpdateComponentInput!) {
+    updateComponent(input: $input) {
         component {
             id
         }
