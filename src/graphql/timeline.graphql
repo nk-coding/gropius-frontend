@@ -198,9 +198,6 @@ fragment IssueCommentTimelineInfo on IssueComment {
 fragment IssueRelationTimelineInfo on IssueRelation {
     ...TimelineItemInfo
     ...OutgoingRelationTimelineInfo
-    initialType {
-        ...IssueRelationTypeTimelineInfo
-    }
 }
 
 fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
@@ -398,6 +395,9 @@ fragment IssueRelationTypeTimelineInfo on IssueRelationType {
 
 fragment IssueRelationTimelineInfoBase on IssueRelation {
     type {
+        ...IssueRelationTypeTimelineInfo
+    }
+    initialType {
         ...IssueRelationTypeTimelineInfo
     }
 }

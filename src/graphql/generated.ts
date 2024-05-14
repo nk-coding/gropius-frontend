@@ -19073,6 +19073,12 @@ export type GetIssueQuery = {
                                     name: string;
                                     description: string;
                                 } | null;
+                                initialType?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             };
                             oldRelationType?: {
                                 __typename?: "IssueRelationType";
@@ -19148,12 +19154,6 @@ export type GetIssueQuery = {
                             __typename: "IssueRelation";
                             id: string;
                             createdAt: any;
-                            initialType?: {
-                                __typename?: "IssueRelationType";
-                                id: string;
-                                name: string;
-                                description: string;
-                            } | null;
                             createdBy:
                                 | {
                                       __typename?: "GropiusUser";
@@ -19191,6 +19191,12 @@ export type GetIssueQuery = {
                                 name: string;
                                 description: string;
                             } | null;
+                            initialType?: {
+                                __typename?: "IssueRelationType";
+                                id: string;
+                                name: string;
+                                description: string;
+                            } | null;
                         }
                       | {
                             __typename: "OutgoingRelationTypeChangedEvent";
@@ -19216,6 +19222,12 @@ export type GetIssueQuery = {
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
                                 type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
+                                initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
@@ -19308,6 +19320,12 @@ export type GetIssueQuery = {
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
                                 type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
+                                initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
@@ -19534,6 +19552,12 @@ export type GetIssueQuery = {
                                     name: string;
                                     description: string;
                                 } | null;
+                                initialType?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             } | null;
                             createdBy:
                                 | {
@@ -19602,6 +19626,12 @@ export type GetIssueQuery = {
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
                                 type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
+                                initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
@@ -19853,6 +19883,12 @@ export type GetIssueQuery = {
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
                       type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                      initialType?: {
+                          __typename?: "IssueRelationType";
+                          id: string;
+                          name: string;
+                          description: string;
+                      } | null;
                   }>;
               };
               incomingRelations: {
@@ -19878,6 +19914,12 @@ export type GetIssueQuery = {
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
                       type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                      initialType?: {
+                          __typename?: "IssueRelationType";
+                          id: string;
+                          name: string;
+                          description: string;
+                      } | null;
                   }>;
               };
               labels: {
@@ -20605,6 +20647,12 @@ export type RemoveIssueRelationMutation = {
                     type: { __typename?: "IssueType"; iconPath: string };
                 } | null;
                 type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                initialType?: {
+                    __typename?: "IssueRelationType";
+                    id: string;
+                    name: string;
+                    description: string;
+                } | null;
             } | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -20626,7 +20674,6 @@ export type CreateIssueRelationMutation = {
             __typename: "IssueRelation";
             id: string;
             createdAt: any;
-            initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -20647,6 +20694,7 @@ export type CreateIssueRelationMutation = {
                 type: { __typename?: "IssueType"; iconPath: string };
             } | null;
             type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+            initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
         };
     };
 };
@@ -20804,6 +20852,12 @@ export type ChangeIssueRelationTypeMutation = {
                     type: { __typename?: "IssueType"; iconPath: string };
                 } | null;
                 type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                initialType?: {
+                    __typename?: "IssueRelationType";
+                    id: string;
+                    name: string;
+                    description: string;
+                } | null;
             };
             oldRelationType?: {
                 __typename?: "IssueRelationType";
@@ -22644,6 +22698,7 @@ type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
@@ -22672,7 +22727,6 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
     __typename: "IssueRelation";
     id: string;
     createdAt: any;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22693,6 +22747,7 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
     type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
@@ -22719,6 +22774,7 @@ type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
@@ -22762,6 +22818,7 @@ type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -22868,6 +22925,7 @@ type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -22908,6 +22966,7 @@ type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23520,6 +23579,7 @@ export type IncomingRelationTypeChangedEventTimelineInfoFragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
@@ -23548,7 +23608,6 @@ export type IssueRelationTimelineInfoFragment = {
     __typename: "IssueRelation";
     id: string;
     createdAt: any;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23569,6 +23628,7 @@ export type IssueRelationTimelineInfoFragment = {
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
     type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
@@ -23595,6 +23655,7 @@ export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
@@ -23638,6 +23699,7 @@ export type RelatedByIssueEventTimelineInfoFragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23770,6 +23832,7 @@ export type RemovedIncomingRelationEventTimelineInfoFragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23810,6 +23873,7 @@ export type RemovedOutgoingRelationEventTimelineInfoFragment = {
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
         type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -24048,6 +24112,7 @@ export type IssueRelationTypeTimelineInfoFragment = {
 export type IssueRelationTimelineInfoBaseFragment = {
     __typename?: "IssueRelation";
     type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type IncomingRelationTimelineInfoFragment = {
@@ -24070,6 +24135,7 @@ export type IncomingRelationTimelineInfoFragment = {
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
     type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type OutgoingRelationTimelineInfoFragment = {
@@ -24092,6 +24158,7 @@ export type OutgoingRelationTimelineInfoFragment = {
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
     type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type IssueTimelineInfoFragment = {
@@ -24791,6 +24858,9 @@ export const IssueRelationTimelineInfoBaseFragmentDoc = gql`
         type {
             ...IssueRelationTypeTimelineInfo
         }
+        initialType {
+            ...IssueRelationTypeTimelineInfo
+        }
     }
     ${IssueRelationTypeTimelineInfoFragmentDoc}
 `;
@@ -24862,13 +24932,9 @@ export const IssueRelationTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTimelineInfo on IssueRelation {
         ...TimelineItemInfo
         ...OutgoingRelationTimelineInfo
-        initialType {
-            ...IssueRelationTypeTimelineInfo
-        }
     }
     ${TimelineItemInfoFragmentDoc}
     ${OutgoingRelationTimelineInfoFragmentDoc}
-    ${IssueRelationTypeTimelineInfoFragmentDoc}
 `;
 export const OutgoingRelationTypeChangedEventTimelineInfoFragmentDoc = gql`
     fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
