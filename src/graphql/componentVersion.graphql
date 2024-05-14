@@ -56,8 +56,37 @@ query searchComponentVersions($query: String!, $count: Int!, $component: ID!) {
     }
 }
 
+query getComponentVersionGeneralDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on ComponentVersion {
+            name
+            description
+            version
+            templatedFields {
+                name
+                value
+            }
+            template {
+                templateFieldSpecifications {
+                    name
+                    value
+                }
+            }
+        }
+    }
+}
+
 mutation createComponentVersion($input: CreateComponentVersionInput!) {
     createComponentVersion(input: $input) {
+        componentVersion {
+            id
+        }
+    }
+}
+
+mutation updateComponentVersion($input: UpdateComponentVersionInput!) {
+    updateComponentVersion(input: $input) {
         componentVersion {
             id
         }

@@ -17303,6 +17303,107 @@ export type SearchComponentVersionsQuery = {
     }>;
 };
 
+export type GetComponentVersionGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetComponentVersionGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | {
+              __typename?: "ComponentVersion";
+              name: string;
+              description: string;
+              version: string;
+              id: string;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              template: {
+                  __typename?: "ComponentVersionTemplate";
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+          }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
 export type CreateComponentVersionMutationVariables = Exact<{
     input: CreateComponentVersionInput;
 }>;
@@ -17311,6 +17412,18 @@ export type CreateComponentVersionMutation = {
     __typename?: "Mutation";
     createComponentVersion: {
         __typename?: "CreateComponentVersionPayload";
+        componentVersion: { __typename?: "ComponentVersion"; id: string };
+    };
+};
+
+export type UpdateComponentVersionMutationVariables = Exact<{
+    input: UpdateComponentVersionInput;
+}>;
+
+export type UpdateComponentVersionMutation = {
+    __typename?: "Mutation";
+    updateComponentVersion: {
+        __typename?: "UpdateComponentVersionPayload";
         componentVersion: { __typename?: "ComponentVersion"; id: string };
     };
 };
@@ -25503,9 +25616,40 @@ export const SearchComponentVersionsDocument = gql`
     }
     ${DefaultComponentVersionInfoFragmentDoc}
 `;
+export const GetComponentVersionGeneralDetailsDocument = gql`
+    query getComponentVersionGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on ComponentVersion {
+                name
+                description
+                version
+                templatedFields {
+                    name
+                    value
+                }
+                template {
+                    templateFieldSpecifications {
+                        name
+                        value
+                    }
+                }
+            }
+        }
+    }
+`;
 export const CreateComponentVersionDocument = gql`
     mutation createComponentVersion($input: CreateComponentVersionInput!) {
         createComponentVersion(input: $input) {
+            componentVersion {
+                id
+            }
+        }
+    }
+`;
+export const UpdateComponentVersionDocument = gql`
+    mutation updateComponentVersion($input: UpdateComponentVersionInput!) {
+        updateComponentVersion(input: $input) {
             componentVersion {
                 id
             }
@@ -26900,6 +27044,22 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        getComponentVersionGeneralDetails(
+            variables: GetComponentVersionGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentVersionGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentVersionGeneralDetailsQuery>(
+                        GetComponentVersionGeneralDetailsDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getComponentVersionGeneralDetails",
+                "query",
+                variables
+            );
+        },
         createComponentVersion(
             variables: CreateComponentVersionMutationVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -26911,6 +27071,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentVersion",
+                "mutation",
+                variables
+            );
+        },
+        updateComponentVersion(
+            variables: UpdateComponentVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateComponentVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateComponentVersionMutation>(UpdateComponentVersionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateComponentVersion",
                 "mutation",
                 variables
             );

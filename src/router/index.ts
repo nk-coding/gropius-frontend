@@ -83,12 +83,23 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: "",
                         name: "component-versions",
-                        component: () => import("../views/component/versions/Versions.vue")
+                        component: () => import("../views/component/version/Versions.vue")
                     },
                     {
                         path: ":version",
-                        name: "component-version",
-                        component: () => import("../views/component/versions/Version.vue")
+                        component: () => import("../views/RouterOnly.vue"),
+                        children: [
+                            {
+                                path: "",
+                                name: "component-version-general",
+                                component: () => import("../views/component/version/General.vue")
+                            },
+                            {
+                                path: "interfaces",
+                                name: "component-version-interfaces",
+                                component: () => import("../views/component/version/Interfaces.vue")
+                            }
+                        ]
                     }
                 ]
             },

@@ -86,7 +86,7 @@ function selectComponentVersion(componentVersion: IdObject) {
 
 function componentVersionRoute(componentVersion: IdObject): RouteLocationRaw {
     return {
-        name: "component-version",
+        name: "component-version-general",
         params: {
             version: componentVersion.id
         }

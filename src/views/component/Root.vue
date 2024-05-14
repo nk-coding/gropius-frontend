@@ -103,6 +103,23 @@ const leftSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name?.toString().startsWith("component-version-")) {
+        return [
+            [
+                {
+                    icon: "mdi-home",
+                    name: "General",
+                    color: "secondary",
+                    to: componentPath("component-version-general")
+                },
+                {
+                    icon: "$interface",
+                    name: "Interfaces",
+                    color: "secondary",
+                    to: componentPath("component-version-interfaces")
+                }
+            ]
+        ];
     } else {
         return [];
     }
