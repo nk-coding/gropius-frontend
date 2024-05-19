@@ -5,7 +5,6 @@ import { jwtDecode } from "jwt-decode";
 import { pushErrorMessage } from "@/util/withErrorMessage";
 import { TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
-import { ClientError } from "graphql-request";
 import { Mutex } from "async-mutex";
 import { shallowRef } from "vue";
 
@@ -23,6 +22,7 @@ export const useAppStore = defineStore("app", {
         user: undefined as undefined | (ClientReturnType<"getCurrentUser">["currentUser"] & GlobalUserPermissions),
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
+        accessTokenValidUntil: useLocalStorage<number>("accessTokenValidUntil", 0),
         errors: [] as string[],
         clientId: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID as string | undefined
     }),
@@ -51,25 +51,17 @@ export const useAppStore = defineStore("app", {
                 this.user = undefined;
             } else {
                 const client = useClient();
-                try {
-                    const userRes = await client.getCurrentUser();
-                    if (userRes.currentUser != undefined) {
-                        this.user = {
-                            ...userRes.currentUser,
-                            canCreateProjects: userRes.canCreateProjects,
-                            canCreateComponents: userRes.canCreateComponents,
-                            canCreateIMSs: userRes.canCreateIMSs,
-                            canCreateTemplates: userRes.canCreateTemplates
-                        };
-                    } else {
-                        this.user = undefined;
-                    }
-                } catch (err) {
-                    if ((err as ClientError).response?.status >= 400) {
-                        pushErrorMessage("Invalid access token.");
-                        this.accessToken = "";
-                        this.refreshToken = "";
-                    }
+                const userRes = await client.getCurrentUser();
+                if (userRes.currentUser != undefined) {
+                    this.user = {
+                        ...userRes.currentUser,
+                        canCreateProjects: userRes.canCreateProjects,
+                        canCreateComponents: userRes.canCreateComponents,
+                        canCreateIMSs: userRes.canCreateIMSs,
+                        canCreateTemplates: userRes.canCreateTemplates
+                    };
+                } else {
+                    this.user = undefined;
                 }
             }
         },
@@ -85,6 +77,7 @@ export const useAppStore = defineStore("app", {
                     ).data;
                     this.accessToken = tokenResponse.access_token;
                     this.refreshToken = tokenResponse.refresh_token;
+                    this.accessTokenValidUntil = this.tokenValidityDuration + Date.now() - 30 * 1000;
                 } catch {
                     this.accessToken = "";
                     this.refreshToken = "";
@@ -98,7 +91,10 @@ export const useAppStore = defineStore("app", {
                     return undefined;
                 }
                 const decoded = jwtDecode(this.accessToken);
-                if (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) {
+                if (
+                    (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) ||
+                    this.accessTokenValidUntil < Date.now()
+                ) {
                     try {
                         await this.forceTokenRefresh();
                     } catch (err) {
