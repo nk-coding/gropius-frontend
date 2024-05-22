@@ -150,6 +150,7 @@ async function updateItems(resetPage: boolean) {
 .sort-container {
     flex: 0 1 300px;
     overflow-x: clip;
+    min-width: 0;
     transition: flex-basis 0.6s ease-in-out;
 }
 
