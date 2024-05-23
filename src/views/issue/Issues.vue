@@ -6,6 +6,7 @@
         :to="(issue: Issue) => issueRoute(issue)"
         :sort-ascending-initially="false"
         :dependencies="[stateFilterInput]"
+        query-param-prefix=""
     >
         <template #item="{ item }">
             <IssueListItem :item="item" />
@@ -34,7 +35,22 @@ const client = useClient();
 const router = useRouter();
 const route = useRoute();
 
-const issueStateIndices = ref([0]);
+const issueStateIndices = computed({
+    get: () => {
+        const state = (route.query.state as string) ?? "open";
+        if (state == "open") {
+            return [0];
+        } else if (state == "closed") {
+            return [1];
+        } else {
+            return [0, 1];
+        }
+    },
+    set: (value: number[]) => {
+        const state = value.length == 1 ? ["open", "closed"][value[0]] : "all";
+        router.replace({ query: { ...route.query, state } });
+    }
+});
 
 const stateFilterInput = computed(() => {
     if (issueStateIndices.value.length != 1) {

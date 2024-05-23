@@ -5,6 +5,7 @@
         :sort-fields="Object.keys(permissionSortFields)"
         :to="() => undefined"
         :dependencies="[permissionDependencyCounter]"
+        query-param-prefix=""
     >
         <template #item="{ item }">
             <ListItem

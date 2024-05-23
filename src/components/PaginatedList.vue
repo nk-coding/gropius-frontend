@@ -48,10 +48,11 @@
 import { watch } from "vue";
 import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
-import { RouteLocationRaw } from "vue-router";
+import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import CustomList from "./CustomList.vue";
 import { computed } from "vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
+import { WritableComputedRef } from "vue";
 
 export interface ItemManager<I, J> {
     fetchItems(
@@ -93,17 +94,46 @@ const props = defineProps({
     name: {
         type: String,
         required: true
+    },
+    queryParamPrefix: {
+        type: String,
+        required: false
     }
 });
 
-const searchString = ref("");
+const route = useRoute();
+const router = useRouter();
+
+const queryMode = computed(() => props.queryParamPrefix != undefined);
+
+const searchString = useQueryParam(
+    "search",
+    "",
+    (value) => value,
+    (value) => value
+);
 const transformedSearchQuery = computed(() => transformSearchQuery(searchString.value));
-const currentSortField = ref(props.sortFields[0]) as Ref<S>;
-const sortAscending = ref(props.sortAscendingInitially);
+const currentSortField = useQueryParam(
+    "sort",
+    props.sortFields[0],
+    (value) => value as S,
+    (value) => value
+);
+const sortAscending = useQueryParam(
+    "asc",
+    props.sortAscendingInitially,
+    (value) => value == "true",
+    (value) => value.toString()
+);
 const loadedInitially = ref(false);
 
 const pageCount = ref(0);
-const currentPage = ref(1);
+const currentPage = useQueryParam(
+    "page",
+    1,
+    (value) => parseInt(value),
+    (value) => value.toString()
+);
 const currentItems = ref<T[]>([]) as Ref<T[]>;
 
 function toggleSortDirection() {
@@ -144,6 +174,44 @@ async function updateItems(resetPage: boolean) {
     loadedInitially.value = true;
     currentItems.value = items;
     pageCount.value = Math.ceil(count / props.itemCount);
+}
+
+function useQueryParam<T>(
+    key: string,
+    initialValue: T,
+    parse: (value: string) => T,
+    stringify: (value: T) => string
+): WritableComputedRef<T> {
+    const _value = ref<T>(initialValue) as Ref<T>;
+    return computed<T>({
+        get: () => {
+            if (queryMode.value) {
+                const value = route.query[props.queryParamPrefix + key];
+                if (value) {
+                    return parse(value as string);
+                } else {
+                    return initialValue;
+                }
+            }
+            return _value.value;
+        },
+        set: (value: T) => {
+            if (queryMode.value) {
+                updateQuery(key, value == "" ? undefined : stringify(value));
+            } else {
+                _value.value = value;
+            }
+        }
+    });
+}
+
+function updateQuery(key: string, value: string | undefined) {
+    router.replace({
+        query: {
+            ...route.query,
+            [props.queryParamPrefix + key]: value
+        }
+    });
 }
 </script>
 <style scoped>

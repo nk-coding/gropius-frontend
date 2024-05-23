@@ -11,7 +11,13 @@ const routes: RouteRecordRaw[] = [
                 path: "",
                 name: "home",
                 component: () => import("../views/home/Home.vue")
-            },
+            }
+        ]
+    },
+    {
+        path: "/",
+        component: () => import("../views/home/Root.vue"),
+        children: [
             {
                 path: "components",
                 name: "components",
@@ -49,7 +55,13 @@ const routes: RouteRecordRaw[] = [
                 path: "",
                 name: "component",
                 component: () => import("../views/component/Home.vue")
-            },
+            }
+        ]
+    },
+    {
+        path: "/components/:trackable",
+        component: () => import("../views/component/Root.vue"),
+        children: [
             {
                 path: "details",
                 component: () => import("../views/RouterOnly.vue"),
@@ -129,7 +141,13 @@ const routes: RouteRecordRaw[] = [
                 path: "",
                 name: "project",
                 component: () => import("../views/project/Home.vue")
-            },
+            }
+        ]
+    },
+    {
+        path: "/projects/:trackable",
+        component: () => import("../views/project/Root.vue"),
+        children: [
             {
                 path: "details",
                 component: () => import("../views/RouterOnly.vue"),

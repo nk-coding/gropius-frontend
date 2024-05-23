@@ -21,9 +21,7 @@
             </slot>
             <slot name="header-content">
                 <v-tabs v-if="tabs.length > 0" color="primary" density="compact" class="ml-5">
-                    <v-tab v-for="(tab, index) in tabs" :value="tab.name" :to="tab.path" :exact="tab.exact ?? true">{{
-                        tab.name
-                    }}</v-tab>
+                    <v-tab v-for="(tab, index) in tabs" :value="tab.name" :to="tab.path">{{ tab.name }}</v-tab>
                 </v-tabs>
             </slot>
             <v-spacer />
@@ -97,7 +95,6 @@ export type TitleSegment = {
 export interface TabSegment {
     name: string;
     path: RouteLocationRaw;
-    exact?: boolean;
 }
 
 const props = defineProps({

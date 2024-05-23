@@ -4,6 +4,7 @@
         :item-manager="itemManager"
         :sort-fields="Object.keys(sortFields)"
         :to="(componentVersion: ComponentVersion) => componentVersionRoute(componentVersion)"
+        query-param-prefix=""
     >
         <template #item="{ item }">
             <ListItem

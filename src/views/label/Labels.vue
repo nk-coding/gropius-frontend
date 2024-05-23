@@ -5,6 +5,7 @@
         :sort-fields="Object.keys(sortFields)"
         :to="() => undefined"
         :dependencies="modifiedLabels"
+        query-param-prefix=""
     >
         <template #item="{ item }">
             <ListItem

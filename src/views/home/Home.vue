@@ -17,6 +17,7 @@
                 :to="(issue: Issue) => issueRoute(issue)"
                 :sort-ascending-initially="false"
                 :dependencies="[stateFilterInput]"
+                query-param-prefix=""
             >
                 <template #item="{ item }">
                     <IssueListItem :item="item" />
@@ -31,7 +32,7 @@
 <script lang="ts" setup>
 import { useClient } from "@/graphql/client";
 import { computed, ref } from "vue";
-import { RouteLocationRaw, useRouter } from "vue-router";
+import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import {
     IssueFilterInput,
@@ -47,10 +48,32 @@ type Issue = ParticipatingIssueListItemInfoFragment;
 
 const client = useClient();
 const router = useRouter();
+const route = useRoute();
 const store = useAppStore();
 
-const issueStateIndices = ref([0]);
-const issueFilterIndex = ref(0);
+const issueStateIndices = computed({
+    get: () => {
+        const state = (route.query.state as string) ?? "open";
+        if (state == "open") {
+            return [0];
+        } else if (state == "closed") {
+            return [1];
+        } else {
+            return [0, 1];
+        }
+    },
+    set: (value: number[]) => {
+        const state = value.length == 1 ? ["open", "closed"][value[0]] : "all";
+        router.replace({ query: { ...route.query, state } });
+    }
+});
+const categories = ["participated", "created", "assigned"];
+const issueFilterIndex = computed({
+    get: () => categories.indexOf((route.query.category as string) ?? "participated"),
+    set: (value: number) => {
+        router.replace({ query: { ...route.query, category: categories[value] } });
+    }
+});
 
 const userId = computed(() => store.user!.id);
 const userFilter = computed(() => ({
