@@ -13,9 +13,7 @@
                 v-bind="props"
                 :title="`${item.raw.name} (v${item.raw.version})`"
                 :subtitle="item.raw.description"
-            >
-                TEST
-            </v-list-item>
+            />
         </template>
         <template #context-item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
