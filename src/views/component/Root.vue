@@ -127,6 +127,15 @@ const leftSidebarItems = computed(() => {
                     color: "secondary",
                     to: componentPath("component-version-interfaces")
                 }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: componentPath("component-version-danger"),
+                    disabled: !(component?.value?.admin ?? false)
+                }
             ]
         ];
     } else {

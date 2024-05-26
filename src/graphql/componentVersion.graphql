@@ -92,3 +92,9 @@ mutation updateComponentVersion($input: UpdateComponentVersionInput!) {
         }
     }
 }
+
+mutation deleteComponentVersion($id: ID!) {
+    deleteComponentVersion(input: { id: $id }) {
+        __typename
+    }
+}

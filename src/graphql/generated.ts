@@ -17434,6 +17434,15 @@ export type UpdateComponentVersionMutation = {
     };
 };
 
+export type DeleteComponentVersionMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteComponentVersionMutation = {
+    __typename?: "Mutation";
+    deleteComponentVersion: { __typename: "DeleteNodePayload" };
+};
+
 export type GetGlobalPermissionListQueryVariables = Exact<{
     orderBy: GlobalPermissionOrder;
     count: Scalars["Int"]["input"];
@@ -25741,6 +25750,13 @@ export const UpdateComponentVersionDocument = gql`
         }
     }
 `;
+export const DeleteComponentVersionDocument = gql`
+    mutation deleteComponentVersion($id: ID!) {
+        deleteComponentVersion(input: { id: $id }) {
+            __typename
+        }
+    }
+`;
 export const GetGlobalPermissionListDocument = gql`
     query getGlobalPermissionList($orderBy: GlobalPermissionOrder!, $count: Int!, $skip: Int!) {
         globalPermissions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -27193,6 +27209,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentVersion",
+                "mutation",
+                variables
+            );
+        },
+        deleteComponentVersion(
+            variables: DeleteComponentVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteComponentVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteComponentVersionMutation>(DeleteComponentVersionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteComponentVersion",
                 "mutation",
                 variables
             );

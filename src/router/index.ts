@@ -115,6 +115,11 @@ const routes: RouteRecordRaw[] = [
                                 path: "interfaces",
                                 name: "component-version-interfaces",
                                 component: () => import("../views/component/version/Interfaces.vue")
+                            },
+                            {
+                                path: "danger",
+                                name: "component-version-danger",
+                                component: () => import("../views/component/version/Danger.vue")
                             }
                         ]
                     }
