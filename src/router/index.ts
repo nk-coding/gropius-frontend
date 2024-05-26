@@ -85,6 +85,11 @@ const routes: RouteRecordRaw[] = [
                         path: "permissions",
                         name: "component-details-permissions",
                         component: () => import("../views/component/details/Permissions.vue")
+                    },
+                    {
+                        path: "danger",
+                        name: "component-details-danger",
+                        component: () => import("../views/component/details/Danger.vue")
                     }
                 ]
             },
@@ -166,6 +171,11 @@ const routes: RouteRecordRaw[] = [
                         path: "permissions",
                         name: "project-details-permissions",
                         component: () => import("../views/project/details/Permissions.vue")
+                    },
+                    {
+                        path: "danger",
+                        name: "project-details-danger",
+                        component: () => import("../views/project/details/Danger.vue")
                     }
                 ]
             },

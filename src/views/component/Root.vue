@@ -101,6 +101,15 @@ const leftSidebarItems = computed(() => {
                     to: componentPath("component-details-permissions"),
                     disabled: !(component?.value?.admin ?? false)
                 }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: componentPath("component-details-danger"),
+                    disabled: !(component?.value?.admin ?? false)
+                }
             ]
         ];
     } else if (route.name?.toString().startsWith("component-version-")) {

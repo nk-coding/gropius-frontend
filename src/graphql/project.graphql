@@ -69,3 +69,9 @@ mutation updateProject($input: UpdateProjectInput!) {
         }
     }
 }
+
+mutation deleteProject($id: ID!) {
+    deleteProject(input: { id: $id }) {
+        __typename
+    }
+}

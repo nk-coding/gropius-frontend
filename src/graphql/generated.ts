@@ -16495,6 +16495,12 @@ export type UpdateComponentMutation = {
     updateComponent: { __typename?: "UpdateComponentPayload"; component: { __typename?: "Component"; id: string } };
 };
 
+export type DeleteComponentMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteComponentMutation = { __typename?: "Mutation"; deleteComponent: { __typename: "DeleteNodePayload" } };
+
 export type GetComponentPermissionListQueryVariables = Exact<{
     orderBy: ComponentPermissionOrder;
     count: Scalars["Int"]["input"];
@@ -22203,6 +22209,12 @@ export type UpdateProjectMutation = {
     updateProject: { __typename?: "UpdateProjectPayload"; project: { __typename?: "Project"; id: string } };
 };
 
+export type DeleteProjectMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteProjectMutation = { __typename?: "Mutation"; deleteProject: { __typename: "DeleteNodePayload" } };
+
 export type GetProjectPermissionListQueryVariables = Exact<{
     orderBy: ProjectPermissionOrder;
     count: Scalars["Int"]["input"];
@@ -25501,6 +25513,13 @@ export const UpdateComponentDocument = gql`
         }
     }
 `;
+export const DeleteComponentDocument = gql`
+    mutation deleteComponent($id: ID!) {
+        deleteComponent(input: { id: $id }) {
+            __typename
+        }
+    }
+`;
 export const GetComponentPermissionListDocument = gql`
     query getComponentPermissionList($orderBy: ComponentPermissionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
         node(id: $component) {
@@ -26462,6 +26481,13 @@ export const UpdateProjectDocument = gql`
         }
     }
 `;
+export const DeleteProjectDocument = gql`
+    mutation deleteProject($id: ID!) {
+        deleteProject(input: { id: $id }) {
+            __typename
+        }
+    }
+`;
 export const GetProjectPermissionListDocument = gql`
     query getProjectPermissionList($orderBy: ProjectPermissionOrder!, $count: Int!, $skip: Int!, $project: ID!) {
         node(id: $project) {
@@ -26862,6 +26888,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponent",
+                "mutation",
+                variables
+            );
+        },
+        deleteComponent(
+            variables: DeleteComponentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteComponentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteComponentMutation>(DeleteComponentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteComponent",
                 "mutation",
                 variables
             );
@@ -28087,6 +28128,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateProject",
+                "mutation",
+                variables
+            );
+        },
+        deleteProject(
+            variables: DeleteProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteProjectMutation>(DeleteProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteProject",
                 "mutation",
                 variables
             );

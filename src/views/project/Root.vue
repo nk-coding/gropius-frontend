@@ -90,6 +90,15 @@ const leftSidebarItems = computed(() => {
                     to: projectPath("project-details-permissions"),
                     disabled: !(project?.value?.admin ?? false)
                 }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: projectPath("project-details-danger"),
+                    disabled: !(project?.value?.admin ?? false)
+                }
             ]
         ];
     } else {

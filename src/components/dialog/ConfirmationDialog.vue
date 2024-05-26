@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog" activator="parent" persistent width="auto">
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3" elevation="0">
+        <v-card rounded="lger" class="pa-3" elevation="0" max-width="500">
             <v-card-title>{{ title }}</v-card-title>
             <v-card-text>
                 {{ message }}
