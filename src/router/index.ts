@@ -42,6 +42,11 @@ const routes: RouteRecordRaw[] = [
                         path: "",
                         name: "admin-permissions",
                         component: () => import("../views/admin/Permissions.vue")
+                    },
+                    {
+                        path: "graphiql",
+                        name: "admin-graphiql",
+                        component: () => import("../views/admin/GraphiQL.vue")
                     }
                 ]
             }
@@ -204,6 +209,16 @@ const routes: RouteRecordRaw[] = [
                         component: () => import("../views/issue/Issue.vue")
                     }
                 ]
+            }
+        ]
+    },
+    {
+        path: "/graphiql",
+        component: () => import("../views/graphiql/Root.vue"),
+        children: [
+            {
+                path: "",
+                component: () => import("../views/admin/GraphiQL.vue")
             }
         ]
     },

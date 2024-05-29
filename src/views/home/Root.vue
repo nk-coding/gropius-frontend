@@ -39,7 +39,7 @@ const tabs = computed(() => {
 });
 
 const rightSidebarItems = computed(() => {
-    if (route.name === "home") {
+    if (route.name === "home" || route.name === "admin-graphiql") {
         return [];
     } else {
         const currentUser = store.user;
@@ -100,6 +100,12 @@ const leftSidebarItems = computed(() => {
                     name: "Access",
                     color: "secondary",
                     to: { name: "admin-permissions" }
+                },
+                {
+                    icon: "mdi-api",
+                    name: "GraphiQL",
+                    color: "secondary",
+                    to: { name: "admin-graphiql" }
                 }
             ]
         ];
