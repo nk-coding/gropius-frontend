@@ -56,6 +56,6 @@ onMounted(() => {
 </script>
 <style scoped>
 .graphiql-container {
-    padding: 10px;
+    padding: 4px;
 }
 </style>
