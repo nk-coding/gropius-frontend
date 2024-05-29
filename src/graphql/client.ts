@@ -45,5 +45,8 @@ export function useClient() {
 
 export type Client = ReturnType<typeof useClient>;
 export type ClientReturnType<T extends keyof Client> = Awaited<ReturnType<Client[T]>>;
-export type NodeReturnType<T extends keyof Client, N extends string> =
-    ClientReturnType<T> extends { node?: infer X } ? (X extends { __typename?: N } ? X : never) : never;
+export type NodeReturnType<T extends keyof Client, N extends string> = ClientReturnType<T> extends { node?: infer X }
+    ? X extends { __typename?: N }
+        ? X
+        : never
+    : never;

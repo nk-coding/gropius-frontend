@@ -390,6 +390,7 @@ fragment CommentTimelineInfo on Comment {
 fragment IssueRelationTypeTimelineInfo on IssueRelationType {
     id
     name
+    inverseName
     description
 }
 

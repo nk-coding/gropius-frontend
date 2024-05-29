@@ -1,4 +1,5 @@
-import { GraphQLClient, RequestOptions } from "graphql-request";
+import { GraphQLClient } from "graphql-request";
+import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -7,7 +8,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
-type GraphQLClientRequestHeaders = RequestOptions["requestHeaders"];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
     ID: { input: string; output: string };
@@ -19086,12 +19086,14 @@ export type GetIssueQuery = {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                                 initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                             };
@@ -19099,12 +19101,14 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                             newRelationType?: {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                             createdBy:
@@ -19204,12 +19208,14 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                             initialType?: {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                         }
@@ -19240,12 +19246,14 @@ export type GetIssueQuery = {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                                 initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                             };
@@ -19253,12 +19261,14 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                             newRelationType?: {
                                 __typename?: "IssueRelationType";
                                 id: string;
                                 name: string;
+                                inverseName: string;
                                 description: string;
                             } | null;
                             createdBy:
@@ -19338,12 +19348,14 @@ export type GetIssueQuery = {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                                 initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                             } | null;
@@ -19565,12 +19577,14 @@ export type GetIssueQuery = {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                                 initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                             } | null;
@@ -19644,12 +19658,14 @@ export type GetIssueQuery = {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                                 initialType?: {
                                     __typename?: "IssueRelationType";
                                     id: string;
                                     name: string;
+                                    inverseName: string;
                                     description: string;
                                 } | null;
                             } | null;
@@ -19897,11 +19913,18 @@ export type GetIssueQuery = {
                           state: { __typename?: "IssueState"; isOpen: boolean };
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
-                      type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                      type?: {
+                          __typename?: "IssueRelationType";
+                          id: string;
+                          name: string;
+                          inverseName: string;
+                          description: string;
+                      } | null;
                       initialType?: {
                           __typename?: "IssueRelationType";
                           id: string;
                           name: string;
+                          inverseName: string;
                           description: string;
                       } | null;
                   }>;
@@ -19928,11 +19951,18 @@ export type GetIssueQuery = {
                           state: { __typename?: "IssueState"; isOpen: boolean };
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
-                      type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                      type?: {
+                          __typename?: "IssueRelationType";
+                          id: string;
+                          name: string;
+                          inverseName: string;
+                          description: string;
+                      } | null;
                       initialType?: {
                           __typename?: "IssueRelationType";
                           id: string;
                           name: string;
+                          inverseName: string;
                           description: string;
                       } | null;
                   }>;
@@ -20661,11 +20691,18 @@ export type RemoveIssueRelationMutation = {
                     state: { __typename?: "IssueState"; isOpen: boolean };
                     type: { __typename?: "IssueType"; iconPath: string };
                 } | null;
-                type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                type?: {
+                    __typename?: "IssueRelationType";
+                    id: string;
+                    name: string;
+                    inverseName: string;
+                    description: string;
+                } | null;
                 initialType?: {
                     __typename?: "IssueRelationType";
                     id: string;
                     name: string;
+                    inverseName: string;
                     description: string;
                 } | null;
             } | null;
@@ -20708,8 +20745,20 @@ export type CreateIssueRelationMutation = {
                 state: { __typename?: "IssueState"; isOpen: boolean };
                 type: { __typename?: "IssueType"; iconPath: string };
             } | null;
-            type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-            initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+            type?: {
+                __typename?: "IssueRelationType";
+                id: string;
+                name: string;
+                inverseName: string;
+                description: string;
+            } | null;
+            initialType?: {
+                __typename?: "IssueRelationType";
+                id: string;
+                name: string;
+                inverseName: string;
+                description: string;
+            } | null;
         };
     };
 };
@@ -20866,11 +20915,18 @@ export type ChangeIssueRelationTypeMutation = {
                     state: { __typename?: "IssueState"; isOpen: boolean };
                     type: { __typename?: "IssueType"; iconPath: string };
                 } | null;
-                type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+                type?: {
+                    __typename?: "IssueRelationType";
+                    id: string;
+                    name: string;
+                    inverseName: string;
+                    description: string;
+                } | null;
                 initialType?: {
                     __typename?: "IssueRelationType";
                     id: string;
                     name: string;
+                    inverseName: string;
                     description: string;
                 } | null;
             };
@@ -20878,12 +20934,14 @@ export type ChangeIssueRelationTypeMutation = {
                 __typename?: "IssueRelationType";
                 id: string;
                 name: string;
+                inverseName: string;
                 description: string;
             } | null;
             newRelationType?: {
                 __typename?: "IssueRelationType";
                 id: string;
                 name: string;
+                inverseName: string;
                 description: string;
             } | null;
             createdBy:
@@ -22718,11 +22776,35 @@ type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22767,8 +22849,20 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    type?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    initialType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
 };
 
 type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
@@ -22794,11 +22888,35 @@ type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -22838,8 +22956,20 @@ type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -22945,8 +23075,20 @@ type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -22986,8 +23128,20 @@ type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23599,11 +23753,35 @@ export type IncomingRelationTypeChangedEventTimelineInfoFragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23648,8 +23826,20 @@ export type IssueRelationTimelineInfoFragment = {
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    type?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    initialType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
 };
 
 export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
@@ -23675,11 +23865,35 @@ export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23719,8 +23933,20 @@ export type RelatedByIssueEventTimelineInfoFragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23731,8 +23957,20 @@ type RelationTypeChangedEventTimelineInfo_IncomingRelationTypeChangedEvent_Fragm
     __typename: "IncomingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23742,8 +23980,20 @@ type RelationTypeChangedEventTimelineInfo_OutgoingRelationTypeChangedEvent_Fragm
     __typename: "OutgoingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
-    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    newRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    oldRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    newRelationType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -23852,8 +24102,20 @@ export type RemovedIncomingRelationEventTimelineInfoFragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -23893,8 +24155,20 @@ export type RemovedOutgoingRelationEventTimelineInfoFragment = {
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        type?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
+        initialType?: {
+            __typename?: "IssueRelationType";
+            id: string;
+            name: string;
+            inverseName: string;
+            description: string;
+        } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -24127,13 +24401,26 @@ export type IssueRelationTypeTimelineInfoFragment = {
     __typename?: "IssueRelationType";
     id: string;
     name: string;
+    inverseName: string;
     description: string;
 };
 
 export type IssueRelationTimelineInfoBaseFragment = {
     __typename?: "IssueRelation";
-    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    type?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    initialType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
 };
 
 export type IncomingRelationTimelineInfoFragment = {
@@ -24155,8 +24442,20 @@ export type IncomingRelationTimelineInfoFragment = {
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    type?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    initialType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
 };
 
 export type OutgoingRelationTimelineInfoFragment = {
@@ -24178,8 +24477,20 @@ export type OutgoingRelationTimelineInfoFragment = {
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-    initialType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    type?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
+    initialType?: {
+        __typename?: "IssueRelationType";
+        id: string;
+        name: string;
+        inverseName: string;
+        description: string;
+    } | null;
 };
 
 export type IssueTimelineInfoFragment = {
@@ -24858,6 +25169,7 @@ export const IssueRelationTypeTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTypeTimelineInfo on IssueRelationType {
         id
         name
+        inverseName
         description
     }
 `;
@@ -26659,11 +26971,10 @@ export const SearchGropiusUsersDocument = gql`
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
     operationName: string,
-    operationType?: string,
-    variables?: any
+    operationType?: string
 ) => Promise<T>;
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
@@ -26678,8 +26989,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAffectedByIssues",
-                "query",
-                variables
+                "query"
             );
         },
         addAffectedEntityToIssue(
@@ -26693,8 +27003,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addAffectedEntityToIssue",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeAffectedEntityFromIssue(
@@ -26709,8 +27018,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeAffectedEntityFromIssue",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeAssignment(
@@ -26724,8 +27032,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeAssignment",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createAssignment(
@@ -26739,8 +27046,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createAssignment",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchAssignmentTypes(
@@ -26754,8 +27060,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAssignmentTypes",
-                "query",
-                variables
+                "query"
             );
         },
         firstAssignmentTypes(
@@ -26769,8 +27074,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstAssignmentTypes",
-                "query",
-                variables
+                "query"
             );
         },
         changeAssignmentType(
@@ -26784,8 +27088,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeAssignmentType",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getComponentList(
@@ -26799,8 +27102,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredComponentList(
@@ -26814,8 +27116,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredComponentList",
-                "query",
-                variables
+                "query"
             );
         },
         getComponent(
@@ -26829,8 +27130,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponent",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentDetails(
@@ -26844,8 +27144,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentDetails",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentGeneralDetails(
@@ -26859,8 +27158,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentGeneralDetails",
-                "query",
-                variables
+                "query"
             );
         },
         searchComponents(
@@ -26874,8 +27172,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponents",
-                "query",
-                variables
+                "query"
             );
         },
         createComponent(
@@ -26889,8 +27186,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponent",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateComponent(
@@ -26904,8 +27200,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponent",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         deleteComponent(
@@ -26919,8 +27214,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteComponent",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getComponentPermissionList(
@@ -26934,8 +27228,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredComponentPermissionList(
@@ -26950,8 +27243,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredComponentPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         searchComponentPermissions(
@@ -26965,8 +27257,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentPermissions",
-                "query",
-                variables
+                "query"
             );
         },
         firstComponentPermissions(
@@ -26980,8 +27271,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstComponentPermissions",
-                "query",
-                variables
+                "query"
             );
         },
         addComponentPermissionToComponent(
@@ -26996,8 +27286,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentPermissionToComponent",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeComponentPermissionFromComponent(
@@ -27012,8 +27301,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeComponentPermissionFromComponent",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateComponentPermission(
@@ -27027,8 +27315,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createComponentPermission(
@@ -27042,8 +27329,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchComponentTemplates(
@@ -27057,8 +27343,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         firstComponentTemplates(
@@ -27072,8 +27357,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstComponentTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentTemplate(
@@ -27087,8 +27371,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentTemplate",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentVersionTemplate(
@@ -27102,8 +27385,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionTemplate",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentVersions(
@@ -27117,8 +27399,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersions",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentVersionList(
@@ -27132,8 +27413,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredComponentVersionList(
@@ -27148,8 +27428,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredComponentVersionList",
-                "query",
-                variables
+                "query"
             );
         },
         searchComponentVersions(
@@ -27163,8 +27442,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentVersions",
-                "query",
-                variables
+                "query"
             );
         },
         getComponentVersionGeneralDetails(
@@ -27179,8 +27457,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getComponentVersionGeneralDetails",
-                "query",
-                variables
+                "query"
             );
         },
         createComponentVersion(
@@ -27194,8 +27471,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentVersion",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateComponentVersion(
@@ -27209,8 +27485,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentVersion",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         deleteComponentVersion(
@@ -27224,8 +27499,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteComponentVersion",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getGlobalPermissionList(
@@ -27239,8 +27513,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getGlobalPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredGlobalPermissionList(
@@ -27255,8 +27528,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredGlobalPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         deleteGlobalPermission(
@@ -27270,8 +27542,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteGlobalPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateGlobalPermission(
@@ -27285,8 +27556,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateGlobalPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createGlobalPermission(
@@ -27300,8 +27570,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createGlobalPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getProjectGraph(
@@ -27315,8 +27584,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectGraph",
-                "query",
-                variables
+                "query"
             );
         },
         addComponentVersionToProject(
@@ -27331,8 +27599,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentVersionToProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeComponentVersionFromProject(
@@ -27347,8 +27614,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeComponentVersionFromProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createRelation(
@@ -27362,8 +27628,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createRelation",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         deleteRelation(
@@ -27377,8 +27642,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteRelation",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getIssueList(
@@ -27392,8 +27656,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredIssueList(
@@ -27407,8 +27670,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredIssueList",
-                "query",
-                variables
+                "query"
             );
         },
         getParticipatingIssueList(
@@ -27422,8 +27684,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getParticipatingIssueList",
-                "query",
-                variables
+                "query"
             );
         },
         getParticipatingFilteredIssueList(
@@ -27438,8 +27699,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getParticipatingFilteredIssueList",
-                "query",
-                variables
+                "query"
             );
         },
         getIssue(
@@ -27453,8 +27713,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssue",
-                "query",
-                variables
+                "query"
             );
         },
         updateBody(
@@ -27468,8 +27727,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateBody",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateIssueComment(
@@ -27483,8 +27741,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateIssueComment",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createIssueComment(
@@ -27498,8 +27755,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueComment",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         deleteIssueComment(
@@ -27513,8 +27769,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteIssueComment",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createIssue(
@@ -27528,8 +27783,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssue",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         changeIssueTitle(
@@ -27543,8 +27797,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTitle",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         changeIssueTemplatedField(
@@ -27558,8 +27811,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTemplatedField",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchIssues(
@@ -27573,8 +27825,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssues",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssues(
@@ -27588,8 +27839,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssues",
-                "query",
-                variables
+                "query"
             );
         },
         searchIssuePriorities(
@@ -27603,8 +27853,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssuePriorities",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssuePriorities(
@@ -27618,8 +27867,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssuePriorities",
-                "query",
-                variables
+                "query"
             );
         },
         changeIssuePriority(
@@ -27633,8 +27881,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssuePriority",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeIssueRelation(
@@ -27648,8 +27895,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueRelation",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createIssueRelation(
@@ -27663,8 +27909,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueRelation",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchIssueRelationTypes(
@@ -27678,8 +27923,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueRelationTypes",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssueRelationTypes(
@@ -27693,8 +27937,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueRelationTypes",
-                "query",
-                variables
+                "query"
             );
         },
         changeIssueRelationType(
@@ -27708,8 +27951,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueRelationType",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchIssueStates(
@@ -27723,8 +27965,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueStates",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssueStates(
@@ -27738,8 +27979,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueStates",
-                "query",
-                variables
+                "query"
             );
         },
         changeIssueState(
@@ -27753,8 +27993,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueState",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         searchIssueTemplates(
@@ -27768,8 +28007,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssueTemplates(
@@ -27783,8 +28021,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         getIssueTemplate(
@@ -27798,8 +28035,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueTemplate",
-                "query",
-                variables
+                "query"
             );
         },
         searchIssueTypes(
@@ -27813,8 +28049,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTypes",
-                "query",
-                variables
+                "query"
             );
         },
         firstIssueTypes(
@@ -27828,8 +28063,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTypes",
-                "query",
-                variables
+                "query"
             );
         },
         changeIssueType(
@@ -27843,8 +28077,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueType",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getLabelList(
@@ -27858,8 +28091,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getLabelList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredLabelList(
@@ -27873,8 +28105,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredLabelList",
-                "query",
-                variables
+                "query"
             );
         },
         searchLabels(
@@ -27888,8 +28119,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchLabels",
-                "query",
-                variables
+                "query"
             );
         },
         firstLabels(
@@ -27903,8 +28133,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstLabels",
-                "query",
-                variables
+                "query"
             );
         },
         searchTrackableLabels(
@@ -27918,8 +28147,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackableLabels",
-                "query",
-                variables
+                "query"
             );
         },
         firstTrackableLabels(
@@ -27933,8 +28161,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstTrackableLabels",
-                "query",
-                variables
+                "query"
             );
         },
         addLabelToIssue(
@@ -27948,8 +28175,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addLabelToIssue",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeLabelFromIssue(
@@ -27963,8 +28189,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromIssue",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createLabel(
@@ -27978,8 +28203,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createLabel",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateLabel(
@@ -27993,8 +28217,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateLabel",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeLabelFromTrackable(
@@ -28008,8 +28231,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromTrackable",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         addLabelToTrackable(
@@ -28023,8 +28245,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addLabelToTrackable",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getPermissionUserList(
@@ -28038,8 +28259,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getPermissionUserList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredPermissionUserList(
@@ -28054,8 +28274,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredPermissionUserList",
-                "query",
-                variables
+                "query"
             );
         },
         getProjectList(
@@ -28069,8 +28288,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredProjectList(
@@ -28084,8 +28302,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredProjectList",
-                "query",
-                variables
+                "query"
             );
         },
         searchProjects(
@@ -28099,8 +28316,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchProjects",
-                "query",
-                variables
+                "query"
             );
         },
         getProject(
@@ -28114,8 +28330,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProject",
-                "query",
-                variables
+                "query"
             );
         },
         getProjectGeneralDetails(
@@ -28129,8 +28344,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectGeneralDetails",
-                "query",
-                variables
+                "query"
             );
         },
         createProject(
@@ -28144,8 +28358,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateProject(
@@ -28159,8 +28372,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         deleteProject(
@@ -28174,8 +28386,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getProjectPermissionList(
@@ -28189,8 +28400,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         getFilteredProjectPermissionList(
@@ -28205,8 +28415,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredProjectPermissionList",
-                "query",
-                variables
+                "query"
             );
         },
         searchProjectPermissions(
@@ -28220,8 +28429,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchProjectPermissions",
-                "query",
-                variables
+                "query"
             );
         },
         firstProjectPermissions(
@@ -28235,8 +28443,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstProjectPermissions",
-                "query",
-                variables
+                "query"
             );
         },
         addProjectPermissionToProject(
@@ -28251,8 +28458,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addProjectPermissionToProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeProjectPermissionFromProject(
@@ -28267,8 +28473,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeProjectPermissionFromProject",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         updateProjectPermission(
@@ -28282,8 +28487,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateProjectPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         createProjectPermission(
@@ -28297,8 +28501,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProjectPermission",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getRelationTemplates(
@@ -28312,8 +28515,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getRelationTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         searchRelationTemplates(
@@ -28327,8 +28529,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchRelationTemplates",
-                "query",
-                variables
+                "query"
             );
         },
         searchTrackables(
@@ -28342,8 +28543,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackables",
-                "query",
-                variables
+                "query"
             );
         },
         addIssueToTrackable(
@@ -28357,8 +28557,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addIssueToTrackable",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         removeIssueFromTrackable(
@@ -28372,8 +28571,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueFromTrackable",
-                "mutation",
-                variables
+                "mutation"
             );
         },
         getCurrentUser(
@@ -28387,8 +28585,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getCurrentUser",
-                "query",
-                variables
+                "query"
             );
         },
         searchGropiusUsers(
@@ -28402,8 +28599,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchGropiusUsers",
-                "query",
-                variables
+                "query"
             );
         }
     };

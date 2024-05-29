@@ -47,7 +47,7 @@
         </template>
     </EditableCompartment>
 </template>
-<script setup lang="ts" generic="T extends { id: string; name: string }, V extends { id: string; type?: T | null }">
+<script setup lang="ts" generic="T extends { id: string }, V extends { id: string; type?: T | null }">
 import { computed, ref } from "vue";
 import { PropType } from "vue";
 import EditableCompartment from "./EditableCompartment.vue";
@@ -73,6 +73,10 @@ const props = defineProps({
         type: Object as PropType<Record<string, boolean>>,
         required: false,
         default: () => ({})
+    },
+    typeName: {
+        type: Function as PropType<(type: NonNullable<V["type"]>) => string>,
+        required: true
     }
 });
 
@@ -104,7 +108,11 @@ function groupByType(items: V[]): Group[] {
 const groupedItems = computed(() => groupByType(props.items));
 
 function typeName(item: V | Group): string {
-    return item.type?.name ?? "[No type]";
+    if (item.type == undefined) {
+        return "[No type]";
+    } else {
+        return props.typeName(item.type);
+    }
 }
 </script>
 <style lang="scss">

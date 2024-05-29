@@ -203,6 +203,7 @@
                     :editable="!!issue.manageIssues"
                     :items="assignments"
                     :edited-types="editedAssignmentTypes"
+                    :type-name="(type) => type.name"
                     @remove-item="removeAssignment"
                     @toggle-type-edit="editedAssignmentTypes[$event] = !editedAssignmentTypes[$event]"
                 >
@@ -269,6 +270,7 @@
                     :editable="!!issue.manageIssues"
                     :items="outgoingRelations"
                     :edited-types="editedRelationTypes"
+                    :type-name="(type) => type.name"
                     @remove-item="removeOutgoingRelation"
                     @toggle-type-edit="editedRelationTypes[$event] = !editedRelationTypes[$event]"
                 >
@@ -320,6 +322,7 @@
                     name-inline="relation"
                     :editable="false"
                     :items="issue.incomingRelations.nodes"
+                    :type-name="(type) => type.inverseName"
                 >
                     <template #ItemInfo="{ item }">
                         <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
