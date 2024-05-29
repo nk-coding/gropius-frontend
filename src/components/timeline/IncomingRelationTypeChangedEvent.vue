@@ -1,7 +1,8 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
         changed the type of an <span class="text-high-emphasis">incoming relation</span> from
-        <Type :type="item.oldRelationType ?? undefined" /> to <Type :type="item.newRelationType ?? undefined" />
+        <InverseType :type="item.oldRelationType ?? undefined" name="inverseName" /> to
+        <InverseType :type="item.newRelationType ?? undefined" />
         <template v-if="item.issueRelation.issue" #content>
             <Issue :issue="item.issueRelation.issue" />
         </template>
@@ -12,7 +13,6 @@ import { PropType } from "vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import DefaultIconTimelineItem from "./DefaultIconTimelineItem.vue";
 import Issue from "../info/Issue.vue";
-import Type from "../info/Type.vue";
 
 defineProps({
     item: {

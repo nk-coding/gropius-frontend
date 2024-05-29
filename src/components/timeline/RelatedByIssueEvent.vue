@@ -2,7 +2,7 @@
     <DefaultIconTimelineItem icon="mdi-triangle" icon-size="x-small" :item="item">
         added an <span class="text-high-emphasis">incoming relation</span>
         <template v-if="item.relation?.type">
-            with type <Type :type="item.relation.initialType ?? undefined" />
+            with type <InverseType :type="item.relation.initialType ?? undefined" />
         </template>
         <template v-if="item.relation?.issue" #content>
             <Issue :issue="item.relation.issue" />
@@ -14,7 +14,7 @@ import { PropType } from "vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import DefaultIconTimelineItem from "./DefaultIconTimelineItem.vue";
 import Issue from "../info/Issue.vue";
-import Type from "../info/Type.vue";
+import InverseType from "../info/InverseType.vue";
 
 defineProps({
     item: {
