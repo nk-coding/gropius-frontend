@@ -8,7 +8,7 @@
         :chips="contextMode"
         item-value="id"
         :filter-keys="['id']"
-        :custom-filter="(item: any) => item.value != context?.id"
+        :custom-filter="(_value, _query, item) => item?.value != context?.id"
         :menu-props="{ maxWidth: 0 }"
         @update:focused="resetFromFocus"
     >
