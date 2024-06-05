@@ -1,5 +1,4 @@
-import { GraphQLClient } from "graphql-request";
-import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
+import { GraphQLClient, RequestOptions } from "graphql-request";
 import gql from "graphql-tag";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -8,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
+type GraphQLClientRequestHeaders = RequestOptions["requestHeaders"];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
     ID: { input: string; output: string };
@@ -1974,34 +1974,6 @@ export type ChangeAssignmentTypePayload = {
     assignmentTypeChangedEvent?: Maybe<AssignmentTypeChangedEvent>;
 };
 
-/** Input for the changeIssueDueDate mutation */
-export type ChangeIssueDueDateInput = {
-    /** The new dueDate */
-    dueDate?: InputMaybe<Scalars["DateTime"]["input"]>;
-    /** The id of the Issue of which the dueDate is updated */
-    issue: Scalars["ID"]["input"];
-};
-
-export type ChangeIssueDueDatePayload = {
-    __typename?: "ChangeIssueDueDatePayload";
-    /** The created event, if present */
-    dueDateChangedEvent?: Maybe<DueDateChangedEvent>;
-};
-
-/** Input for the changeIssueEstimatedTime mutation */
-export type ChangeIssueEstimatedTimeInput = {
-    /** The new estimatedTime */
-    estimatedTime?: InputMaybe<Scalars["Duration"]["input"]>;
-    /** The id of the Issue of which the estimatedTime is updated */
-    issue: Scalars["ID"]["input"];
-};
-
-export type ChangeIssueEstimatedTimePayload = {
-    __typename?: "ChangeIssueEstimatedTimePayload";
-    /** The created event, if present */
-    estimatedTimeChangedEvent?: Maybe<EstimatedTimeChangedEvent>;
-};
-
 /** Input for the changeIssuePriority mutation */
 export type ChangeIssuePriorityInput = {
     /** The id of the Issue of which the priority is updated */
@@ -2028,34 +2000,6 @@ export type ChangeIssueRelationTypePayload = {
     __typename?: "ChangeIssueRelationTypePayload";
     /** The created event, if present */
     outgoingRelationTypeChangedEvent?: Maybe<OutgoingRelationTypeChangedEvent>;
-};
-
-/** Input for the changeIssueSpentTime mutation */
-export type ChangeIssueSpentTimeInput = {
-    /** The id of the Issue of which the spentTime is updated */
-    issue: Scalars["ID"]["input"];
-    /** The new spentTime */
-    spentTime?: InputMaybe<Scalars["Duration"]["input"]>;
-};
-
-export type ChangeIssueSpentTimePayload = {
-    __typename?: "ChangeIssueSpentTimePayload";
-    /** The created event, if present */
-    spentTimeChangedEvent?: Maybe<SpentTimeChangedEvent>;
-};
-
-/** Input for the changeIssueStartDate mutation */
-export type ChangeIssueStartDateInput = {
-    /** The id of the Issue of which the startDate is updated */
-    issue: Scalars["ID"]["input"];
-    /** The new startDate */
-    startDate?: InputMaybe<Scalars["DateTime"]["input"]>;
-};
-
-export type ChangeIssueStartDatePayload = {
-    __typename?: "ChangeIssueStartDatePayload";
-    /** The created event, if present */
-    startDateChangedEvent?: Maybe<StartDateChangedEvent>;
 };
 
 /** Input for the changeIssueState mutation */
@@ -4081,88 +4025,6 @@ export type DeleteNodePayload = {
     __typename?: "DeleteNodePayload";
     /** The id of the deleted Node */
     id: Scalars["ID"]["output"];
-};
-
-/**
- * Event representing that the due date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type DueDateChangedEvent = AuditedNode &
-    BaseNode &
-    Node &
-    TimelineItem & {
-        __typename?: "DueDateChangedEvent";
-        /** The DateTime this entity was created at. */
-        createdAt: Scalars["DateTime"]["output"];
-        /** The User who created this entity. */
-        createdBy: User;
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The Issue this TimelineItem is part of. */
-        issue?: Maybe<Issue>;
-        /** The DateTime this entity was last modified at. */
-        lastModifiedAt: Scalars["DateTime"]["output"];
-        /** The User who last modified this entity. */
-        lastModifiedBy: User;
-        /** The new due date. */
-        newDueDate?: Maybe<Scalars["DateTime"]["output"]>;
-        /** The old due date. */
-        oldDueDate?: Maybe<Scalars["DateTime"]["output"]>;
-        /** If existing, the parent TimelineItem */
-        parentItem?: Maybe<ParentTimelineItem>;
-    };
-
-/**
- * Event representing that the due date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type DueDateChangedEventHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
- * Event representing that the estimated time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type EstimatedTimeChangedEvent = AuditedNode &
-    BaseNode &
-    Node &
-    TimelineItem & {
-        __typename?: "EstimatedTimeChangedEvent";
-        /** The DateTime this entity was created at. */
-        createdAt: Scalars["DateTime"]["output"];
-        /** The User who created this entity. */
-        createdBy: User;
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The Issue this TimelineItem is part of. */
-        issue?: Maybe<Issue>;
-        /** The DateTime this entity was last modified at. */
-        lastModifiedAt: Scalars["DateTime"]["output"];
-        /** The User who last modified this entity. */
-        lastModifiedBy: User;
-        /** The new estimated time of the Issue. */
-        newEstimatedTime?: Maybe<Scalars["Duration"]["output"]>;
-        /** The old estimated time of the Issue. */
-        oldEstimatedTime?: Maybe<Scalars["Duration"]["output"]>;
-        /** If existing, the parent TimelineItem */
-        parentItem?: Maybe<ParentTimelineItem>;
-    };
-
-/**
- * Event representing that the estimated time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type EstimatedTimeChangedEventHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /** Fill style of a shape */
@@ -10313,18 +10175,6 @@ export type Mutation = {
      */
     changeAssignmentType: ChangeAssignmentTypePayload;
     /**
-     * Changes the `dueDate` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
-     *         If the `dueDate` is equal to the already existing `dueDate`, no event is created.
-     *
-     */
-    changeIssueDueDate: ChangeIssueDueDatePayload;
-    /**
-     * Changes the `estimatedTime` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
-     *         If the `estimatedTime` is equal to the already existing `estimatedTime`, no event is created.
-     *
-     */
-    changeIssueEstimatedTime: ChangeIssueEstimatedTimePayload;
-    /**
      * Changes the `priority` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, the IssuePriority must be defined by the Template of the Issue.
      *         If the `priority` is equal to the already existing `priority`, no event is created.
@@ -10339,18 +10189,6 @@ export type Mutation = {
      *
      */
     changeIssueRelationType: ChangeIssueRelationTypePayload;
-    /**
-     * Changes the `spentTime` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
-     *         If the `spentTime` is equal to the already existing `spentTime`, no event is created.
-     *
-     */
-    changeIssueSpentTime: ChangeIssueSpentTimePayload;
-    /**
-     * Changes the `startDate` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
-     *         If the `startDate` is equal to the already existing `startDate`, no event is created.
-     *
-     */
-    changeIssueStartDate: ChangeIssueStartDatePayload;
     /**
      * Changes the `state` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, the IssueState must be defined by the Template of the Issue.
@@ -10804,28 +10642,12 @@ export type MutationChangeAssignmentTypeArgs = {
     input: ChangeAssignmentTypeInput;
 };
 
-export type MutationChangeIssueDueDateArgs = {
-    input: ChangeIssueDueDateInput;
-};
-
-export type MutationChangeIssueEstimatedTimeArgs = {
-    input: ChangeIssueEstimatedTimeInput;
-};
-
 export type MutationChangeIssuePriorityArgs = {
     input: ChangeIssuePriorityInput;
 };
 
 export type MutationChangeIssueRelationTypeArgs = {
     input: ChangeIssueRelationTypeInput;
-};
-
-export type MutationChangeIssueSpentTimeArgs = {
-    input: ChangeIssueSpentTimeInput;
-};
-
-export type MutationChangeIssueStartDateArgs = {
-    input: ChangeIssueStartDateInput;
 };
 
 export type MutationChangeIssueStateArgs = {
@@ -12023,8 +11845,6 @@ export type PublicTimelineItem =
     | Assignment
     | AssignmentTypeChangedEvent
     | Body
-    | DueDateChangedEvent
-    | EstimatedTimeChangedEvent
     | IncomingRelationTypeChangedEvent
     | IssueComment
     | IssueRelation
@@ -12036,8 +11856,6 @@ export type PublicTimelineItem =
     | RemovedFromPinnedIssuesEvent
     | RemovedLabelEvent
     | RemovedTemplatedFieldEvent
-    | SpentTimeChangedEvent
-    | StartDateChangedEvent
     | StateChangedEvent
     | TemplatedFieldChangedEvent
     | TitleChangedEvent
@@ -13896,88 +13714,6 @@ export enum ShapeType {
 }
 
 /**
- * Event representing that the spent time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type SpentTimeChangedEvent = AuditedNode &
-    BaseNode &
-    Node &
-    TimelineItem & {
-        __typename?: "SpentTimeChangedEvent";
-        /** The DateTime this entity was created at. */
-        createdAt: Scalars["DateTime"]["output"];
-        /** The User who created this entity. */
-        createdBy: User;
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The Issue this TimelineItem is part of. */
-        issue?: Maybe<Issue>;
-        /** The DateTime this entity was last modified at. */
-        lastModifiedAt: Scalars["DateTime"]["output"];
-        /** The User who last modified this entity. */
-        lastModifiedBy: User;
-        /** The mew spent time. */
-        newSpentTime?: Maybe<Scalars["Duration"]["output"]>;
-        /** The old spent time. */
-        oldSpentTime?: Maybe<Scalars["Duration"]["output"]>;
-        /** If existing, the parent TimelineItem */
-        parentItem?: Maybe<ParentTimelineItem>;
-    };
-
-/**
- * Event representing that the spent time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type SpentTimeChangedEventHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
- * Event representing that the start date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type StartDateChangedEvent = AuditedNode &
-    BaseNode &
-    Node &
-    TimelineItem & {
-        __typename?: "StartDateChangedEvent";
-        /** The DateTime this entity was created at. */
-        createdAt: Scalars["DateTime"]["output"];
-        /** The User who created this entity. */
-        createdBy: User;
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The Issue this TimelineItem is part of. */
-        issue?: Maybe<Issue>;
-        /** The DateTime this entity was last modified at. */
-        lastModifiedAt: Scalars["DateTime"]["output"];
-        /** The User who last modified this entity. */
-        lastModifiedBy: User;
-        /** The new start date. */
-        newStartDate?: Maybe<Scalars["DateTime"]["output"]>;
-        /** The old start date. */
-        oldStartDate?: Maybe<Scalars["DateTime"]["output"]>;
-        /** If existing, the parent TimelineItem */
-        parentItem?: Maybe<ParentTimelineItem>;
-    };
-
-/**
- * Event representing that the start date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type StartDateChangedEventHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
  * Event representing that the state of an Issue changed.
  *     READ is granted if READ is granted on `issue`.
  *
@@ -14523,10 +14259,6 @@ export enum TimelineItemType {
     Body = "BODY",
     /** Comment timeline item */
     Comment = "COMMENT",
-    /** DueDateChangedEvent timeline item */
-    DueDateChangedEvent = "DUE_DATE_CHANGED_EVENT",
-    /** EstimatedTimeChangedEvent timeline item */
-    EstimatedTimeChangedEvent = "ESTIMATED_TIME_CHANGED_EVENT",
     /** IncomingRelationTypeChangedEvent timeline item */
     IncomingRelationTypeChangedEvent = "INCOMING_RELATION_TYPE_CHANGED_EVENT",
     /** IssueComment timeline item */
@@ -14565,10 +14297,6 @@ export enum TimelineItemType {
     RemovedRelationEvent = "REMOVED_RELATION_EVENT",
     /** RemovedTemplatedFieldEvent timeline item */
     RemovedTemplatedFieldEvent = "REMOVED_TEMPLATED_FIELD_EVENT",
-    /** SpentTimeChangedEvent timeline item */
-    SpentTimeChangedEvent = "SPENT_TIME_CHANGED_EVENT",
-    /** StartDateChangedEvent timeline item */
-    StartDateChangedEvent = "START_DATE_CHANGED_EVENT",
     /** StateChangedEvent timeline item */
     StateChangedEvent = "STATE_CHANGED_EVENT",
     /** TemplatedFieldChangedEvent timeline item */
@@ -15880,8 +15608,6 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -15940,8 +15666,6 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -16070,8 +15794,6 @@ export type GetComponentQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -16124,8 +15846,6 @@ export type GetComponentQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -16299,8 +16019,6 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -16353,8 +16071,6 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -16401,8 +16117,6 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -16455,8 +16169,6 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -16544,8 +16256,6 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -16598,8 +16308,6 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -16697,8 +16405,6 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -16751,8 +16457,6 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -16884,8 +16588,6 @@ export type GetComponentTemplateQuery = {
           }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -16938,8 +16640,6 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -16990,8 +16690,6 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -17044,8 +16742,6 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -17094,8 +16790,6 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -17148,8 +16842,6 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -17201,8 +16893,6 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -17255,8 +16945,6 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -17345,8 +17033,6 @@ export type GetComponentVersionGeneralDetailsQuery = {
               };
           }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -17399,8 +17085,6 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -17549,8 +17233,6 @@ export type GetProjectGraphQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -17755,8 +17437,6 @@ export type GetProjectGraphQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -18316,8 +17996,6 @@ export type GetIssueListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -18440,8 +18118,6 @@ export type GetIssueListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -18669,8 +18345,6 @@ export type GetIssueQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -19000,50 +18674,6 @@ export type GetIssueQuery = {
                                       avatar: any;
                                   };
                             bodyLastEditedBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
-                        }
-                      | {
-                            __typename: "DueDateChangedEvent";
-                            oldDueDate?: any | null;
-                            newDueDate?: any | null;
-                            id: string;
-                            createdAt: any;
-                            createdBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
-                        }
-                      | {
-                            __typename: "EstimatedTimeChangedEvent";
-                            oldEstimatedTime?: any | null;
-                            newEstimatedTime?: any | null;
-                            id: string;
-                            createdAt: any;
-                            createdBy:
                                 | {
                                       __typename?: "GropiusUser";
                                       id: string;
@@ -19707,50 +19337,6 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename: "SpentTimeChangedEvent";
-                            oldSpentTime?: any | null;
-                            newSpentTime?: any | null;
-                            id: string;
-                            createdAt: any;
-                            createdBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
-                        }
-                      | {
-                            __typename: "StartDateChangedEvent";
-                            oldStartDate?: any | null;
-                            newStartDate?: any | null;
-                            id: string;
-                            createdAt: any;
-                            createdBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
-                        }
-                      | {
                             __typename: "StateChangedEvent";
                             id: string;
                             createdAt: any;
@@ -20078,8 +19664,6 @@ export type GetIssueQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -20412,8 +19996,6 @@ export type FirstIssuesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -20487,8 +20069,6 @@ export type FirstIssuesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -20549,8 +20129,6 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -20615,8 +20193,6 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -20812,8 +20388,6 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -20872,8 +20446,6 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21002,8 +20574,6 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21068,8 +20638,6 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21168,8 +20736,6 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21228,8 +20794,6 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21290,8 +20854,6 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21356,8 +20918,6 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21424,8 +20984,6 @@ export type GetLabelListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21485,8 +21043,6 @@ export type GetLabelListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21552,8 +21108,6 @@ export type FirstLabelsQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21639,8 +21193,6 @@ export type FirstLabelsQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21693,8 +21245,6 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -21753,8 +21303,6 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -21891,8 +21439,6 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | {
               __typename?: "GlobalPermission";
@@ -21984,8 +21530,6 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -22085,8 +21629,6 @@ export type GetProjectQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -22150,8 +21692,6 @@ export type GetProjectQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -22186,8 +21726,6 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | { __typename?: "ComponentVersion"; id: string }
         | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
         | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
@@ -22247,8 +21785,6 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "RemovedLabelEvent"; id: string }
         | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
         | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
         | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
@@ -22310,8 +21846,6 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -22379,8 +21913,6 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -22464,8 +21996,6 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "ComponentTemplate" }
         | { __typename?: "ComponentVersion" }
         | { __typename?: "ComponentVersionTemplate" }
-        | { __typename?: "DueDateChangedEvent" }
-        | { __typename?: "EstimatedTimeChangedEvent" }
         | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
@@ -22532,8 +22062,6 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "RemovedLabelEvent" }
         | { __typename?: "RemovedOutgoingRelationEvent" }
         | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "SpentTimeChangedEvent" }
-        | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
         | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
@@ -22727,28 +22255,6 @@ type DefaultTimelineItemInfo_Body_Fragment = {
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     bodyLastEditedBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type DefaultTimelineItemInfo_DueDateChangedEvent_Fragment = {
-    __typename: "DueDateChangedEvent";
-    oldDueDate?: any | null;
-    newDueDate?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
-    __typename: "EstimatedTimeChangedEvent";
-    oldEstimatedTime?: any | null;
-    newEstimatedTime?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
@@ -23158,28 +22664,6 @@ type DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
-type DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment = {
-    __typename: "SpentTimeChangedEvent";
-    oldSpentTime?: any | null;
-    newSpentTime?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type DefaultTimelineItemInfo_StartDateChangedEvent_Fragment = {
-    __typename: "StartDateChangedEvent";
-    oldStartDate?: any | null;
-    newStartDate?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
 type DefaultTimelineItemInfo_StateChangedEvent_Fragment = {
     __typename: "StateChangedEvent";
     id: string;
@@ -23245,8 +22729,6 @@ export type DefaultTimelineItemInfoFragment =
     | DefaultTimelineItemInfo_Assignment_Fragment
     | DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment
     | DefaultTimelineItemInfo_Body_Fragment
-    | DefaultTimelineItemInfo_DueDateChangedEvent_Fragment
-    | DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment
     | DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment
     | DefaultTimelineItemInfo_IssueComment_Fragment
     | DefaultTimelineItemInfo_IssueRelation_Fragment
@@ -23262,8 +22744,6 @@ export type DefaultTimelineItemInfoFragment =
     | DefaultTimelineItemInfo_RemovedLabelEvent_Fragment
     | DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment
     | DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment
-    | DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment
-    | DefaultTimelineItemInfo_StartDateChangedEvent_Fragment
     | DefaultTimelineItemInfo_StateChangedEvent_Fragment
     | DefaultTimelineItemInfo_TemplateChangedEvent_Fragment
     | DefaultTimelineItemInfo_TemplatedFieldChangedEvent_Fragment
@@ -23335,24 +22815,6 @@ type TimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
 
 type TimelineItemInfo_Body_Fragment = {
     __typename: "Body";
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type TimelineItemInfo_DueDateChangedEvent_Fragment = {
-    __typename: "DueDateChangedEvent";
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type TimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
-    __typename: "EstimatedTimeChangedEvent";
     id: string;
     createdAt: any;
     createdBy:
@@ -23495,24 +22957,6 @@ type TimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
-type TimelineItemInfo_SpentTimeChangedEvent_Fragment = {
-    __typename: "SpentTimeChangedEvent";
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-type TimelineItemInfo_StartDateChangedEvent_Fragment = {
-    __typename: "StartDateChangedEvent";
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
 type TimelineItemInfo_StateChangedEvent_Fragment = {
     __typename: "StateChangedEvent";
     id: string;
@@ -23567,8 +23011,6 @@ export type TimelineItemInfoFragment =
     | TimelineItemInfo_Assignment_Fragment
     | TimelineItemInfo_AssignmentTypeChangedEvent_Fragment
     | TimelineItemInfo_Body_Fragment
-    | TimelineItemInfo_DueDateChangedEvent_Fragment
-    | TimelineItemInfo_EstimatedTimeChangedEvent_Fragment
     | TimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment
     | TimelineItemInfo_IssueComment_Fragment
     | TimelineItemInfo_IssueRelation_Fragment
@@ -23584,8 +23026,6 @@ export type TimelineItemInfoFragment =
     | TimelineItemInfo_RemovedLabelEvent_Fragment
     | TimelineItemInfo_RemovedOutgoingRelationEvent_Fragment
     | TimelineItemInfo_RemovedTemplatedFieldEvent_Fragment
-    | TimelineItemInfo_SpentTimeChangedEvent_Fragment
-    | TimelineItemInfo_StartDateChangedEvent_Fragment
     | TimelineItemInfo_StateChangedEvent_Fragment
     | TimelineItemInfo_TemplateChangedEvent_Fragment
     | TimelineItemInfo_TemplatedFieldChangedEvent_Fragment
@@ -23704,28 +23144,6 @@ export type BodyTimelineInfoFragment = {
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     bodyLastEditedBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-export type DueDateChangedEventTimelineInfoFragment = {
-    __typename: "DueDateChangedEvent";
-    oldDueDate?: any | null;
-    newDueDate?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-export type EstimatedTimeChangedEventTimelineInfoFragment = {
-    __typename: "EstimatedTimeChangedEvent";
-    oldEstimatedTime?: any | null;
-    newEstimatedTime?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
@@ -24178,28 +23596,6 @@ export type RemovedOutgoingRelationEventTimelineInfoFragment = {
 export type RemovedTemplatedFieldEventTimelineInfoFragment = {
     __typename: "RemovedTemplatedFieldEvent";
     fieldName: string;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-export type SpentTimeChangedEventTimelineInfoFragment = {
-    __typename: "SpentTimeChangedEvent";
-    oldSpentTime?: any | null;
-    newSpentTime?: any | null;
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
-
-export type StartDateChangedEventTimelineInfoFragment = {
-    __typename: "StartDateChangedEvent";
-    oldStartDate?: any | null;
-    newStartDate?: any | null;
     id: string;
     createdAt: any;
     createdBy:
@@ -25149,22 +24545,6 @@ export const BodyTimelineInfoFragmentDoc = gql`
     ${TimelineItemInfoFragmentDoc}
     ${CommentTimelineInfoFragmentDoc}
 `;
-export const DueDateChangedEventTimelineInfoFragmentDoc = gql`
-    fragment DueDateChangedEventTimelineInfo on DueDateChangedEvent {
-        ...TimelineItemInfo
-        oldDueDate
-        newDueDate
-    }
-    ${TimelineItemInfoFragmentDoc}
-`;
-export const EstimatedTimeChangedEventTimelineInfoFragmentDoc = gql`
-    fragment EstimatedTimeChangedEventTimelineInfo on EstimatedTimeChangedEvent {
-        ...TimelineItemInfo
-        oldEstimatedTime
-        newEstimatedTime
-    }
-    ${TimelineItemInfoFragmentDoc}
-`;
 export const IssueRelationTypeTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTypeTimelineInfo on IssueRelationType {
         id
@@ -25395,22 +24775,6 @@ export const RemovedTemplatedFieldEventTimelineInfoFragmentDoc = gql`
     }
     ${TimelineItemInfoFragmentDoc}
 `;
-export const SpentTimeChangedEventTimelineInfoFragmentDoc = gql`
-    fragment SpentTimeChangedEventTimelineInfo on SpentTimeChangedEvent {
-        ...TimelineItemInfo
-        oldSpentTime
-        newSpentTime
-    }
-    ${TimelineItemInfoFragmentDoc}
-`;
-export const StartDateChangedEventTimelineInfoFragmentDoc = gql`
-    fragment StartDateChangedEventTimelineInfo on StartDateChangedEvent {
-        ...TimelineItemInfo
-        oldStartDate
-        newStartDate
-    }
-    ${TimelineItemInfoFragmentDoc}
-`;
 export const DefaultIssueStateInfoFragmentDoc = gql`
     fragment DefaultIssueStateInfo on IssueState {
         id
@@ -25527,12 +24891,6 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
         ... on Body {
             ...BodyTimelineInfo
         }
-        ... on DueDateChangedEvent {
-            ...DueDateChangedEventTimelineInfo
-        }
-        ... on EstimatedTimeChangedEvent {
-            ...EstimatedTimeChangedEventTimelineInfo
-        }
         ... on IncomingRelationTypeChangedEvent {
             ...IncomingRelationTypeChangedEventTimelineInfo
         }
@@ -25578,12 +24936,6 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
         ... on RemovedTemplatedFieldEvent {
             ...RemovedTemplatedFieldEventTimelineInfo
         }
-        ... on SpentTimeChangedEvent {
-            ...SpentTimeChangedEventTimelineInfo
-        }
-        ... on StartDateChangedEvent {
-            ...StartDateChangedEventTimelineInfo
-        }
         ... on StateChangedEvent {
             ...StateChangedEventTimelineInfo
         }
@@ -25608,8 +24960,6 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
     ${AssignmentTimelineInfoFragmentDoc}
     ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
     ${BodyTimelineInfoFragmentDoc}
-    ${DueDateChangedEventTimelineInfoFragmentDoc}
-    ${EstimatedTimeChangedEventTimelineInfoFragmentDoc}
     ${IncomingRelationTypeChangedEventTimelineInfoFragmentDoc}
     ${IssueCommentTimelineInfoFragmentDoc}
     ${IssueRelationTimelineInfoFragmentDoc}
@@ -25625,8 +24975,6 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
     ${RemovedLabelEventTimelineInfoFragmentDoc}
     ${RemovedOutgoingRelationEventTimelineInfoFragmentDoc}
     ${RemovedTemplatedFieldEventTimelineInfoFragmentDoc}
-    ${SpentTimeChangedEventTimelineInfoFragmentDoc}
-    ${StartDateChangedEventTimelineInfoFragmentDoc}
     ${StateChangedEventTimelineInfoFragmentDoc}
     ${TemplateChangedEventTimelineInfoFragmentDoc}
     ${TemplatedFieldChangedEventTimelineInfoFragmentDoc}
@@ -26971,10 +26319,11 @@ export const SearchGropiusUsersDocument = gql`
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
     operationName: string,
-    operationType?: string
+    operationType?: string,
+    variables?: any
 ) => Promise<T>;
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
@@ -26989,7 +26338,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAffectedByIssues",
-                "query"
+                "query",
+                variables
             );
         },
         addAffectedEntityToIssue(
@@ -27003,7 +26353,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addAffectedEntityToIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeAffectedEntityFromIssue(
@@ -27018,7 +26369,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeAffectedEntityFromIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeAssignment(
@@ -27032,7 +26384,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeAssignment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createAssignment(
@@ -27046,7 +26399,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createAssignment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchAssignmentTypes(
@@ -27060,7 +26414,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAssignmentTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstAssignmentTypes(
@@ -27074,7 +26429,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstAssignmentTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeAssignmentType(
@@ -27088,7 +26444,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeAssignmentType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getComponentList(
@@ -27102,7 +26459,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredComponentList(
@@ -27116,7 +26474,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredComponentList",
-                "query"
+                "query",
+                variables
             );
         },
         getComponent(
@@ -27130,7 +26489,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponent",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentDetails(
@@ -27144,7 +26504,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentDetails",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentGeneralDetails(
@@ -27158,7 +26519,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentGeneralDetails",
-                "query"
+                "query",
+                variables
             );
         },
         searchComponents(
@@ -27172,7 +26534,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponents",
-                "query"
+                "query",
+                variables
             );
         },
         createComponent(
@@ -27186,7 +26549,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateComponent(
@@ -27200,7 +26564,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteComponent(
@@ -27214,7 +26579,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getComponentPermissionList(
@@ -27228,7 +26594,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredComponentPermissionList(
@@ -27243,7 +26610,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredComponentPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         searchComponentPermissions(
@@ -27257,7 +26625,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentPermissions",
-                "query"
+                "query",
+                variables
             );
         },
         firstComponentPermissions(
@@ -27271,7 +26640,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstComponentPermissions",
-                "query"
+                "query",
+                variables
             );
         },
         addComponentPermissionToComponent(
@@ -27286,7 +26656,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentPermissionToComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeComponentPermissionFromComponent(
@@ -27301,7 +26672,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeComponentPermissionFromComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateComponentPermission(
@@ -27315,7 +26687,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createComponentPermission(
@@ -27329,7 +26702,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchComponentTemplates(
@@ -27343,7 +26717,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         firstComponentTemplates(
@@ -27357,7 +26732,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstComponentTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentTemplate(
@@ -27371,7 +26747,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersionTemplate(
@@ -27385,7 +26762,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersions(
@@ -27399,7 +26777,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersions",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersionList(
@@ -27413,7 +26792,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredComponentVersionList(
@@ -27428,7 +26808,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredComponentVersionList",
-                "query"
+                "query",
+                variables
             );
         },
         searchComponentVersions(
@@ -27442,7 +26823,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentVersions",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersionGeneralDetails(
@@ -27457,7 +26839,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getComponentVersionGeneralDetails",
-                "query"
+                "query",
+                variables
             );
         },
         createComponentVersion(
@@ -27471,7 +26854,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentVersion",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateComponentVersion(
@@ -27485,7 +26869,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentVersion",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteComponentVersion(
@@ -27499,7 +26884,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteComponentVersion",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getGlobalPermissionList(
@@ -27513,7 +26899,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getGlobalPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredGlobalPermissionList(
@@ -27528,7 +26915,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredGlobalPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         deleteGlobalPermission(
@@ -27542,7 +26930,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteGlobalPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateGlobalPermission(
@@ -27556,7 +26945,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateGlobalPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createGlobalPermission(
@@ -27570,7 +26960,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createGlobalPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getProjectGraph(
@@ -27584,7 +26975,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectGraph",
-                "query"
+                "query",
+                variables
             );
         },
         addComponentVersionToProject(
@@ -27599,7 +26991,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentVersionToProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeComponentVersionFromProject(
@@ -27614,7 +27007,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeComponentVersionFromProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createRelation(
@@ -27628,7 +27022,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteRelation(
@@ -27642,7 +27037,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getIssueList(
@@ -27656,7 +27052,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredIssueList(
@@ -27670,7 +27067,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getParticipatingIssueList(
@@ -27684,7 +27082,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getParticipatingIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getParticipatingFilteredIssueList(
@@ -27699,7 +27098,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getParticipatingFilteredIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getIssue(
@@ -27713,7 +27113,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssue",
-                "query"
+                "query",
+                variables
             );
         },
         updateBody(
@@ -27727,7 +27128,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateBody",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateIssueComment(
@@ -27741,7 +27143,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssueComment(
@@ -27755,7 +27158,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteIssueComment(
@@ -27769,7 +27173,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssue(
@@ -27783,7 +27188,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         changeIssueTitle(
@@ -27797,7 +27203,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTitle",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         changeIssueTemplatedField(
@@ -27811,7 +27218,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTemplatedField",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssues(
@@ -27825,7 +27233,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssues",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssues(
@@ -27839,7 +27248,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssues",
-                "query"
+                "query",
+                variables
             );
         },
         searchIssuePriorities(
@@ -27853,7 +27263,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssuePriorities",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssuePriorities(
@@ -27867,7 +27278,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssuePriorities",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssuePriority(
@@ -27881,7 +27293,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssuePriority",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeIssueRelation(
@@ -27895,7 +27308,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssueRelation(
@@ -27909,7 +27323,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueRelationTypes(
@@ -27923,7 +27338,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueRelationTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueRelationTypes(
@@ -27937,7 +27353,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueRelationTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueRelationType(
@@ -27951,7 +27368,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueRelationType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueStates(
@@ -27965,7 +27383,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueStates",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueStates(
@@ -27979,7 +27398,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueStates",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueState(
@@ -27993,7 +27413,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueState",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueTemplates(
@@ -28007,7 +27428,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueTemplates(
@@ -28021,7 +27443,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         getIssueTemplate(
@@ -28035,7 +27458,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         searchIssueTypes(
@@ -28049,7 +27473,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueTypes(
@@ -28063,7 +27488,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueType(
@@ -28077,7 +27503,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getLabelList(
@@ -28091,7 +27518,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getLabelList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredLabelList(
@@ -28105,7 +27533,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredLabelList",
-                "query"
+                "query",
+                variables
             );
         },
         searchLabels(
@@ -28119,7 +27548,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchLabels",
-                "query"
+                "query",
+                variables
             );
         },
         firstLabels(
@@ -28133,7 +27563,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstLabels",
-                "query"
+                "query",
+                variables
             );
         },
         searchTrackableLabels(
@@ -28147,7 +27578,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackableLabels",
-                "query"
+                "query",
+                variables
             );
         },
         firstTrackableLabels(
@@ -28161,7 +27593,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstTrackableLabels",
-                "query"
+                "query",
+                variables
             );
         },
         addLabelToIssue(
@@ -28175,7 +27608,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addLabelToIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeLabelFromIssue(
@@ -28189,7 +27623,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createLabel(
@@ -28203,7 +27638,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createLabel",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateLabel(
@@ -28217,7 +27653,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateLabel",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeLabelFromTrackable(
@@ -28231,7 +27668,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromTrackable",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         addLabelToTrackable(
@@ -28245,7 +27683,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addLabelToTrackable",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getPermissionUserList(
@@ -28259,7 +27698,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getPermissionUserList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredPermissionUserList(
@@ -28274,7 +27714,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredPermissionUserList",
-                "query"
+                "query",
+                variables
             );
         },
         getProjectList(
@@ -28288,7 +27729,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredProjectList(
@@ -28302,7 +27744,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredProjectList",
-                "query"
+                "query",
+                variables
             );
         },
         searchProjects(
@@ -28316,7 +27759,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchProjects",
-                "query"
+                "query",
+                variables
             );
         },
         getProject(
@@ -28330,7 +27774,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProject",
-                "query"
+                "query",
+                variables
             );
         },
         getProjectGeneralDetails(
@@ -28344,7 +27789,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectGeneralDetails",
-                "query"
+                "query",
+                variables
             );
         },
         createProject(
@@ -28358,7 +27804,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateProject(
@@ -28372,7 +27819,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteProject(
@@ -28386,7 +27834,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getProjectPermissionList(
@@ -28400,7 +27849,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredProjectPermissionList(
@@ -28415,7 +27865,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredProjectPermissionList",
-                "query"
+                "query",
+                variables
             );
         },
         searchProjectPermissions(
@@ -28429,7 +27880,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchProjectPermissions",
-                "query"
+                "query",
+                variables
             );
         },
         firstProjectPermissions(
@@ -28443,7 +27895,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstProjectPermissions",
-                "query"
+                "query",
+                variables
             );
         },
         addProjectPermissionToProject(
@@ -28458,7 +27911,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addProjectPermissionToProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeProjectPermissionFromProject(
@@ -28473,7 +27927,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeProjectPermissionFromProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateProjectPermission(
@@ -28487,7 +27942,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateProjectPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createProjectPermission(
@@ -28501,7 +27957,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProjectPermission",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getRelationTemplates(
@@ -28515,7 +27972,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getRelationTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         searchRelationTemplates(
@@ -28529,7 +27987,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchRelationTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         searchTrackables(
@@ -28543,7 +28002,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackables",
-                "query"
+                "query",
+                variables
             );
         },
         addIssueToTrackable(
@@ -28557,7 +28017,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addIssueToTrackable",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeIssueFromTrackable(
@@ -28571,7 +28032,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueFromTrackable",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getCurrentUser(
@@ -28585,7 +28047,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getCurrentUser",
-                "query"
+                "query",
+                variables
             );
         },
         searchGropiusUsers(
@@ -28599,7 +28062,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchGropiusUsers",
-                "query"
+                "query",
+                variables
             );
         }
     };

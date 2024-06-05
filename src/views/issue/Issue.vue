@@ -106,11 +106,9 @@
                     :model-value="issue.state"
                 >
                     <template #display>
-                        <AffectedByIssue
-                            v-for="onTrackable in trackables"
-                            :affected-entity="onTrackable"
-                            class="mr-1"
-                        />
+                        <div class="d-flex flex-wrap ga-1">
+                            <AffectedByIssue v-for="onTrackable in trackables" :affected-entity="onTrackable" />
+                        </div>
                     </template>
                     <template #edit>
                         <div v-for="onTrackable in trackables">
@@ -158,7 +156,9 @@
                 <v-divider class="mx-2" />
                 <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
                     <template #display>
-                        <Label v-for="label in labels" :label="label" class="mr-1" />
+                        <div class="d-flex flex-wrap ga-1">
+                            <Label v-for="label in labels" :label="label" />
+                        </div>
                     </template>
                     <template #edit>
                         <div v-for="label in labels">

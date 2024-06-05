@@ -23,12 +23,6 @@ fragment DefaultTimelineItemInfo on TimelineItem {
     ... on Body {
         ...BodyTimelineInfo
     }
-    ... on DueDateChangedEvent {
-        ...DueDateChangedEventTimelineInfo
-    }
-    ... on EstimatedTimeChangedEvent {
-        ...EstimatedTimeChangedEventTimelineInfo
-    }
     ... on IncomingRelationTypeChangedEvent {
         ...IncomingRelationTypeChangedEventTimelineInfo
     }
@@ -73,12 +67,6 @@ fragment DefaultTimelineItemInfo on TimelineItem {
     }
     ... on RemovedTemplatedFieldEvent {
         ...RemovedTemplatedFieldEventTimelineInfo
-    }
-    ... on SpentTimeChangedEvent {
-        ...SpentTimeChangedEventTimelineInfo
-    }
-    ... on StartDateChangedEvent {
-        ...StartDateChangedEventTimelineInfo
     }
     ... on StateChangedEvent {
         ...StateChangedEventTimelineInfo
@@ -165,18 +153,6 @@ fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
 fragment BodyTimelineInfo on Body {
     ...TimelineItemInfo
     ...CommentTimelineInfo
-}
-
-fragment DueDateChangedEventTimelineInfo on DueDateChangedEvent {
-    ...TimelineItemInfo
-    oldDueDate
-    newDueDate
-}
-
-fragment EstimatedTimeChangedEventTimelineInfo on EstimatedTimeChangedEvent {
-    ...TimelineItemInfo
-    oldEstimatedTime
-    newEstimatedTime
 }
 
 fragment IncomingRelationTypeChangedEventTimelineInfo on IncomingRelationTypeChangedEvent {
@@ -293,18 +269,6 @@ fragment RemovedOutgoingRelationEventTimelineInfo on RemovedOutgoingRelationEven
 fragment RemovedTemplatedFieldEventTimelineInfo on RemovedTemplatedFieldEvent {
     ...TimelineItemInfo
     fieldName
-}
-
-fragment SpentTimeChangedEventTimelineInfo on SpentTimeChangedEvent {
-    ...TimelineItemInfo
-    oldSpentTime
-    newSpentTime
-}
-
-fragment StartDateChangedEventTimelineInfo on StartDateChangedEvent {
-    ...TimelineItemInfo
-    oldStartDate
-    newStartDate
 }
 
 fragment StateChangedEventTimelineInfo on StateChangedEvent {

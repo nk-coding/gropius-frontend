@@ -10,8 +10,8 @@
         rounded="xl"
         :elevation="editMode ? 5 : 0"
     >
-        <div class="d-flex align-center text-subtitle-1 title">
-            {{ name }}
+        <div class="d-flex text-subtitle-1 title">
+            <span class="align-self-center">{{ name }}</span>
             <v-spacer />
             <IconButton v-if="editable && !editMode" @click="editMode = true">
                 <v-icon icon="mdi-pencil" />
@@ -118,7 +118,7 @@ function closeEditMode() {
 </script>
 <style scoped>
 .title {
-    height: 36px;
+    min-height: 36px;
 }
 
 .compartment-sheet {
