@@ -134,6 +134,7 @@ export class SRoot extends ViewportRootElementImpl {
                 stroke: var(--shape-stroke-color);
                 stroke-width: 2px;
                 fill: var(--background-overlay-color);
+                cursor: pointer;
             }
 
             .sprotty .issue-type-folder.selected,

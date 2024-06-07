@@ -20,7 +20,8 @@ export class IssueTypeView implements IView {
             class: {
                 "issue-type-icon": true,
                 open: model.isOpen,
-                closed: !model.isOpen
+                closed: !model.isOpen,
+                selectable: true
             },
             attrs: {
                 d: model.iconPath
