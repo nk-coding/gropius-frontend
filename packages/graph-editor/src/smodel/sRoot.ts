@@ -83,10 +83,10 @@ export class SRoot extends ViewportRootElementImpl {
 
             .sprotty svg {
                 background:
-                  conic-gradient(from 90deg at 1px 1px, transparent 90deg, var(--diagram-grid) 0) 
-                  calc(var(--diagram-scroll-x) * -1 * var(--diagram-zoom))
-                  calc(var(--diagram-scroll-y) * -1 * var(--diagram-zoom)) /
-                  calc(150px * var(--diagram-zoom-normalized)) calc(150px * var(--diagram-zoom-normalized));
+                  radial-gradient(circle, var(--diagram-grid) 1.2px, transparent 1.2px)
+                    calc(var(--diagram-scroll-x) * -1 * var(--diagram-zoom))
+                    calc(var(--diagram-scroll-y) * -1 * var(--diagram-zoom)) /
+                    calc(50px * var(--diagram-zoom-normalized)) calc(50px * var(--diagram-zoom-normalized));
             }
 
             .sprotty foreignObject {

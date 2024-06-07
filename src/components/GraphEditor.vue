@@ -176,7 +176,7 @@ watch(
     border-style: none;
     border-width: 0px;
     outline: none;
-    --diagram-grid: rgba(var(--v-theme-on-surface), 0.2);
+    --diagram-grid: rgba(var(--v-theme-on-surface), 0.35);
     --background-overlay-color: rgba(var(--v-theme-surface), 0.6);
     --shape-stroke-color: rgb(var(--v-theme-on-surface));
     --version-chip-background: rgb(var(--v-theme-primary-container));

@@ -14,7 +14,7 @@ export class RootView implements IView {
                 style: {
                     "--diagram-zoom": `${model.zoom}`,
                     "--diagram-zoom-normalized": `${
-                        model.zoom / Math.pow(2, Math.round(Math.log2(model.zoom) / 2) * 2)
+                        model.zoom / Math.pow(2, Math.round(Math.log2(model.zoom) / 1.8) * 1.8)
                     }`,
                     "--diagram-scroll-x": `${model.scroll.x}px`,
                     "--diagram-scroll-y": `${model.scroll.y}px`
