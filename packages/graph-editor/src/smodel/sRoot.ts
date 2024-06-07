@@ -136,6 +136,7 @@ export class SRoot extends ViewportRootElementImpl {
                 fill: var(--background-overlay-color);
             }
 
+            .sprotty .issue-type-folder.selected,
             .sprotty .issue-type-folder.highlighted {
                 stroke: var(--highlight-stroke-color);
                 fill: var(--highlight-fill-color);

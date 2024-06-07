@@ -23,7 +23,7 @@
                     <IssueListItem :item="item" />
                 </template>
                 <template #search-append>
-                    <IssueStateSegmentedButton v-model="issueStateIndices" />
+                    <IssueStateSegmentedButton v-model="issueStateIndices" class="ml-2" />
                 </template>
             </PaginatedList>
         </div>

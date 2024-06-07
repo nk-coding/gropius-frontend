@@ -17276,7 +17276,7 @@ export type GetProjectGraphQuery = {
               components: {
                   __typename?: "ComponentVersionConnection";
                   nodes: Array<{
-                      __typename?: "ComponentVersion";
+                      __typename: "ComponentVersion";
                       name: string;
                       version: string;
                       id: string;
@@ -17286,7 +17286,7 @@ export type GetProjectGraphQuery = {
                           nodes: Array<{
                               __typename?: "InterfaceDefinition";
                               visibleInterface?: {
-                                  __typename?: "Interface";
+                                  __typename: "Interface";
                                   id: string;
                                   outgoingRelations: {
                                       __typename?: "RelationConnection";
@@ -17316,7 +17316,12 @@ export type GetProjectGraphQuery = {
                                           id: string;
                                           count: number;
                                           isOpen: boolean;
-                                          type: { __typename?: "IssueType"; name: string; iconPath: string };
+                                          type: {
+                                              __typename?: "IssueType";
+                                              id: string;
+                                              name: string;
+                                              iconPath: string;
+                                          };
                                           outgoingRelations: {
                                               __typename?: "AggregatedIssueRelationConnection";
                                               nodes: Array<{
@@ -17362,6 +17367,7 @@ export type GetProjectGraphQuery = {
                       };
                       component: {
                           __typename?: "Component";
+                          id: string;
                           template: {
                               __typename?: "ComponentTemplate";
                               id: string;
@@ -17403,7 +17409,7 @@ export type GetProjectGraphQuery = {
                               id: string;
                               count: number;
                               isOpen: boolean;
-                              type: { __typename?: "IssueType"; name: string; iconPath: string };
+                              type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
                               outgoingRelations: {
                                   __typename?: "AggregatedIssueRelationConnection";
                                   nodes: Array<{
@@ -17498,7 +17504,7 @@ export type GraphInfoFragment = {
     components: {
         __typename?: "ComponentVersionConnection";
         nodes: Array<{
-            __typename?: "ComponentVersion";
+            __typename: "ComponentVersion";
             name: string;
             version: string;
             id: string;
@@ -17508,7 +17514,7 @@ export type GraphInfoFragment = {
                 nodes: Array<{
                     __typename?: "InterfaceDefinition";
                     visibleInterface?: {
-                        __typename?: "Interface";
+                        __typename: "Interface";
                         id: string;
                         outgoingRelations: {
                             __typename?: "RelationConnection";
@@ -17538,7 +17544,7 @@ export type GraphInfoFragment = {
                                 id: string;
                                 count: number;
                                 isOpen: boolean;
-                                type: { __typename?: "IssueType"; name: string; iconPath: string };
+                                type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
                                 outgoingRelations: {
                                     __typename?: "AggregatedIssueRelationConnection";
                                     nodes: Array<{
@@ -17580,6 +17586,7 @@ export type GraphInfoFragment = {
             };
             component: {
                 __typename?: "Component";
+                id: string;
                 template: {
                     __typename?: "ComponentTemplate";
                     id: string;
@@ -17617,7 +17624,7 @@ export type GraphInfoFragment = {
                     id: string;
                     count: number;
                     isOpen: boolean;
-                    type: { __typename?: "IssueType"; name: string; iconPath: string };
+                    type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
                     outgoingRelations: {
                         __typename?: "AggregatedIssueRelationConnection";
                         nodes: Array<{
@@ -17639,7 +17646,7 @@ export type GraphInfoFragment = {
 };
 
 export type GraphComponentVersionInfoFragment = {
-    __typename?: "ComponentVersion";
+    __typename: "ComponentVersion";
     name: string;
     version: string;
     id: string;
@@ -17649,7 +17656,7 @@ export type GraphComponentVersionInfoFragment = {
         nodes: Array<{
             __typename?: "InterfaceDefinition";
             visibleInterface?: {
-                __typename?: "Interface";
+                __typename: "Interface";
                 id: string;
                 outgoingRelations: {
                     __typename?: "RelationConnection";
@@ -17679,7 +17686,7 @@ export type GraphComponentVersionInfoFragment = {
                         id: string;
                         count: number;
                         isOpen: boolean;
-                        type: { __typename?: "IssueType"; name: string; iconPath: string };
+                        type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
                         outgoingRelations: {
                             __typename?: "AggregatedIssueRelationConnection";
                             nodes: Array<{
@@ -17721,6 +17728,7 @@ export type GraphComponentVersionInfoFragment = {
     };
     component: {
         __typename?: "Component";
+        id: string;
         template: {
             __typename?: "ComponentTemplate";
             id: string;
@@ -17751,7 +17759,7 @@ export type GraphComponentVersionInfoFragment = {
             id: string;
             count: number;
             isOpen: boolean;
-            type: { __typename?: "IssueType"; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
@@ -17770,8 +17778,30 @@ export type GraphComponentVersionInfoFragment = {
     };
 };
 
+export type GraphAggregatedIssueInfoFragment = {
+    __typename?: "AggregatedIssue";
+    id: string;
+    count: number;
+    isOpen: boolean;
+    type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+    outgoingRelations: {
+        __typename?: "AggregatedIssueRelationConnection";
+        nodes: Array<{
+            __typename?: "AggregatedIssueRelation";
+            end: {
+                __typename?: "AggregatedIssue";
+                id: string;
+                relationPartner:
+                    | { __typename?: "ComponentVersion"; id: string }
+                    | { __typename?: "Interface"; id: string };
+            };
+            type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
+        }>;
+    };
+};
+
 type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
-    __typename?: "ComponentVersion";
+    __typename: "ComponentVersion";
     id: string;
     outgoingRelations: {
         __typename?: "RelationConnection";
@@ -17794,7 +17824,7 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
             id: string;
             count: number;
             isOpen: boolean;
-            type: { __typename?: "IssueType"; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
@@ -17814,7 +17844,7 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
 };
 
 type GraphRelationPartnerInfo_Interface_Fragment = {
-    __typename?: "Interface";
+    __typename: "Interface";
     id: string;
     outgoingRelations: {
         __typename?: "RelationConnection";
@@ -17837,7 +17867,7 @@ type GraphRelationPartnerInfo_Interface_Fragment = {
             id: string;
             count: number;
             isOpen: boolean;
-            type: { __typename?: "IssueType"; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
@@ -17901,8 +17931,8 @@ export type GetIssueListQueryVariables = Exact<{
     orderBy: IssueOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
+    filter?: InputMaybe<IssueFilterInput>;
     trackable: Scalars["ID"]["input"];
-    stateFilter?: InputMaybe<IssueStateFilterInput>;
 }>;
 
 export type GetIssueListQuery = {
@@ -18127,11 +18157,170 @@ export type GetIssueListQuery = {
         | null;
 };
 
+export type GetIssueListOnAggregatedIssueQueryVariables = Exact<{
+    orderBy: IssueOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    filter?: InputMaybe<IssueFilterInput>;
+    aggregatedIssue: Scalars["ID"]["input"];
+}>;
+
+export type GetIssueListOnAggregatedIssueQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | {
+              __typename?: "AggregatedIssue";
+              issues: {
+                  __typename?: "IssueConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "Issue";
+                      id: string;
+                      title: string;
+                      createdAt: any;
+                      createdBy:
+                          | {
+                                __typename?: "GropiusUser";
+                                id: string;
+                                username: string;
+                                displayName: string;
+                                avatar: any;
+                            }
+                          | {
+                                __typename?: "IMSUser";
+                                id: string;
+                                username?: string | null;
+                                displayName: string;
+                                avatar: any;
+                            };
+                      issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+                      labels: {
+                          __typename?: "LabelConnection";
+                          nodes: Array<{
+                              __typename?: "Label";
+                              id: string;
+                              name: string;
+                              description: string;
+                              color: string;
+                          }>;
+                      };
+                      assignments: {
+                          __typename?: "AssignmentConnection";
+                          nodes: Array<{
+                              __typename?: "Assignment";
+                              user:
+                                  | {
+                                        __typename?: "GropiusUser";
+                                        id: string;
+                                        username: string;
+                                        displayName: string;
+                                        avatar: any;
+                                    }
+                                  | {
+                                        __typename?: "IMSUser";
+                                        id: string;
+                                        username?: string | null;
+                                        displayName: string;
+                                        avatar: any;
+                                    };
+                          }>;
+                      };
+                      priority?: {
+                          __typename?: "IssuePriority";
+                          id: string;
+                          name: string;
+                          description: string;
+                          value: number;
+                      } | null;
+                      incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      state: { __typename?: "IssueState"; isOpen: boolean };
+                      type: { __typename?: "IssueType"; iconPath: string };
+                  }>;
+              };
+          }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
 export type GetFilteredIssueListQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
-    trackable: Scalars["ID"]["input"];
-    stateFilter?: InputMaybe<IssueStateFilterInput>;
+    filter?: InputMaybe<IssueFilterInput>;
 }>;
 
 export type GetFilteredIssueListQuery = {
@@ -24136,9 +24325,36 @@ export const GraphRelationTemplateInfoFragmentDoc = gql`
     }
     ${StrokeStyleInfoFragmentDoc}
 `;
+export const GraphAggregatedIssueInfoFragmentDoc = gql`
+    fragment GraphAggregatedIssueInfo on AggregatedIssue {
+        id
+        type {
+            id
+            name
+            iconPath
+        }
+        count
+        isOpen
+        outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
+            nodes {
+                end {
+                    id
+                    relationPartner {
+                        id
+                    }
+                }
+                type {
+                    name
+                    id
+                }
+            }
+        }
+    }
+`;
 export const GraphRelationPartnerInfoFragmentDoc = gql`
     fragment GraphRelationPartnerInfo on RelationPartner {
         id
+        __typename
         outgoingRelations(filter: { end: { partOfProject: $project } }) {
             nodes {
                 id
@@ -24152,31 +24368,12 @@ export const GraphRelationPartnerInfoFragmentDoc = gql`
         }
         aggregatedIssues {
             nodes {
-                id
-                type {
-                    name
-                    iconPath
-                }
-                count
-                isOpen
-                outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
-                    nodes {
-                        end {
-                            id
-                            relationPartner {
-                                id
-                            }
-                        }
-                        type {
-                            name
-                            id
-                        }
-                    }
-                }
+                ...GraphAggregatedIssueInfo
             }
         }
     }
     ${GraphRelationTemplateInfoFragmentDoc}
+    ${GraphAggregatedIssueInfoFragmentDoc}
 `;
 export const FillStyleInfoFragmentDoc = gql`
     fragment FillStyleInfo on FillStyle {
@@ -24220,6 +24417,7 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
             }
         }
         component {
+            id
             template {
                 ...GraphRelationPartnerTemplateInfo
             }
@@ -25504,16 +25702,31 @@ export const DeleteRelationDocument = gql`
     }
 `;
 export const GetIssueListDocument = gql`
-    query getIssueList(
+    query getIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput, $trackable: ID!) {
+        node(id: $trackable) {
+            ... on Trackable {
+                issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...IssueListItemInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${IssueListItemInfoFragmentDoc}
+`;
+export const GetIssueListOnAggregatedIssueDocument = gql`
+    query getIssueListOnAggregatedIssue(
         $orderBy: IssueOrder!
         $count: Int!
         $skip: Int!
-        $trackable: ID!
-        $stateFilter: IssueStateFilterInput
+        $filter: IssueFilterInput
+        $aggregatedIssue: ID!
     ) {
-        node(id: $trackable) {
-            ... on Trackable {
-                issues(filter: { state: $stateFilter }, orderBy: $orderBy, first: $count, skip: $skip) {
+        node(id: $aggregatedIssue) {
+            ... on AggregatedIssue {
+                issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         ...IssueListItemInfo
                     }
@@ -25525,12 +25738,8 @@ export const GetIssueListDocument = gql`
     ${IssueListItemInfoFragmentDoc}
 `;
 export const GetFilteredIssueListDocument = gql`
-    query getFilteredIssueList($query: String!, $count: Int!, $trackable: ID!, $stateFilter: IssueStateFilterInput) {
-        searchIssues(
-            query: $query
-            first: $count
-            filter: { trackables: { any: { id: { eq: $trackable } } }, state: $stateFilter }
-        ) {
+    query getFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterInput) {
+        searchIssues(query: $query, first: $count, filter: $filter) {
             ...IssueListItemInfo
         }
     }
@@ -27052,6 +27261,22 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueList",
+                "query",
+                variables
+            );
+        },
+        getIssueListOnAggregatedIssue(
+            variables: GetIssueListOnAggregatedIssueQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetIssueListOnAggregatedIssueQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetIssueListOnAggregatedIssueQuery>(
+                        GetIssueListOnAggregatedIssueDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getIssueListOnAggregatedIssue",
                 "query",
                 variables
             );

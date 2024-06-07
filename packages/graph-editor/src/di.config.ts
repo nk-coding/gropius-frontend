@@ -63,7 +63,7 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
         enable: [selectFeature, moveFeature, connectFeature]
     });
     configureModelElement(context, IssueType.TYPE, SIssueType, IssueTypeView, {
-        enable: [issueHighlightableFeature]
+        enable: [issueHighlightableFeature, selectFeature]
     });
     configureModelElement(context, Relation.TYPE, SRelation, RelationView, {
         enable: [selectFeature]

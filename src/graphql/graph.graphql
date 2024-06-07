@@ -66,6 +66,7 @@ fragment GraphComponentVersionInfo on ComponentVersion {
         }
     }
     component {
+        id
         template {
             ...GraphRelationPartnerTemplateInfo
         }
@@ -73,8 +74,34 @@ fragment GraphComponentVersionInfo on ComponentVersion {
     relateFromComponent: hasPermission(permission: RELATE_FROM_COMPONENT)
 }
 
+fragment GraphAggregatedIssueInfo on AggregatedIssue {
+    id
+    type {
+        id
+        name
+        iconPath
+    }
+    count
+    isOpen
+    outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
+        nodes {
+            end {
+                id
+                relationPartner {
+                    id
+                }
+            }
+            type {
+                name
+                id
+            }
+        }
+    }
+}
+
 fragment GraphRelationPartnerInfo on RelationPartner {
     id
+    __typename
     outgoingRelations(filter: { end: { partOfProject: $project } }) {
         nodes {
             id
@@ -88,27 +115,7 @@ fragment GraphRelationPartnerInfo on RelationPartner {
     }
     aggregatedIssues {
         nodes {
-            id
-            type {
-                name
-                iconPath
-            }
-            count
-            isOpen
-            outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
-                nodes {
-                    end {
-                        id
-                        relationPartner {
-                            id
-                        }
-                    }
-                    type {
-                        name
-                        id
-                    }
-                }
-            }
+            ...GraphAggregatedIssueInfo
         }
     }
 }

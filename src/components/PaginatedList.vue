@@ -1,29 +1,36 @@
 <template>
     <div class="d-flex h-100 flex-column">
-        <div class="d-flex align-center my-3 ml-3 top-bar">
+        <div class="d-flex align-center mt-3 mb-2 ml-3 top-bar">
             <v-text-field
                 v-model="searchString"
                 label="Search"
-                class="mr-2 search-field"
+                class="search-field"
                 prepend-inner-icon="mdi-magnify"
                 clearable
             >
             </v-text-field>
             <slot name="search-append" />
-            <div class="sort-container d-flex mr-3" :class="{ hidden: transformedSearchQuery != undefined }">
+            <div
+                class="sort-container d-flex mr-3"
+                :class="{ hidden: transformedSearchQuery != undefined, 'sort-container-small': sortFields.length <= 1 }"
+            >
                 <v-select
+                    v-if="sortFields.length > 1"
                     v-model="currentSortField"
                     label="Sort by"
-                    class="mx-2"
+                    class="ml-2"
                     :class="{ hidden: transformedSearchQuery != undefined }"
                     variant="outlined"
                     :items="sortFields"
                 ></v-select>
-                <v-btn icon variant="outlined" @click="toggleSortDirection()">
+                <v-btn icon variant="outlined" @click="toggleSortDirection()" class="ml-2">
                     <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'" />
                     <v-tooltip activator="parent" location="bottom"> Toggle sort sort </v-tooltip>
                 </v-btn>
             </div>
+        </div>
+        <div class="mx-3 mb-1">
+            <slot name="additional-filter" />
         </div>
         <div class="overflow-y-auto flex-1-1 px-3">
             <div v-if="currentItems.length == 0 && loadedInitially" class="text-medium-emphasis">
@@ -222,6 +229,7 @@ function updateQuery(key: string, value: string | undefined) {
     transition: flex-basis 0.6s ease-in-out;
 }
 
+.sort-container.hidden.sort-container-small,
 .sort-container.hidden {
     flex-basis: 0px;
 }
@@ -240,5 +248,9 @@ function updateQuery(key: string, value: string | undefined) {
 
 .pagination-container {
     flex: 1 1 300px;
+}
+
+.sort-container.sort-container-small {
+    flex-basis: 56px;
 }
 </style>

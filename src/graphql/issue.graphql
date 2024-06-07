@@ -2,12 +2,12 @@ query getIssueList(
     $orderBy: IssueOrder!
     $count: Int!
     $skip: Int!
+    $filter: IssueFilterInput
     $trackable: ID!
-    $stateFilter: IssueStateFilterInput
 ) {
     node(id: $trackable) {
         ... on Trackable {
-            issues(filter: { state: $stateFilter }, orderBy: $orderBy, first: $count, skip: $skip) {
+            issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     ...IssueListItemInfo
                 }
@@ -17,11 +17,30 @@ query getIssueList(
     }
 }
 
-query getFilteredIssueList($query: String!, $count: Int!, $trackable: ID!, $stateFilter: IssueStateFilterInput) {
+query getIssueListOnAggregatedIssue(
+    $orderBy: IssueOrder!
+    $count: Int!
+    $skip: Int!
+    $filter: IssueFilterInput
+    $aggregatedIssue: ID!
+) {
+    node(id: $aggregatedIssue) {
+        ... on AggregatedIssue {
+            issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    ...IssueListItemInfo
+                }
+                totalCount
+            }
+        }
+    }
+}
+
+query getFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterInput) {
     searchIssues(
         query: $query
         first: $count
-        filter: { trackables: { any: { id: { eq: $trackable } } }, state: $stateFilter }
+        filter: $filter
     ) {
         ...IssueListItemInfo
     }

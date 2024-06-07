@@ -3,7 +3,7 @@
         <template #prepend>
             <IssueIcon :issue="item" height="40px" class="mr-2 flex-0-0" />
         </template>
-        <template #append>
+        <template #append v-if="!hideDetails">
             <div class="mr-6" v-if="item.priority != undefined">
                 <IssuePriority :priority="item.priority ?? undefined" size="small" />
             </div>
@@ -33,7 +33,7 @@
                 <User :user="item.createdBy" size="small" />
             </div>
         </template>
-        <template #title-append>
+        <template #title-append v-if="!hideDetails">
             <Label
                 v-for="(label, idx) in item.labels.nodes"
                 :key="idx"
@@ -68,6 +68,10 @@ const props = defineProps({
     item: {
         type: Object as PropType<IssueListItemInfoFragment | ParticipatingIssueListItemInfoFragment>,
         required: true
+    },
+    hideDetails: {
+        type: Boolean,
+        default: false
     }
 });
 

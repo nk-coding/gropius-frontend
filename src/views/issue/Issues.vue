@@ -12,7 +12,7 @@
             <IssueListItem :item="item" />
         </template>
         <template #search-append>
-            <IssueStateSegmentedButton v-model="issueStateIndices" />
+            <IssueStateSegmentedButton v-model="issueStateIndices" class="ml-2" />
         </template>
         <IssueDialogs />
     </PaginatedList>
@@ -85,7 +85,7 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
                 count,
                 skip: page * count,
                 trackable: trackableId.value,
-                stateFilter: stateFilterInput.value
+                filter: { state: stateFilterInput.value }
             });
             const issues = (res.node as Trackable).issues;
             return [issues.nodes, issues.totalCount];
@@ -93,8 +93,7 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
             const res = await client.getFilteredIssueList({
                 query: filter,
                 count,
-                trackable: trackableId.value,
-                stateFilter: stateFilterInput.value
+                filter: { trackables: { any: { id: { eq: trackableId.value } } }, state: stateFilterInput.value }
             });
             return [res.searchIssues, res.searchIssues.length];
         }

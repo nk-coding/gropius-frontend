@@ -2,44 +2,46 @@
     <div class="h-100 position-relative">
         <div :id="editorId" class="sprotty" />
         <Teleport
-            v-if="selecteds.length == 1"
+            v-if="selected?.contextMenu != undefined"
             :key="selected.id"
-            :to="`#${selected.contextMenuContainerId}>.context-menu`"
+            :to="`#${selected.contextMenu.containerId}>.context-menu`"
         >
             <div class="context-menu ml-2" @mousedown.stop.prevent>
                 <template
-                    v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'"
+                    v-if="
+                        selected.contextMenu.data.type == 'component' || selected.contextMenu.data.type == 'interface'
+                    "
                 >
                     <SmallFAB
                         class="d-block"
                         icon
                         color="primary-container"
-                        :disabled="!selected.contextMenuData.createRelation"
-                        @mousedown="() => modelSource!.startRelation(selected.id)"
+                        :disabled="!selected.contextMenu.data.createRelation"
+                        @mousedown="() => modelSource!.startRelation(selected!.id)"
                     >
                         <v-icon icon="mdi-arrow-top-right" />
                         <v-tooltip activator="parent">Create relation</v-tooltip>
                     </SmallFAB>
                 </template>
-                <template v-if="selected.contextMenuData.type == 'component'">
+                <template v-if="selected.contextMenu.data.type == 'component'">
                     <SmallFAB
                         class="d-block mt-2"
                         icon
                         color="primary-container"
-                        :disabled="!selected.contextMenuData.remove"
-                        @mouseup="$emit('removeComponent', selected.id)"
+                        :disabled="!selected.contextMenu.data.remove"
+                        @mouseup="$emit('removeComponent', selected!.id)"
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Remove component version from project</v-tooltip>
                     </SmallFAB>
                 </template>
-                <template v-if="selected.contextMenuData.type == 'relation'">
+                <template v-if="selected.contextMenu.data.type == 'relation'">
                     <SmallFAB
                         class="d-block"
                         icon
                         color="primary-container"
-                        :disabled="!selected.contextMenuData.delete"
-                        @mouseup="$emit('deleteRelation', selected.id)"
+                        :disabled="!selected.contextMenu.data.delete"
+                        @mouseup="$emit('deleteRelation', selected!.id)"
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Delete relation</v-tooltip>
@@ -47,7 +49,7 @@
                 </template>
             </div>
         </Teleport>
-        <div class="position-absolute top-0 right-0 ma-3">
+        <div class="position-absolute top-0 right-0 h-100 pa-3 pointer-events-none">
             <slot />
         </div>
     </div>
@@ -99,6 +101,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
+    (event: "update:selected", value: SelectedElement<ContextMenuData> | undefined): void;
     (event: "removeComponent", value: string): void;
     (event: "createRelation", value: CreateRelationContext): void;
     (event: "deleteRelation", value: string): void;
@@ -121,7 +124,17 @@ class ModelSource extends GraphModelSource {
 const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 const selecteds = ref<SelectedElement<ContextMenuData>[]>([]);
-const selected = computed(() => selecteds.value[0]);
+const selected = computed(() => {
+    if (selecteds.value.length == 1) {
+        return selecteds.value[0];
+    } else {
+        return undefined;
+    }
+});
+
+watch(selected, () => {
+    emit("update:selected", selected.value);
+});
 
 onMounted(async () => {
     const container = createContainer(editorId.value);
@@ -147,6 +160,10 @@ watch(
 <style scoped>
 .context-menu {
     pointer-events: all;
+}
+
+.pointer-events-none {
+    pointer-events: none;
 }
 
 /* Sprotty */

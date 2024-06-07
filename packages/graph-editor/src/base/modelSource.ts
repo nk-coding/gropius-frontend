@@ -150,8 +150,15 @@ export abstract class GraphModelSource extends LocalModelSource {
                 .filter((element) => "contextMenuData" in element && element.contextMenuData != undefined)
                 .map((element) => ({
                     id: element.id,
-                    contextMenuContainerId: `${this.viewerOptions.baseDiv}_${element.id}-context-menu`,
-                    contextMenuData: (element as SSelectable).contextMenuData
+                    contextMenu: {
+                        containerId: `${this.viewerOptions.baseDiv}_${element.id}-context-menu`,
+                        data: (element as SSelectable).contextMenuData
+                    }
+                })),
+            ...selection
+                .filter((element) => element.type === IssueType.TYPE)
+                .map((element) => ({
+                    id: element.id
                 }))
         ];
         this.handleSelectionChanged(elements);
@@ -409,8 +416,10 @@ export abstract class GraphModelSource extends LocalModelSource {
 
 export interface SelectedElement<T> {
     id: string;
-    contextMenuContainerId: string;
-    contextMenuData: T;
+    contextMenu?: {
+        containerId: string;
+        data: T;
+    };
 }
 
 export interface CreateRelationContext {
