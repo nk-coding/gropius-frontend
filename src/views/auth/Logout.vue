@@ -3,7 +3,7 @@
         <template #content>
             <GropiusCard class="logout-container mt-5">
                 <p class="text-center text-body-1 my-2">Logged in as {{ me?.displayName }} ({{ me?.username }})</p>
-                <DefaultButton class="full-width" @click="logout"> Logout </DefaultButton>
+                <DefaultButton class="w-100" @click="logout"> Logout </DefaultButton>
             </GropiusCard>
         </template>
     </BaseLayout>

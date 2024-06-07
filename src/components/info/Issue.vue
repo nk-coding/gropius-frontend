@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex align-center">
         <IssueIcon :issue="issue" class="issue-icon mr-1 flex-0-0" />
-        <span class="flex-1-1-0 text-ellipses">
+        <span class="flex-1-1-0 text-ellipsis">
             <CustomRouterLink :to="issueLocation" :text="issue.title" class="text-high-emphasis" />
             <br />
             <span class="text-medium-emphasis text-body-2">

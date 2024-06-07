@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4 full-height" v-if="project != undefined">
+    <div class="pa-4 h-100 overflow-y-auto" v-if="project != undefined">
         <DetailCompartment name="General">
             <InputWrapper
                 v-model="project.name"

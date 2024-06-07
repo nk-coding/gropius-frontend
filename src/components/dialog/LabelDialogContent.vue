@@ -17,7 +17,7 @@
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     >
                         <template #append-inner v-if="isFieldValid('color')">
-                            <v-icon :color="color" icon="mdi-circle" class="full-opacity" />
+                            <v-icon :color="color" icon="mdi-circle" class="opacity-100" />
                         </template>
                         <v-menu activator="parent" :close-on-content-click="false">
                             <v-color-picker class="mt-1" rounded="lger" v-model="pickerColor" :modes="['rgb']" />

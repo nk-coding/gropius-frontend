@@ -3,7 +3,7 @@
         <template #item="{ props, item: label }">
             <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
                 <template #prepend>
-                    <v-icon :color="label.raw.color" class="full-opacity mr-2" icon="mdi-circle" />
+                    <v-icon :color="label.raw.color" class="opacity-100 mr-2" icon="mdi-circle" />
                 </template>
             </v-list-item>
         </template>

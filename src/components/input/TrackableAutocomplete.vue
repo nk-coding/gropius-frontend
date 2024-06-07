@@ -5,7 +5,7 @@
                 <template #prepend>
                     <v-icon
                         color="primary"
-                        class="full-opacity mr-2"
+                        class="opacity-100 mr-2"
                         :icon="mapAffectedByIssueTypeToIcon(trackable.raw.__typename)"
                     />
                 </template>

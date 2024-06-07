@@ -1,5 +1,5 @@
 <template>
-    <div class="full-height d-flex flex-column pt-3">
+    <div class="h-100 d-flex flex-column pt-3">
         <div class="d-flex align-center mb-3 mx-3">
             <div class="text-h6">Recent issues</div>
             <v-spacer />
@@ -9,7 +9,7 @@
                 <v-btn :prepend-icon="issueFilterIndex == 2 ? 'mdi-check' : 'mdi-account'"> Assigned </v-btn>
             </v-btn-toggle>
         </div>
-        <div class="flex-1-1 paginated-list-container">
+        <div class="flex-1-1 overflow-y-hidden">
             <PaginatedList
                 name="issues"
                 :item-manager="itemManager"
@@ -152,8 +152,3 @@ function issueRoute(issue: Issue): RouteLocationRaw {
     };
 }
 </script>
-<style scoped>
-.paginated-list-container {
-    overflow-y: hidden;
-}
-</style>

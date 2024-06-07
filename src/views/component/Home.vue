@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4 full-height d-flex flex-column" v-if="component != undefined">
+    <div class="pa-4 h-100 d-flex flex-column" v-if="component != undefined">
         <div class="text-h4">{{ component.name }}</div>
         <div class="text-body-1 mt-2">{{ component.description }}</div>
         <v-sheet
@@ -13,7 +13,7 @@
         >
             <div class="text-h6 mb-2">Pinned issues</div>
             <div v-if="component.pinnedIssues.nodes.length == 0" class="text-medium-emphasis">No pinned issues</div>
-            <div v-else class="issue-list-wrapper flex-shrink-1">
+            <div v-else class="overflow-y-auto flex-shrink-1">
                 <CustomList :items="component.pinnedIssues.nodes" :to="issueRoute">
                     <template #item="{ item }">
                         <IssueListItem :item="item" />
@@ -22,7 +22,7 @@
             </div>
         </v-sheet>
         <v-sheet
-            class="pa-4 mt-5 issue-list-sheet d-flex flex-column"
+            class="pa-4 mt-5 overflow-hidden d-flex flex-column"
             rounded="lger"
             color="surface-elevated-2"
             :elevation="0"
@@ -91,14 +91,6 @@ const issuesRoute = computed(() => ({
 }));
 </script>
 <style scoped>
-.issue-list-wrapper {
-    overflow-y: auto;
-}
-
-.issue-list-sheet {
-    overflow: hidden;
-}
-
 .pinned-issues-sheet {
     overflow: hidden;
     max-height: 25vh;

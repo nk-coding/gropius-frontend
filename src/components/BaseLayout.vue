@@ -1,5 +1,5 @@
 <template>
-    <div class="root d-flex flex-column">
+    <div class="root h-100 w-100 d-flex flex-column">
         <div class="header d-flex align-center my-2">
             <div class="ml-5">
                 <router-link to="/">
@@ -40,14 +40,14 @@
                             elevation="4"
                         >
                             <img :src="store.user.avatar" class="large-avatar rounded-circle mb-2" />
-                            <p class="text-h5 text-on-surface text-ellipses">Hi {{ store.user.displayName }}</p>
+                            <p class="text-h5 text-on-surface text-ellipsis">Hi {{ store.user.displayName }}</p>
                             <p class="text-medium-emphasis">
                                 {{ store.user.username }}
                             </p>
-                            <p v-if="store.user.email" class="text-medium-emphasis text-ellipses">
+                            <p v-if="store.user.email" class="text-medium-emphasis text-ellipsis">
                                 {{ store.user.email }}
                             </p>
-                            <DefaultButton variant="tonal" class="mt-3 full-width text-ellipses" @click="logout"
+                            <DefaultButton variant="tonal" class="mt-3 w-100 text-ellipsis" @click="logout"
                                 >Logout</DefaultButton
                             >
                         </v-card>
@@ -55,18 +55,18 @@
                 </v-btn>
             </div>
         </div>
-        <div class="content d-flex flex-grow-1 mb-3">
+        <div class="h-0 d-flex flex-grow-1 mb-3">
             <div class="left-bar">
                 <slot name="left-bar">
-                    <SideBar :items="leftSidebarItems" class="full-width" />
+                    <SideBar :items="leftSidebarItems" class="w-100" />
                 </slot>
             </div>
-            <v-sheet color="surface" class="main-sheet flex-grow-1" rounded="xl">
+            <v-sheet color="surface" class="h-100 w-0 overflow-hidden flex-grow-1" rounded="xl">
                 <slot name="content"></slot>
             </v-sheet>
             <div class="right-bar">
                 <slot name="right-bar">
-                    <SideBar :items="rightSidebarItems" class="full-width" />
+                    <SideBar :items="rightSidebarItems" class="w-100" />
                 </slot>
             </div>
         </div>
@@ -143,8 +143,6 @@ updateColorMode();
 @use "@/styles/settings.scss";
 
 .root {
-    width: 100%;
-    height: 100%;
     background: rgb(var(--v-theme-surface-container));
 }
 
@@ -157,19 +155,6 @@ updateColorMode();
 .left-bar,
 .right-bar {
     height: 100%;
-}
-
-.main-sheet {
-    height: 100%;
-    width: 0px;
-}
-
-.content {
-    height: 0px;
-}
-
-.main-sheet {
-    overflow: hidden;
 }
 
 .avatar-button :deep(.v-btn__content),
@@ -188,9 +173,7 @@ updateColorMode();
     overflow: hidden !important;
 }
 
-.text-ellipses {
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.text-ellipsis {
     max-width: 100%;
 }
 </style>

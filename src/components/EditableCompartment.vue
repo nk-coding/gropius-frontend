@@ -1,7 +1,7 @@
 <template>
     <v-sheet
         ref="compartmentSheet"
-        class="ma-2 compartment-sheet"
+        class="ma-2 position-relative"
         :class="{
             'px-4 py-2': editMode,
             'pl-2': !editMode
@@ -119,10 +119,6 @@ function closeEditMode() {
 <style scoped>
 .title {
     min-height: 36px;
-}
-
-.compartment-sheet {
-    position: relative;
 }
 
 .pseudo-overlay-content {

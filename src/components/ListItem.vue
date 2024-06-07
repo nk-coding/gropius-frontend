@@ -11,7 +11,7 @@
             </div>
             <slot name="subtitle">
                 <div
-                    class="text-medium-emphasis text-body-2 text-ellipses"
+                    class="text-medium-emphasis text-body-2 text-ellipsis"
                     :class="{
                         'font-italic': italicSubtitle
                     }"

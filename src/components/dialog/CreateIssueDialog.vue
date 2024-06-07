@@ -55,7 +55,7 @@
                     color="primary"
                     class="markdown-field"
                 >
-                    <Markdown v-model="body" v-bind="bodyProps" edit-mode editable class="full-width ma-2" />
+                    <Markdown v-model="body" v-bind="bodyProps" edit-mode editable class="w-100 ma-2" />
                 </SimpleField>
             </template>
             <template #templatedFields>

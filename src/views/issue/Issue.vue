@@ -1,6 +1,6 @@
 <template>
     <IssueDialogs />
-    <div v-if="issue" class="pl-3 pt-3 full-height d-flex flex-column">
+    <div v-if="issue" class="pl-3 pt-3 h-100 d-flex flex-column">
         <div class="mb-5">
             <div class="d-flex">
                 <IssueIcon :issue="issue" height="50px" class="mr-3"></IssueIcon>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="content d-flex flex-fill">
+        <div class="overflow-auto position-relative d-flex flex-fill">
             <div class="timeline">
                 <TimelineItem
                     v-for="item in timeline"
@@ -123,7 +123,7 @@
                                 <template #prepend>
                                     <v-icon
                                         color="primary"
-                                        class="mr-2 full-opacity"
+                                        class="mr-2 opacity-100"
                                         :icon="mapAffectedByIssueTypeToIcon(onTrackable.__typename)"
                                     />
                                 </template>
@@ -171,7 +171,7 @@
                                     <v-list-item-title class="mb-1">{{ label.name }}</v-list-item-title>
                                 </template>
                                 <template #prepend>
-                                    <v-icon :color="label.color" class="mr-2 full-opacity" icon="mdi-circle " />
+                                    <v-icon :color="label.color" class="mr-2 opacity-100" icon="mdi-circle " />
                                 </template>
                                 <template #append>
                                     <IconButton @click="removeLabel(label.id)">
@@ -352,7 +352,7 @@
                                 <template #prepend>
                                     <v-icon
                                         color="primary"
-                                        class="mr-2 full-opacity"
+                                        class="mr-2 opacity-100"
                                         :icon="mapAffectedByIssueTypeToIcon(affectedEntity.__typename)"
                                     />
                                 </template>
@@ -879,11 +879,6 @@ async function removeFromTrackable(trackableId: string) {
 .type-icon {
     width: map.get(settings.$avatar-sizes, "large");
     height: map.get(settings.$avatar-sizes, "large");
-}
-
-.content {
-    position: relative;
-    overflow: auto;
 }
 
 .timeline {

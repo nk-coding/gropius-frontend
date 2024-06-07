@@ -1,6 +1,6 @@
 <template>
     <BaseObjectForm :name="name" :is-null="model == undefined" @add-value="model = {}">
-        <div class="full-width">
+        <div class="w-100">
             <div v-if="!readonly" class="d-flex align-center mb-3">
                 <v-text-field
                     v-model="addName"

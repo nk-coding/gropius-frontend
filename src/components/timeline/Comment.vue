@@ -18,7 +18,7 @@
                 <template #default="{ isHovering, props }">
                     <v-sheet
                         :border="selected ? 'primary-container md medium-emphasis' : true"
-                        class="flex-1-1 ml-2 comment-card pa-3"
+                        class="flex-1-1 ml-2 overflow-hidden pa-3"
                         rounded="lger"
                         v-bind="props"
                     >
@@ -112,10 +112,10 @@
                                             commented
                                             <RelativeTimeWrapper :time="answers.createdAt" />
                                         </div>
-                                        <div v-if="!isItemDeleted(answers)" class="answer-text">
+                                        <div v-if="!isItemDeleted(answers)" class="text-ellipsis">
                                             {{ markdownToText(answers.body) }}
                                         </div>
-                                        <div v-else class="text-medium-emphasis font-italic answer-text">
+                                        <div v-else class="text-medium-emphasis font-italic text-ellipsis">
                                             {{ deletedText }}
                                         </div>
                                     </div>
@@ -348,16 +348,6 @@ async function deleteComment() {
 <style scoped>
 .comment-top-bar {
     min-height: 45px;
-}
-
-.comment-card {
-    overflow: hidden;
-}
-
-.answer-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .answer-card {

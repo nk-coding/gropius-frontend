@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex full-height flex-column">
+    <div class="d-flex h-100 flex-column">
         <div class="d-flex align-center my-3 ml-3 top-bar">
             <v-text-field
                 v-model="searchString"
@@ -25,7 +25,7 @@
                 </v-btn>
             </div>
         </div>
-        <div class="list-container flex-1-1 px-3">
+        <div class="overflow-y-auto flex-1-1 px-3">
             <div v-if="currentItems.length == 0 && loadedInitially" class="text-medium-emphasis">
                 No {{ name }} found
             </div>
@@ -232,10 +232,6 @@ function updateQuery(key: string, value: string | undefined) {
 
 .top-bar :deep(.v-input__details) {
     display: none !important;
-}
-
-.list-container {
-    overflow-y: auto;
 }
 
 .pagination {

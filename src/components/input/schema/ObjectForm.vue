@@ -4,7 +4,7 @@
         :is-null="modelValue == undefined"
         @add-value="model = generateDefaultData(schema, rootSchema, true)"
     >
-        <div class="full-width">
+        <div class="w-100">
             <div
                 v-if="
                     (isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable) &&

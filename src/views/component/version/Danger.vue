@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4 full-height">
+    <div class="pa-4 h-100 overflow-y-auto">
         <DetailCompartment name="Danger Zone" color="error-container">
             <DefaultButton color="error">
                 Delete component version

@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4 full-height" v-if="componentVersion != undefined && component != undefined">
+    <div class="pa-4 h-100 overflow-y-auto" v-if="componentVersion != undefined && component != undefined">
         <DetailCompartment name="General">
             <InputWrapper
                 v-model="componentVersion.name"

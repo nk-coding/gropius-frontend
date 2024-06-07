@@ -42,7 +42,7 @@
                         </v-form>
                     </v-window-item>
                 </v-window>
-                <DefaultButton class="full-width" @click="submitForm"> Continue </DefaultButton>
+                <DefaultButton class="w-100" @click="submitForm"> Continue </DefaultButton>
                 <div v-if="allowModeSwitch" class="mt-2">
                     <p v-if="isLogin">
                         <span class="text-middle">Don't have an account?</span>
@@ -58,7 +58,7 @@
                     <DefaultButton
                         v-for="strategy in currentStrategies.redirect"
                         :key="strategy.id"
-                        class="full-width my-2"
+                        class="w-100 my-2"
                         variant="outlined"
                         density="default"
                         @click="redirect(strategy)"

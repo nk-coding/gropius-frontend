@@ -1,5 +1,5 @@
 <template>
-    <div class="sprotty-wrapper">
+    <div class="h-100 position-relative">
         <div :id="editorId" class="sprotty" />
         <Teleport
             v-if="selecteds.length == 1"
@@ -47,7 +47,7 @@
                 </template>
             </div>
         </Teleport>
-        <div class="ui-container ma-3">
+        <div class="position-absolute top-0 right-0 ma-3">
             <slot />
         </div>
     </div>
@@ -145,17 +145,6 @@ watch(
 );
 </script>
 <style scoped>
-.sprotty-wrapper {
-    height: 100%;
-    position: relative;
-}
-
-.ui-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
 .context-menu {
     pointer-events: all;
 }
