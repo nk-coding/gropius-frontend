@@ -312,6 +312,7 @@
                             autofocus
                             menu-mode="initial"
                             :initial-context="trackable ?? undefined"
+                            :ignore="[issueId]"
                             @selected-item="addOutgoingRelation"
                         />
                     </template>

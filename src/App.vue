@@ -71,6 +71,10 @@ html,
     white-space: nowrap;
 }
 
+.pointer-events-all {
+    pointer-events: all;
+}
+
 .v-btn-group.segmented-button {
     display: grid;
     grid-auto-columns: minmax(0, 1fr);

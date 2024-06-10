@@ -61,8 +61,8 @@ async function searchAffected(
             return [context!];
         }
     }, "Error searching affectable entities");
-    const currentIds = new Set(props.ignore);
-    return searchRes.filter((item) => !currentIds.has(item.id));
+    const ignoredIds = new Set(props.ignore);
+    return searchRes.filter((item) => !ignoredIds.has(item.id));
 }
 
 async function searchTrackables(filter: string, count: number): Promise<DefaultTrackableInfoFragment[]> {

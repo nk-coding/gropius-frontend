@@ -29,16 +29,18 @@ export function useClient() {
                 ((err as ClientError).response?.errors?.[0] as any | undefined)?.extensions?.status >= 400
             ) {
                 await store.forceTokenRefresh();
+                try {
+                    return await action();
+                } catch (err) {
+                    store.accessToken = "";
+                    store.refreshToken = "";
+                    const router = useRouter();
+                    router.push({ name: "login" });
+                    throw err;
+                }
+            } else {
+                throw err;
             }
-        }
-        try {
-            return await action();
-        } catch (err) {
-            store.accessToken = "";
-            store.refreshToken = "";
-            const router = useRouter();
-            router.push({ name: "login" });
-            throw err;
         }
     });
 }

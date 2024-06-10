@@ -44,7 +44,7 @@ async function searchLabels(filter: string, count: number): Promise<DefaultLabel
         }
     }, "Error searching labels");
     const searchedLabels = new Map(searchRes.map((label) => [label.id, label]));
-    const currentLabels = new Set(props.ignore);
-    return [...searchedLabels.values()].filter((label) => !currentLabels.has(label.id));
+    const ignoredLabels = new Set(props.ignore);
+    return [...searchedLabels.values()].filter((label) => !ignoredLabels.has(label.id));
 }
 </script>

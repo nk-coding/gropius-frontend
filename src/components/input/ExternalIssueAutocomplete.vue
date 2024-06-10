@@ -38,6 +38,11 @@ const props = defineProps({
     initialContext: {
         type: Object as PropType<Readonly<DefaultTrackableInfoFragment>>,
         required: false
+    },
+    ignore: {
+        type: Array as PropType<string[]>,
+        required: false,
+        default: () => []
     }
 });
 
@@ -52,7 +57,7 @@ async function searchIssues(
     count: number,
     context?: DefaultTrackableInfoFragment
 ): Promise<DefaultIssueInfoFragment[]> {
-    return await withErrorMessage(async () => {
+    const searchRes = await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {
             const res = await client.searchIssues({ query, count, trackable: context!.id });
@@ -62,6 +67,8 @@ async function searchIssues(
             return (res.node as NodeReturnType<"firstIssues", "Component">).issues.nodes;
         }
     }, "Error searching issues");
+    const ignoredIds = new Set(props.ignore);
+    return searchRes.filter((item) => !ignoredIds.has(item.id));
 }
 
 async function searchTrackables(filter: string, count: number): Promise<DefaultTrackableInfoFragment[]> {

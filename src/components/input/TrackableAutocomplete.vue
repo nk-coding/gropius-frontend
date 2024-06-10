@@ -46,8 +46,7 @@ async function searchTrackables(filter: string, count: number): Promise<DefaultT
             return [];
         }
     }, "Error searching trackables");
-    const searchedTrackables = new Map(searchRes.map((trackable) => [trackable.id, trackable]));
-    const currentTrackables = new Set(props.ignore);
-    return [...searchedTrackables.values()].filter((trackable) => !currentTrackables.has(trackable.id));
+    const ignoredTrackables = new Set(props.ignore);
+    return searchRes.filter((trackable) => !ignoredTrackables.has(trackable.id));
 }
 </script>
