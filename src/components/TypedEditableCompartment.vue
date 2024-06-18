@@ -1,11 +1,11 @@
 <template>
     <EditableCompartment :name="name" :editable="editable">
         <template #display>
-            <div v-for="itemGroup in groupedItems">
+            <div v-for="(itemGroup, index) in groupedItems" :key="itemGroup.type?.id ?? index">
                 <span class="text-subtitle-2">
                     {{ typeName(itemGroup) }}
                 </span>
-                <div v-for="item in itemGroup.items">
+                <div v-for="(item, index) in itemGroup.items" :key="index">
                     <slot name="ItemInfo" :item="item" />
                 </div>
             </div>

@@ -39,7 +39,7 @@
                             hide-details
                         />
                     </div>
-                    <template v-for="(user, index) in users">
+                    <template v-for="(user, index) in users" :key="index">
                         <v-divider />
                         <div class="d-flex align-center my-2 mx-3">
                             <User :user="user" size="x-large" />

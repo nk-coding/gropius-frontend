@@ -5,7 +5,7 @@
             <CustomRouterLink :to="issueLocation" :text="issue.title" class="text-high-emphasis" />
             <br />
             <span class="text-medium-emphasis text-body-2">
-                <template v-for="(trackable, idx) in issue.trackables.nodes">
+                <template v-for="(trackable, idx) in issue.trackables.nodes" :key="idx">
                     <Trackable :trackable="trackable" class="text-medium-emphasis text-body-2" />
                     <span v-if="idx < issue.trackables.nodes.length - 1">, </span>
                 </template>

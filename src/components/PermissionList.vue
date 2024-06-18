@@ -15,7 +15,13 @@
             >
                 <template #append-line>
                     <div class="d-flex flex-wrap chip-container mt-1">
-                        <v-chip v-for="entry in item.entries" color="primary" size="small" class="flex-shrink-0">
+                        <v-chip
+                            v-for="(entry, index) in item.entries"
+                            :key="index"
+                            color="primary"
+                            size="small"
+                            class="flex-shrink-0"
+                        >
                             {{ enumToRegularCase(entry) }}
                         </v-chip>
                     </div>

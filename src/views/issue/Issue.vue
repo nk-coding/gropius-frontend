@@ -32,6 +32,7 @@
             <div class="timeline">
                 <TimelineItem
                     v-for="item in timeline"
+                    :key="item.id"
                     :ref="(el: any) => registerItemElement(item.id, el)"
                     :item="item"
                     :selected="item.id == selectedItem"
@@ -42,6 +43,7 @@
                 <TimelineBreak />
                 <Comment
                     v-if="issue.comment"
+                    :key="issue.id"
                     ref="newComment"
                     :item="newCommentItem"
                     new-comment
@@ -107,11 +109,15 @@
                 >
                     <template #display>
                         <div class="d-flex flex-wrap ga-1">
-                            <AffectedByIssue v-for="onTrackable in trackables" :affected-entity="onTrackable" />
+                            <AffectedByIssue
+                                v-for="(onTrackable, index) in trackables"
+                                :key="index"
+                                :affected-entity="onTrackable"
+                            />
                         </div>
                     </template>
                     <template #edit>
-                        <div v-for="onTrackable in trackables">
+                        <div v-for="(onTrackable, index) in trackables" :key="index">
                             <v-list-item
                                 class="px-0 py-2"
                                 :title="onTrackable.name"
@@ -157,11 +163,11 @@
                 <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
                     <template #display>
                         <div class="d-flex flex-wrap ga-1">
-                            <Label v-for="label in labels" :label="label" />
+                            <Label v-for="(label, index) in labels" :key="index" :label="label" />
                         </div>
                     </template>
                     <template #edit>
-                        <div v-for="label in labels">
+                        <div v-for="(label, index) in labels" :key="index">
                             <v-list-item
                                 class="px-0 py-2"
                                 :title="label.name"
@@ -332,17 +338,22 @@
                 <v-divider class="mx-2" />
                 <EditableCompartment name="Affects" :editable="!!issue.manageIssues">
                     <template #display>
-                        <div v-for="itemGroup in groupedAffectedEntities">
+                        <div v-for="(itemGroup, index) in groupedAffectedEntities" :key="index">
                             <span class="text-subtitle-2">
                                 {{ itemGroup?.type }}
                             </span>
                             <div>
-                                <AffectedByIssue v-for="item in itemGroup.items" :affected-entity="item" class="mr-1" />
+                                <AffectedByIssue
+                                    v-for="(item, index) in itemGroup.items"
+                                    :key="index"
+                                    :affected-entity="item"
+                                    class="mr-1"
+                                />
                             </div>
                         </div>
                     </template>
                     <template #edit>
-                        <div v-for="affectedEntity in affectedEntities">
+                        <div v-for="(affectedEntity, index) in affectedEntities" :key="index">
                             <v-list-item
                                 class="px-0 py-2"
                                 :subtitle="affectedEntity.description || 'No description provided'"

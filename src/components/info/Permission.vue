@@ -9,7 +9,13 @@
         </template>
     </v-list-item>
     <div class="d-flex flex-wrap chip-container">
-        <v-chip v-for="entry in permission.entries" color="primary" size="small" class="flex-shrink-0">
+        <v-chip
+            v-for="(entry, index) in permission.entries"
+            :key="index"
+            color="primary"
+            size="small"
+            class="flex-shrink-0"
+        >
             {{ enumToRegularCase(entry) }}
         </v-chip>
     </div>

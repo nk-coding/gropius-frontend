@@ -1,5 +1,5 @@
 <template>
-    <div v-for="(item, index) in items">
+    <div v-for="(item, index) in items" :key="index">
         <v-divider v-if="index != 0" />
         <v-card variant="text" rounded="0" class="px-3" :to="to(item)">
             <slot name="item" :item="item" />

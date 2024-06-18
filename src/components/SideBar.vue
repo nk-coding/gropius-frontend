@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex flex-column">
-        <div v-for="(itemGroup, idx) in items" class="d-flex flex-column align-center w-100">
+        <div v-for="(itemGroup, idx) in items" :key="idx" class="d-flex flex-column align-center w-100">
             <div v-if="idx > 0" class="mx-3 mb-3 mt-1 align-self-stretch">
                 <v-divider></v-divider>
             </div>
-            <div v-for="item in itemGroup" class="sidebar-item mb-2">
+            <div v-for="(item, index) in itemGroup" :key="index" class="sidebar-item mb-2">
                 <SideBarButton
                     v-if="'name' in item"
                     :icon="item.icon"
