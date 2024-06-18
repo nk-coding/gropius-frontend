@@ -2,7 +2,7 @@
     <PaginatedList
         name="permissions"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(permissionSortFields)"
+        :sort-fields="permissionSortFields"
         :to="() => undefined"
         :dependencies="[permissionDependencyCounter]"
         query-param-prefix=""
@@ -99,7 +99,7 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { PropType } from "vue";
 import { ref } from "vue";
 import ManagePermissionUsersDialog from "./dialog/ManagePermissionUsersDialog.vue";
-import { IdObject } from "@/util/types";
+import { IdObject, ValueOf } from "@/util/types";
 import CreatePermissionDialog from "./dialog/CreatePermissionDialog.vue";
 import UpdatePermissionDialog from "./dialog/UpdatePermissionDialog.vue";
 
@@ -132,7 +132,7 @@ const props = defineProps({
         required: true
     },
     itemManager: {
-        type: Object as PropType<ItemManager<T, keyof typeof permissionSortFields>>,
+        type: Object as PropType<ItemManager<T, ValueOf<typeof permissionSortFields>>>,
         required: true
     },
     permissionEntries: {

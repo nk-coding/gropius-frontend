@@ -1,4 +1,4 @@
-query getLabelList($orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+query getLabelList($orderBy: [LabelOrder!]!, $count: Int!, $skip: Int!, $trackable: ID!) {
     node(id: $trackable) {
         ... on Trackable {
             labels(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -39,7 +39,7 @@ query firstLabels($issue: ID!, $count: Int!) {
         ... on Issue {
             trackables {
                 nodes {
-                    labels(first: $count, orderBy: { field: NAME }) {
+                    labels(first: $count, orderBy: [{ field: NAME }]) {
                         nodes {
                             ...DefaultLabelInfo
                         }
@@ -59,7 +59,7 @@ query searchTrackableLabels($trackable: ID!, $query: String!, $count: Int!) {
 query firstTrackableLabels($trackable: ID!, $count: Int!) {
     node(id: $trackable) {
         ... on Trackable {
-            labels(first: $count, orderBy: { field: NAME }) {
+            labels(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultLabelInfo
                 }

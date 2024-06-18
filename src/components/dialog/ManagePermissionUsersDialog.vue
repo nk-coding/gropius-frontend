@@ -20,7 +20,7 @@
             <PaginatedList
                 name="users"
                 :item-manager="itemManager"
-                :sort-fields="Object.keys(sortFields)"
+                :sort-fields="sortFields"
                 :to="() => undefined"
                 :dependencies="modifiedUsers"
             >
@@ -48,7 +48,7 @@
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { PropType, computed, ref, watch } from "vue";
 import PaginatedList, { ItemManager } from "../PaginatedList.vue";
-import { DefaultUserInfoFragment, GropiusUserOrderField, OrderDirection } from "@/graphql/generated";
+import { DefaultUserInfoFragment, GropiusUserOrder, GropiusUserOrderField } from "@/graphql/generated";
 import User from "../info/User.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import GropiusUserAutocomplete from "../input/GropiusUserAutocomplete.vue";
@@ -136,20 +136,16 @@ const sortFields = {
     "[Default]": GropiusUserOrderField.Id
 };
 
-const itemManager: ItemManager<DefaultUserInfoFragment, keyof typeof sortFields> = {
+const itemManager: ItemManager<DefaultUserInfoFragment, GropiusUserOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: GropiusUserOrder[],
         count: number,
         page: number
     ): Promise<[DefaultUserInfoFragment[], number]> {
         if (filter == undefined) {
             const res = await client.getPermissionUserList({
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count,
                 permission: model.value!.id

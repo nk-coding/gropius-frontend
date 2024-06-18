@@ -1,4 +1,4 @@
-query getProjectList($orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
+query getProjectList($orderBy: [ProjectOrder!]!, $count: Int!, $skip: Int!) {
     projects(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id

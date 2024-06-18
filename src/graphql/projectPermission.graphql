@@ -1,4 +1,4 @@
-query getProjectPermissionList($orderBy: ProjectPermissionOrder!, $count: Int!, $skip: Int!, $project: ID!) {
+query getProjectPermissionList($orderBy: [ProjectPermissionOrder!]!, $count: Int!, $skip: Int!, $project: ID!) {
     node(id: $project) {
         ... on Project {
             permissions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -37,7 +37,7 @@ query searchProjectPermissions($project: ID!, $query: String!, $count: Int!) {
 query firstProjectPermissions($project: ID!, $count: Int!) {
     node(id: $project) {
         ... on Project {
-            permissions(first: $count, orderBy: { field: NAME }) {
+            permissions(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultProjectPermissionInfo
                 }

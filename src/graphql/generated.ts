@@ -387,7 +387,7 @@ export type AffectedByIssueAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -540,7 +540,7 @@ export type AggregatedIssueIncomingRelationsArgs = {
     filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -563,7 +563,7 @@ export type AggregatedIssueIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -586,7 +586,7 @@ export type AggregatedIssueOutgoingRelationsArgs = {
     filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -707,7 +707,7 @@ export type AggregatedIssueRelationIssueRelationsArgs = {
     filter?: InputMaybe<IssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationOrder>;
+    orderBy?: InputMaybe<Array<IssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -942,7 +942,7 @@ export type ArtefactIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -961,7 +961,7 @@ export type ArtefactReferencingCommentsArgs = {
     filter?: InputMaybe<IssueCommentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueCommentOrder>;
+    orderBy?: InputMaybe<Array<IssueCommentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1131,7 +1131,7 @@ export type ArtefactTemplateExtendedByArgs = {
     filter?: InputMaybe<ArtefactTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactTemplateOrder>;
+    orderBy?: InputMaybe<Array<ArtefactTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1146,7 +1146,7 @@ export type ArtefactTemplateExtendsArgs = {
     filter?: InputMaybe<ArtefactTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactTemplateOrder>;
+    orderBy?: InputMaybe<Array<ArtefactTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1179,7 +1179,7 @@ export type ArtefactTemplateUsedInArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1415,7 +1415,7 @@ export type AssignmentTypeAssignmentsWithTypeArgs = {
     filter?: InputMaybe<AssignmentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentOrder>;
+    orderBy?: InputMaybe<Array<AssignmentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1439,7 +1439,7 @@ export type AssignmentTypePartOfArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1703,7 +1703,7 @@ export type BasePermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1882,7 +1882,7 @@ export type BodyAnsweredByArgs = {
     filter?: InputMaybe<IssueCommentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueCommentOrder>;
+    orderBy?: InputMaybe<Array<IssueCommentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2147,7 +2147,7 @@ export type CommentAnsweredByArgs = {
     filter?: InputMaybe<IssueCommentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueCommentOrder>;
+    orderBy?: InputMaybe<Array<IssueCommentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2278,7 +2278,7 @@ export type ComponentAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2298,7 +2298,7 @@ export type ComponentArtefactsArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2332,7 +2332,7 @@ export type ComponentInterfaceSpecificationsArgs = {
     filter?: InputMaybe<InterfaceSpecificationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2352,7 +2352,7 @@ export type ComponentIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2372,7 +2372,7 @@ export type ComponentLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<LabelOrder>;
+    orderBy?: InputMaybe<Array<LabelOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2392,7 +2392,7 @@ export type ComponentPermissionsArgs = {
     filter?: InputMaybe<ComponentPermissionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentPermissionOrder>;
+    orderBy?: InputMaybe<Array<ComponentPermissionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2412,7 +2412,7 @@ export type ComponentPinnedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2432,7 +2432,7 @@ export type ComponentSyncsToArgs = {
     filter?: InputMaybe<ImsProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsProjectOrder>;
+    orderBy?: InputMaybe<Array<ImsProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2481,7 +2481,7 @@ export type ComponentVersionsArgs = {
     filter?: InputMaybe<ComponentVersionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentVersionOrder>;
+    orderBy?: InputMaybe<Array<ComponentVersionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2572,7 +2572,11 @@ export enum ComponentOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /** NodePermission to grant specific permissions to a set of Components. */
@@ -2612,7 +2616,7 @@ export type ComponentPermissionNodesWithPermissionArgs = {
     filter?: InputMaybe<ComponentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentOrder>;
+    orderBy?: InputMaybe<Array<ComponentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2623,7 +2627,7 @@ export type ComponentPermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2840,7 +2844,7 @@ export type ComponentTemplateExtendedByArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentTemplateOrder>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2856,7 +2860,7 @@ export type ComponentTemplateExtendsArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentTemplateOrder>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2882,7 +2886,7 @@ export type ComponentTemplatePossibleEndOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2898,7 +2902,7 @@ export type ComponentTemplatePossibleInvisibleInterfaceSpecificationsArgs = {
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2914,7 +2918,7 @@ export type ComponentTemplatePossibleStartOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2930,7 +2934,7 @@ export type ComponentTemplatePossibleVisibleInterfaceSpecificationsArgs = {
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -2956,7 +2960,7 @@ export type ComponentTemplateUsedInArgs = {
     filter?: InputMaybe<ComponentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentOrder>;
+    orderBy?: InputMaybe<Array<ComponentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3107,7 +3111,7 @@ export type ComponentVersionAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3124,7 +3128,7 @@ export type ComponentVersionAggregatedIssuesArgs = {
     filter?: InputMaybe<AggregatedIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3152,7 +3156,7 @@ export type ComponentVersionIncludingProjectsArgs = {
     filter?: InputMaybe<ProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ProjectOrder>;
+    orderBy?: InputMaybe<Array<ProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3169,7 +3173,7 @@ export type ComponentVersionIncomingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3186,7 +3190,7 @@ export type ComponentVersionInterfaceDefinitionsArgs = {
     filter?: InputMaybe<InterfaceDefinitionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceDefinitionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3203,7 +3207,7 @@ export type ComponentVersionIntraComponentDependencySpecificationsArgs = {
     filter?: InputMaybe<IntraComponentDependencySpecificationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IntraComponentDependencySpecificationOrder>;
+    orderBy?: InputMaybe<Array<IntraComponentDependencySpecificationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3220,7 +3224,7 @@ export type ComponentVersionOutgoingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3347,6 +3351,10 @@ export enum ComponentVersionOrderField {
     Id = "ID",
     /** Order by name */
     Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME",
     /** Order by version */
     Version = "VERSION"
 }
@@ -3412,7 +3420,7 @@ export type ComponentVersionTemplateUsedInArgs = {
     filter?: InputMaybe<ComponentVersionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentVersionOrder>;
+    orderBy?: InputMaybe<Array<ComponentVersionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4116,7 +4124,7 @@ export type GlobalPermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4240,7 +4248,7 @@ export type GropiusUserAssignmentsArgs = {
     filter?: InputMaybe<AssignmentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentOrder>;
+    orderBy?: InputMaybe<Array<AssignmentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4260,7 +4268,7 @@ export type GropiusUserCanSyncOthersArgs = {
     filter?: InputMaybe<SyncPermissionTargetFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<SyncPermissionTargetOrder>;
+    orderBy?: InputMaybe<Array<SyncPermissionTargetOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4280,7 +4288,7 @@ export type GropiusUserCanSyncSelfArgs = {
     filter?: InputMaybe<SyncPermissionTargetFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<SyncPermissionTargetOrder>;
+    orderBy?: InputMaybe<Array<SyncPermissionTargetOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4300,7 +4308,7 @@ export type GropiusUserCreatedNodesArgs = {
     filter?: InputMaybe<AuditedNodeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AuditedNodeOrder>;
+    orderBy?: InputMaybe<Array<AuditedNodeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4334,7 +4342,7 @@ export type GropiusUserImsUsersArgs = {
     filter?: InputMaybe<ImsUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsUserOrder>;
+    orderBy?: InputMaybe<Array<ImsUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4354,7 +4362,7 @@ export type GropiusUserParticipatedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4374,7 +4382,7 @@ export type GropiusUserPermissionsArgs = {
     filter?: InputMaybe<BasePermissionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<BasePermissionOrder>;
+    orderBy?: InputMaybe<Array<BasePermissionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4539,7 +4547,7 @@ export type ImsPermissionsArgs = {
     filter?: InputMaybe<ImsPermissionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsPermissionOrder>;
+    orderBy?: InputMaybe<Array<ImsPermissionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4555,7 +4563,7 @@ export type ImsProjectsArgs = {
     filter?: InputMaybe<ImsProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsProjectOrder>;
+    orderBy?: InputMaybe<Array<ImsProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4571,7 +4579,7 @@ export type ImsSyncOthersAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4587,7 +4595,7 @@ export type ImsSyncSelfAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4624,7 +4632,7 @@ export type ImsUsersArgs = {
     filter?: InputMaybe<ImsUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsUserOrder>;
+    orderBy?: InputMaybe<Array<ImsUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4805,7 +4813,11 @@ export type ImsIssueOrder = {
 /** Fields a list of IMSIssue can be sorted by */
 export enum ImsIssueOrderField {
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /**
@@ -4869,7 +4881,7 @@ export type ImsIssueTemplateUsedInArgs = {
     filter?: InputMaybe<ImsIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsIssueOrder>;
+    orderBy?: InputMaybe<Array<ImsIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4912,7 +4924,11 @@ export enum ImsOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /** NodePermission to grant specific permissions to a set of IMSs. */
@@ -4952,7 +4968,7 @@ export type ImsPermissionNodesWithPermissionArgs = {
     filter?: InputMaybe<ImsFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsOrder>;
+    orderBy?: InputMaybe<Array<ImsOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4963,7 +4979,7 @@ export type ImsPermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5119,7 +5135,7 @@ export type ImsProjectImsIssuesArgs = {
     filter?: InputMaybe<ImsIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsIssueOrder>;
+    orderBy?: InputMaybe<Array<ImsIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5135,7 +5151,7 @@ export type ImsProjectSyncOthersAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5151,7 +5167,7 @@ export type ImsProjectSyncSelfAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5251,7 +5267,11 @@ export enum ImsProjectOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /**
@@ -5315,7 +5335,7 @@ export type ImsProjectTemplateUsedInArgs = {
     filter?: InputMaybe<ImsProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsProjectOrder>;
+    orderBy?: InputMaybe<Array<ImsProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5384,7 +5404,7 @@ export type ImsTemplateExtendedByArgs = {
     filter?: InputMaybe<ImsTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsTemplateOrder>;
+    orderBy?: InputMaybe<Array<ImsTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5399,7 +5419,7 @@ export type ImsTemplateExtendsArgs = {
     filter?: InputMaybe<ImsTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsTemplateOrder>;
+    orderBy?: InputMaybe<Array<ImsTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5432,7 +5452,7 @@ export type ImsTemplateUsedInArgs = {
     filter?: InputMaybe<ImsFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsOrder>;
+    orderBy?: InputMaybe<Array<ImsOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5568,7 +5588,7 @@ export type ImsUserAssignmentsArgs = {
     filter?: InputMaybe<AssignmentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentOrder>;
+    orderBy?: InputMaybe<Array<AssignmentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5586,7 +5606,7 @@ export type ImsUserCreatedNodesArgs = {
     filter?: InputMaybe<AuditedNodeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AuditedNodeOrder>;
+    orderBy?: InputMaybe<Array<AuditedNodeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5616,7 +5636,7 @@ export type ImsUserParticipatedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5790,7 +5810,7 @@ export type ImsUserTemplateUsedInArgs = {
     filter?: InputMaybe<ImsUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsUserOrder>;
+    orderBy?: InputMaybe<Array<ImsUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5932,7 +5952,7 @@ export type InterfaceAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5949,7 +5969,7 @@ export type InterfaceAggregatedIssuesArgs = {
     filter?: InputMaybe<AggregatedIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5977,7 +5997,7 @@ export type InterfaceIncomingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5994,7 +6014,7 @@ export type InterfaceIntraComponentDependencyParticipantsArgs = {
     filter?: InputMaybe<IntraComponentDependencyParticipantFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IntraComponentDependencyParticipantOrder>;
+    orderBy?: InputMaybe<Array<IntraComponentDependencyParticipantOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6011,7 +6031,7 @@ export type InterfaceOutgoingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6118,7 +6138,7 @@ export type InterfaceDefinitionInvisibleDerivedByArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6158,7 +6178,7 @@ export type InterfaceDefinitionVisibleDerivedByArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6238,6 +6258,10 @@ export enum InterfaceDefinitionOrderField {
     Id = "ID",
     /** Order by invisibleSelfDefined */
     InvisibleSelfDefined = "INVISIBLE_SELF_DEFINED",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME",
     /** Order by visibleSelfDefined */
     VisibleSelfDefined = "VISIBLE_SELF_DEFINED"
 }
@@ -6307,7 +6331,7 @@ export type InterfaceDefinitionTemplateUsedInArgs = {
     filter?: InputMaybe<InterfaceDefinitionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceDefinitionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6385,7 +6409,11 @@ export enum InterfaceOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /**
@@ -6451,7 +6479,7 @@ export type InterfacePartAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6483,7 +6511,7 @@ export type InterfacePartIncludingIncomingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6502,7 +6530,7 @@ export type InterfacePartIncludingIntraComponentDependencyParticipantsArgs = {
     filter?: InputMaybe<IntraComponentDependencyParticipantFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IntraComponentDependencyParticipantOrder>;
+    orderBy?: InputMaybe<Array<IntraComponentDependencyParticipantOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6521,7 +6549,7 @@ export type InterfacePartIncludingOutgoingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6639,7 +6667,11 @@ export enum InterfacePartOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /**
@@ -6703,7 +6735,7 @@ export type InterfacePartTemplateUsedInArgs = {
     filter?: InputMaybe<InterfacePartFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
+    orderBy?: InputMaybe<Array<InterfacePartOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6780,7 +6812,7 @@ export type InterfaceSpecificationAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6835,7 +6867,7 @@ export type InterfaceSpecificationVersionsArgs = {
     filter?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationVersionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationVersionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6895,7 +6927,7 @@ export type InterfaceSpecificationDerivationConditionDerivableInterfaceSpecifica
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7075,7 +7107,11 @@ export enum InterfaceSpecificationOrderField {
     /** Order by id */
     Id = "ID",
     /** Order by name */
-    Name = "NAME"
+    Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /**
@@ -7165,7 +7201,7 @@ export type InterfaceSpecificationTemplateCanBeInvisibleOnComponentsArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentTemplateOrder>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7182,7 +7218,7 @@ export type InterfaceSpecificationTemplateCanBeVisibleOnComponentsArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentTemplateOrder>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7199,7 +7235,7 @@ export type InterfaceSpecificationTemplateDerivableByArgs = {
     filter?: InputMaybe<InterfaceSpecificationDerivationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationDerivationConditionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationDerivationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7216,7 +7252,7 @@ export type InterfaceSpecificationTemplateExtendedByArgs = {
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7233,7 +7269,7 @@ export type InterfaceSpecificationTemplateExtendsArgs = {
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7261,7 +7297,7 @@ export type InterfaceSpecificationTemplatePossibleEndOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7278,7 +7314,7 @@ export type InterfaceSpecificationTemplatePossibleStartOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7306,7 +7342,7 @@ export type InterfaceSpecificationTemplateUsedInArgs = {
     filter?: InputMaybe<InterfaceSpecificationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7459,7 +7495,7 @@ export type InterfaceSpecificationVersionAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7493,7 +7529,7 @@ export type InterfaceSpecificationVersionInterfaceDefinitionsArgs = {
     filter?: InputMaybe<InterfaceDefinitionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceDefinitionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7513,7 +7549,7 @@ export type InterfaceSpecificationVersionPartsArgs = {
     filter?: InputMaybe<InterfacePartFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
+    orderBy?: InputMaybe<Array<InterfacePartOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7638,6 +7674,10 @@ export enum InterfaceSpecificationVersionOrderField {
     Id = "ID",
     /** Order by name */
     Name = "NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME",
     /** Order by version */
     Version = "VERSION"
 }
@@ -7703,7 +7743,7 @@ export type InterfaceSpecificationVersionTemplateUsedInArgs = {
     filter?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationVersionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationVersionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7788,7 +7828,7 @@ export type InterfaceTemplateUsedInArgs = {
     filter?: InputMaybe<InterfaceFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceOrder>;
+    orderBy?: InputMaybe<Array<InterfaceOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7858,7 +7898,7 @@ export type IntraComponentDependencyParticipantIncludedPartsArgs = {
     filter?: InputMaybe<InterfacePartFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
+    orderBy?: InputMaybe<Array<InterfacePartOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7998,7 +8038,7 @@ export type IntraComponentDependencySpecificationIncomingParticipantsArgs = {
     filter?: InputMaybe<IntraComponentDependencyParticipantFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IntraComponentDependencyParticipantOrder>;
+    orderBy?: InputMaybe<Array<IntraComponentDependencyParticipantOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8017,7 +8057,7 @@ export type IntraComponentDependencySpecificationOutgoingParticipantsArgs = {
     filter?: InputMaybe<IntraComponentDependencyParticipantFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IntraComponentDependencyParticipantOrder>;
+    orderBy?: InputMaybe<Array<IntraComponentDependencyParticipantOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8203,7 +8243,7 @@ export type IssueAffectsArgs = {
     filter?: InputMaybe<AffectedByIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AffectedByIssueOrder>;
+    orderBy?: InputMaybe<Array<AffectedByIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8224,7 +8264,7 @@ export type IssueAggregatedByArgs = {
     filter?: InputMaybe<AggregatedIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8245,7 +8285,7 @@ export type IssueArtefactsArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8266,7 +8306,7 @@ export type IssueAssignmentsArgs = {
     filter?: InputMaybe<AssignmentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentOrder>;
+    orderBy?: InputMaybe<Array<AssignmentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8302,7 +8342,7 @@ export type IssueImsIssuesArgs = {
     filter?: InputMaybe<ImsIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsIssueOrder>;
+    orderBy?: InputMaybe<Array<ImsIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8323,7 +8363,7 @@ export type IssueIncomingRelationsArgs = {
     filter?: InputMaybe<IssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationOrder>;
+    orderBy?: InputMaybe<Array<IssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8344,7 +8384,7 @@ export type IssueIssueCommentsArgs = {
     filter?: InputMaybe<IssueCommentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueCommentOrder>;
+    orderBy?: InputMaybe<Array<IssueCommentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8365,7 +8405,7 @@ export type IssueLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<LabelOrder>;
+    orderBy?: InputMaybe<Array<LabelOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8386,7 +8426,7 @@ export type IssueOutgoingRelationsArgs = {
     filter?: InputMaybe<IssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationOrder>;
+    orderBy?: InputMaybe<Array<IssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8407,7 +8447,7 @@ export type IssueParticipantsArgs = {
     filter?: InputMaybe<UserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<UserOrder>;
+    orderBy?: InputMaybe<Array<UserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8428,7 +8468,7 @@ export type IssuePinnedOnArgs = {
     filter?: InputMaybe<TrackableFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TrackableOrder>;
+    orderBy?: InputMaybe<Array<TrackableOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8480,7 +8520,7 @@ export type IssueTimelineItemsArgs = {
     filter?: InputMaybe<TimelineItemFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TimelineItemOrder>;
+    orderBy?: InputMaybe<Array<TimelineItemOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8501,7 +8541,7 @@ export type IssueTrackablesArgs = {
     filter?: InputMaybe<TrackableFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TrackableOrder>;
+    orderBy?: InputMaybe<Array<TrackableOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8579,7 +8619,7 @@ export type IssueCommentAnsweredByArgs = {
     filter?: InputMaybe<IssueCommentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueCommentOrder>;
+    orderBy?: InputMaybe<Array<IssueCommentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8609,7 +8649,7 @@ export type IssueCommentReferencedArtefactsArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8827,12 +8867,32 @@ export enum IssueOrderField {
     LastModifiedAt = "LAST_MODIFIED_AT",
     /** Order by lastUpdatedAt */
     LastUpdatedAt = "LAST_UPDATED_AT",
+    /** Order by priority_id */
+    PriorityId = "PRIORITY_ID",
+    /** Order by priority_name */
+    PriorityName = "PRIORITY_NAME",
+    /** Order by priority_value */
+    PriorityValue = "PRIORITY_VALUE",
     /** Order by spentTime */
     SpentTime = "SPENT_TIME",
     /** Order by startDate */
     StartDate = "START_DATE",
+    /** Order by state_id */
+    StateId = "STATE_ID",
+    /** Order by state_isOpen */
+    StateIsOpen = "STATE_IS_OPEN",
+    /** Order by state_name */
+    StateName = "STATE_NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME",
     /** Order by title */
-    Title = "TITLE"
+    Title = "TITLE",
+    /** Order by type_id */
+    TypeId = "TYPE_ID",
+    /** Order by type_name */
+    TypeName = "TYPE_NAME"
 }
 
 /**
@@ -8879,7 +8939,7 @@ export type IssuePriorityPartOfArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -8894,7 +8954,7 @@ export type IssuePriorityPrioritizedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9033,7 +9093,7 @@ export type IssueRelationAggregatedByArgs = {
     filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9179,7 +9239,7 @@ export type IssueRelationTypePartOfArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9194,7 +9254,7 @@ export type IssueRelationTypeRelationsWithTypeArgs = {
     filter?: InputMaybe<IssueRelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationOrder>;
+    orderBy?: InputMaybe<Array<IssueRelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9326,7 +9386,7 @@ export type IssueStateIssuesWithStateArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9341,7 +9401,7 @@ export type IssueStatePartOfArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9488,7 +9548,7 @@ export type IssueTemplateAssignmentTypesArgs = {
     filter?: InputMaybe<AssignmentTypeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentTypeOrder>;
+    orderBy?: InputMaybe<Array<AssignmentTypeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9507,7 +9567,7 @@ export type IssueTemplateExtendedByArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9526,7 +9586,7 @@ export type IssueTemplateExtendsArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9558,7 +9618,7 @@ export type IssueTemplateIssuePrioritiesArgs = {
     filter?: InputMaybe<IssuePriorityFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssuePriorityOrder>;
+    orderBy?: InputMaybe<Array<IssuePriorityOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9577,7 +9637,7 @@ export type IssueTemplateIssueStatesArgs = {
     filter?: InputMaybe<IssueStateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueStateOrder>;
+    orderBy?: InputMaybe<Array<IssueStateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9596,7 +9656,7 @@ export type IssueTemplateIssueTypesArgs = {
     filter?: InputMaybe<IssueTypeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTypeOrder>;
+    orderBy?: InputMaybe<Array<IssueTypeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9615,7 +9675,7 @@ export type IssueTemplateRelationTypesArgs = {
     filter?: InputMaybe<IssueRelationTypeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueRelationTypeOrder>;
+    orderBy?: InputMaybe<Array<IssueRelationTypeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9647,7 +9707,7 @@ export type IssueTemplateUsedInArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9777,7 +9837,7 @@ export type IssueTypeIssuesWithTypeArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9792,7 +9852,7 @@ export type IssueTypePartOfArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9952,7 +10012,7 @@ export type LabelIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9969,7 +10029,7 @@ export type LabelTrackablesArgs = {
     filter?: InputMaybe<TrackableFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TrackableOrder>;
+    orderBy?: InputMaybe<Array<TrackableOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11056,7 +11116,7 @@ export type NodePermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11263,7 +11323,7 @@ export type ParentTimelineItemChildItemsArgs = {
     filter?: InputMaybe<TimelineItemFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TimelineItemOrder>;
+    orderBy?: InputMaybe<Array<TimelineItemOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11418,7 +11478,7 @@ export type ProjectAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11436,7 +11496,7 @@ export type ProjectArtefactsArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11454,7 +11514,7 @@ export type ProjectComponentsArgs = {
     filter?: InputMaybe<ComponentVersionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentVersionOrder>;
+    orderBy?: InputMaybe<Array<ComponentVersionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11484,7 +11544,7 @@ export type ProjectIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11502,7 +11562,7 @@ export type ProjectLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<LabelOrder>;
+    orderBy?: InputMaybe<Array<LabelOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11520,7 +11580,7 @@ export type ProjectPermissionsArgs = {
     filter?: InputMaybe<ProjectPermissionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ProjectPermissionOrder>;
+    orderBy?: InputMaybe<Array<ProjectPermissionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11538,7 +11598,7 @@ export type ProjectPinnedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11556,7 +11616,7 @@ export type ProjectSyncsToArgs = {
     filter?: InputMaybe<ImsProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsProjectOrder>;
+    orderBy?: InputMaybe<Array<ImsProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11681,7 +11741,7 @@ export type ProjectPermissionNodesWithPermissionArgs = {
     filter?: InputMaybe<ProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ProjectOrder>;
+    orderBy?: InputMaybe<Array<ProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11692,7 +11752,7 @@ export type ProjectPermissionUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11939,7 +11999,7 @@ export type QueryArtefactTemplatesArgs = {
     filter?: InputMaybe<ArtefactTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactTemplateOrder>;
+    orderBy?: InputMaybe<Array<ArtefactTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11949,7 +12009,7 @@ export type QueryComponentTemplatesArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentTemplateOrder>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11959,7 +12019,7 @@ export type QueryComponentsArgs = {
     filter?: InputMaybe<ComponentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ComponentOrder>;
+    orderBy?: InputMaybe<Array<ComponentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11969,7 +12029,7 @@ export type QueryGlobalPermissionsArgs = {
     filter?: InputMaybe<GlobalPermissionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GlobalPermissionOrder>;
+    orderBy?: InputMaybe<Array<GlobalPermissionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11983,7 +12043,7 @@ export type QueryImsTemplatesArgs = {
     filter?: InputMaybe<ImsTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsTemplateOrder>;
+    orderBy?: InputMaybe<Array<ImsTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11993,7 +12053,7 @@ export type QueryImssArgs = {
     filter?: InputMaybe<ImsFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsOrder>;
+    orderBy?: InputMaybe<Array<ImsOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12003,7 +12063,7 @@ export type QueryInterfaceSpecificationTemplatesArgs = {
     filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12013,7 +12073,7 @@ export type QueryIssueTemplatesArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueTemplateOrder>;
+    orderBy?: InputMaybe<Array<IssueTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12027,7 +12087,7 @@ export type QueryProjectsArgs = {
     filter?: InputMaybe<ProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ProjectOrder>;
+    orderBy?: InputMaybe<Array<ProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12037,7 +12097,7 @@ export type QueryRelationTemplatesArgs = {
     filter?: InputMaybe<RelationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12291,7 +12351,7 @@ export type RelationDerivesInvisibleArgs = {
     filter?: InputMaybe<InterfaceDefinitionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceDefinitionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12312,7 +12372,7 @@ export type RelationDerivesVisibleArgs = {
     filter?: InputMaybe<InterfaceDefinitionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceDefinitionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12333,7 +12393,7 @@ export type RelationEndPartsArgs = {
     filter?: InputMaybe<InterfacePartFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
+    orderBy?: InputMaybe<Array<InterfacePartOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12369,7 +12429,7 @@ export type RelationStartPartsArgs = {
     filter?: InputMaybe<InterfacePartFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
+    orderBy?: InputMaybe<Array<InterfacePartOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12445,7 +12505,7 @@ export type RelationConditionFromArgs = {
     filter?: InputMaybe<RelationPartnerTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationPartnerTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationPartnerTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12477,7 +12537,7 @@ export type RelationConditionInterfaceSpecificationDerivationConditionsArgs = {
     filter?: InputMaybe<InterfaceSpecificationDerivationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationDerivationConditionOrder>;
+    orderBy?: InputMaybe<Array<InterfaceSpecificationDerivationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12496,7 +12556,7 @@ export type RelationConditionPartOfArgs = {
     filter?: InputMaybe<RelationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12515,7 +12575,7 @@ export type RelationConditionToArgs = {
     filter?: InputMaybe<RelationPartnerTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationPartnerTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationPartnerTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12665,8 +12725,20 @@ export type RelationOrder = {
 
 /** Fields a list of Relation can be sorted by */
 export enum RelationOrderField {
+    /** Order by end_id */
+    EndId = "END_ID",
+    /** Order by end_name */
+    EndName = "END_NAME",
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by start_id */
+    StartId = "START_ID",
+    /** Order by start_name */
+    StartName = "START_NAME",
+    /** Order by template_id */
+    TemplateId = "TEMPLATE_ID",
+    /** Order by template_name */
+    TemplateName = "TEMPLATE_NAME"
 }
 
 /** Entity which can be used as start / end of Relations. Can be affected by Issues. */
@@ -12705,7 +12777,7 @@ export type RelationPartnerAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12716,7 +12788,7 @@ export type RelationPartnerAggregatedIssuesArgs = {
     filter?: InputMaybe<AggregatedIssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AggregatedIssueOrder>;
+    orderBy?: InputMaybe<Array<AggregatedIssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12732,7 +12804,7 @@ export type RelationPartnerIncomingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12743,7 +12815,7 @@ export type RelationPartnerOutgoingRelationsArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12828,7 +12900,7 @@ export type RelationPartnerTemplatePossibleEndOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12839,7 +12911,7 @@ export type RelationPartnerTemplatePossibleStartOfRelationsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12971,7 +13043,7 @@ export type RelationTemplateExtendedByArgs = {
     filter?: InputMaybe<RelationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -12988,7 +13060,7 @@ export type RelationTemplateExtendsArgs = {
     filter?: InputMaybe<RelationTemplateFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationTemplateOrder>;
+    orderBy?: InputMaybe<Array<RelationTemplateOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13016,7 +13088,7 @@ export type RelationTemplateRelationConditionsArgs = {
     filter?: InputMaybe<RelationConditionFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationConditionOrder>;
+    orderBy?: InputMaybe<Array<RelationConditionOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13044,7 +13116,7 @@ export type RelationTemplateUsedInArgs = {
     filter?: InputMaybe<RelationFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<RelationOrder>;
+    orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13493,7 +13565,7 @@ export type RemovedFromTrackableEventChildItemsArgs = {
     filter?: InputMaybe<TimelineItemFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TimelineItemOrder>;
+    orderBy?: InputMaybe<Array<TimelineItemOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13886,7 +13958,7 @@ export type SyncPermissionTargetSyncOthersAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13897,7 +13969,7 @@ export type SyncPermissionTargetSyncSelfAllowedByArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<GropiusUserOrder>;
+    orderBy?: InputMaybe<Array<GropiusUserOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14056,7 +14128,7 @@ export type TemplateChangedEventChildItemsArgs = {
     filter?: InputMaybe<TimelineItemFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<TimelineItemOrder>;
+    orderBy?: InputMaybe<Array<TimelineItemOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14401,7 +14473,7 @@ export type TrackableAffectingIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14418,7 +14490,7 @@ export type TrackableArtefactsArgs = {
     filter?: InputMaybe<ArtefactFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ArtefactOrder>;
+    orderBy?: InputMaybe<Array<ArtefactOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14446,7 +14518,7 @@ export type TrackableIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14463,7 +14535,7 @@ export type TrackableLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<LabelOrder>;
+    orderBy?: InputMaybe<Array<LabelOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14480,7 +14552,7 @@ export type TrackablePinnedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -14497,7 +14569,7 @@ export type TrackableSyncsToArgs = {
     filter?: InputMaybe<ImsProjectFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<ImsProjectOrder>;
+    orderBy?: InputMaybe<Array<ImsProjectOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -15220,7 +15292,7 @@ export type UserAssignmentsArgs = {
     filter?: InputMaybe<AssignmentFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AssignmentOrder>;
+    orderBy?: InputMaybe<Array<AssignmentOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -15237,7 +15309,7 @@ export type UserCreatedNodesArgs = {
     filter?: InputMaybe<AuditedNodeFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AuditedNodeOrder>;
+    orderBy?: InputMaybe<Array<AuditedNodeOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -15265,7 +15337,7 @@ export type UserParticipatedIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<IssueOrder>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -15723,7 +15795,7 @@ export type ChangeAssignmentTypeMutation = {
 };
 
 export type GetComponentListQueryVariables = Exact<{
-    orderBy: ComponentOrder;
+    orderBy: Array<ComponentOrder> | ComponentOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
 }>;
@@ -16214,7 +16286,7 @@ export type DeleteComponentMutationVariables = Exact<{
 export type DeleteComponentMutation = { __typename?: "Mutation"; deleteComponent: { __typename: "DeleteNodePayload" } };
 
 export type GetComponentPermissionListQueryVariables = Exact<{
-    orderBy: ComponentPermissionOrder;
+    orderBy: Array<ComponentPermissionOrder> | ComponentPermissionOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     component: Scalars["ID"]["input"];
@@ -16852,7 +16924,7 @@ export type GetComponentVersionsQuery = {
 };
 
 export type GetComponentVersionListQueryVariables = Exact<{
-    orderBy: ComponentVersionOrder;
+    orderBy: Array<ComponentVersionOrder> | ComponentVersionOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     component: Scalars["ID"]["input"];
@@ -17128,7 +17200,7 @@ export type DeleteComponentVersionMutation = {
 };
 
 export type GetGlobalPermissionListQueryVariables = Exact<{
-    orderBy: GlobalPermissionOrder;
+    orderBy: Array<GlobalPermissionOrder> | GlobalPermissionOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
 }>;
@@ -17928,7 +18000,7 @@ export type GraphRelationTemplateInfoFragment = {
 };
 
 export type GetIssueListQueryVariables = Exact<{
-    orderBy: IssueOrder;
+    orderBy: Array<IssueOrder> | IssueOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     filter?: InputMaybe<IssueFilterInput>;
@@ -18158,7 +18230,7 @@ export type GetIssueListQuery = {
 };
 
 export type GetIssueListOnAggregatedIssueQueryVariables = Exact<{
-    orderBy: IssueOrder;
+    orderBy: Array<IssueOrder> | IssueOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     filter?: InputMaybe<IssueFilterInput>;
@@ -18368,7 +18440,7 @@ export type GetFilteredIssueListQuery = {
 };
 
 export type GetParticipatingIssueListQueryVariables = Exact<{
-    orderBy: IssueOrder;
+    orderBy: Array<IssueOrder> | IssueOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     filter?: InputMaybe<IssueFilterInput>;
@@ -21139,7 +21211,7 @@ export type ChangeIssueTypeMutation = {
 };
 
 export type GetLabelListQueryVariables = Exact<{
-    orderBy: LabelOrder;
+    orderBy: Array<LabelOrder> | LabelOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     trackable: Scalars["ID"]["input"];
@@ -21588,7 +21660,7 @@ export type AddLabelToTrackableMutation = {
 };
 
 export type GetPermissionUserListQueryVariables = Exact<{
-    orderBy: GropiusUserOrder;
+    orderBy: Array<GropiusUserOrder> | GropiusUserOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     permission: Scalars["ID"]["input"];
@@ -21746,7 +21818,7 @@ export type GetFilteredPermissionUserListQuery = {
 };
 
 export type GetProjectListQueryVariables = Exact<{
-    orderBy: ProjectOrder;
+    orderBy: Array<ProjectOrder> | ProjectOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
 }>;
@@ -22008,7 +22080,7 @@ export type DeleteProjectMutationVariables = Exact<{
 export type DeleteProjectMutation = { __typename?: "Mutation"; deleteProject: { __typename: "DeleteNodePayload" } };
 
 export type GetProjectPermissionListQueryVariables = Exact<{
-    orderBy: ProjectPermissionOrder;
+    orderBy: Array<ProjectPermissionOrder> | ProjectPermissionOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     project: Scalars["ID"]["input"];
@@ -25246,7 +25318,7 @@ export const FirstAssignmentTypesDocument = gql`
     query firstAssignmentTypes($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                assignmentTypes(first: $count, orderBy: { field: NAME }) {
+                assignmentTypes(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultAssignmentTypeInfo
                     }
@@ -25267,7 +25339,7 @@ export const ChangeAssignmentTypeDocument = gql`
     ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
 `;
 export const GetComponentListDocument = gql`
-    query getComponentList($orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+    query getComponentList($orderBy: [ComponentOrder!]!, $count: Int!, $skip: Int!) {
         components(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 id
@@ -25316,7 +25388,7 @@ export const GetComponentDetailsDocument = gql`
             ... on Component {
                 name
                 description
-                issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: 20) {
+                issues(orderBy: [{ field: LAST_UPDATED_AT, direction: DESC }], first: 20) {
                     nodes {
                         ...IssueListItemInfo
                     }
@@ -25388,7 +25460,12 @@ export const DeleteComponentDocument = gql`
     }
 `;
 export const GetComponentPermissionListDocument = gql`
-    query getComponentPermissionList($orderBy: ComponentPermissionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
+    query getComponentPermissionList(
+        $orderBy: [ComponentPermissionOrder!]!
+        $count: Int!
+        $skip: Int!
+        $component: ID!
+    ) {
         node(id: $component) {
             ... on Component {
                 permissions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -25430,7 +25507,7 @@ export const FirstComponentPermissionsDocument = gql`
     query firstComponentPermissions($component: ID!, $count: Int!) {
         node(id: $component) {
             ... on Component {
-                permissions(first: $count, orderBy: { field: NAME }) {
+                permissions(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultComponentPermissionInfo
                     }
@@ -25480,7 +25557,7 @@ export const SearchComponentTemplatesDocument = gql`
 `;
 export const FirstComponentTemplatesDocument = gql`
     query firstComponentTemplates($count: Int!) {
-        componentTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
+        componentTemplates(first: $count, orderBy: [{ field: NAME }], filter: { isDeprecated: { eq: false } }) {
             nodes {
                 ...DefaultComponentTemplateInfo
             }
@@ -25528,7 +25605,7 @@ export const GetComponentVersionsDocument = gql`
     ${DefaultComponentVersionInfoFragmentDoc}
 `;
 export const GetComponentVersionListDocument = gql`
-    query getComponentVersionList($orderBy: ComponentVersionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
+    query getComponentVersionList($orderBy: [ComponentVersionOrder!]!, $count: Int!, $skip: Int!, $component: ID!) {
         node(id: $component) {
             ... on Component {
                 versions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -25616,7 +25693,7 @@ export const DeleteComponentVersionDocument = gql`
     }
 `;
 export const GetGlobalPermissionListDocument = gql`
-    query getGlobalPermissionList($orderBy: GlobalPermissionOrder!, $count: Int!, $skip: Int!) {
+    query getGlobalPermissionList($orderBy: [GlobalPermissionOrder!]!, $count: Int!, $skip: Int!) {
         globalPermissions(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 ...DefaultGlobalPermissionInfo
@@ -25702,7 +25779,13 @@ export const DeleteRelationDocument = gql`
     }
 `;
 export const GetIssueListDocument = gql`
-    query getIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput, $trackable: ID!) {
+    query getIssueList(
+        $orderBy: [IssueOrder!]!
+        $count: Int!
+        $skip: Int!
+        $filter: IssueFilterInput
+        $trackable: ID!
+    ) {
         node(id: $trackable) {
             ... on Trackable {
                 issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
@@ -25718,7 +25801,7 @@ export const GetIssueListDocument = gql`
 `;
 export const GetIssueListOnAggregatedIssueDocument = gql`
     query getIssueListOnAggregatedIssue(
-        $orderBy: IssueOrder!
+        $orderBy: [IssueOrder!]!
         $count: Int!
         $skip: Int!
         $filter: IssueFilterInput
@@ -25746,7 +25829,7 @@ export const GetFilteredIssueListDocument = gql`
     ${IssueListItemInfoFragmentDoc}
 `;
 export const GetParticipatingIssueListDocument = gql`
-    query getParticipatingIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
+    query getParticipatingIssueList($orderBy: [IssueOrder!]!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
         currentUser {
             participatedIssues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
@@ -25777,7 +25860,7 @@ export const GetIssueDocument = gql`
                 }
                 createdAt
                 lastUpdatedAt
-                timelineItems(orderBy: { field: CREATED_AT }) {
+                timelineItems(orderBy: [{ field: CREATED_AT }]) {
                     nodes {
                         ...DefaultTimelineItemInfo
                     }
@@ -25943,7 +26026,7 @@ export const FirstIssuesDocument = gql`
     query firstIssues($count: Int!, $trackable: ID!) {
         node(id: $trackable) {
             ... on Trackable {
-                issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: $count) {
+                issues(orderBy: [{ field: LAST_UPDATED_AT, direction: DESC }], first: $count) {
                     nodes {
                         ...DefaultIssueInfo
                     }
@@ -25965,7 +26048,7 @@ export const FirstIssuePrioritiesDocument = gql`
     query firstIssuePriorities($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                issuePriorities(first: $count, orderBy: { field: NAME }) {
+                issuePriorities(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultIssuePriorityInfo
                     }
@@ -26017,7 +26100,7 @@ export const FirstIssueRelationTypesDocument = gql`
     query firstIssueRelationTypes($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                relationTypes(first: $count, orderBy: { field: NAME }) {
+                relationTypes(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultIssueRelationTypeInfo
                     }
@@ -26049,7 +26132,7 @@ export const FirstIssueStatesDocument = gql`
     query firstIssueStates($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                issueStates(first: $count, orderBy: { field: NAME }) {
+                issueStates(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultIssueStateInfo
                     }
@@ -26079,7 +26162,7 @@ export const SearchIssueTemplatesDocument = gql`
 `;
 export const FirstIssueTemplatesDocument = gql`
     query firstIssueTemplates($count: Int!) {
-        issueTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
+        issueTemplates(first: $count, orderBy: [{ field: NAME }], filter: { isDeprecated: { eq: false } }) {
             nodes {
                 ...DefaultIssueTemplateInfo
             }
@@ -26109,7 +26192,7 @@ export const FirstIssueTypesDocument = gql`
     query firstIssueTypes($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                issueTypes(first: $count, orderBy: { field: NAME }) {
+                issueTypes(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultIssueTypeInfo
                     }
@@ -26130,7 +26213,7 @@ export const ChangeIssueTypeDocument = gql`
     ${TypeChangedEventTimelineInfoFragmentDoc}
 `;
 export const GetLabelListDocument = gql`
-    query getLabelList($orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+    query getLabelList($orderBy: [LabelOrder!]!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
             ... on Trackable {
                 labels(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -26170,7 +26253,7 @@ export const FirstLabelsDocument = gql`
             ... on Issue {
                 trackables {
                     nodes {
-                        labels(first: $count, orderBy: { field: NAME }) {
+                        labels(first: $count, orderBy: [{ field: NAME }]) {
                             nodes {
                                 ...DefaultLabelInfo
                             }
@@ -26194,7 +26277,7 @@ export const FirstTrackableLabelsDocument = gql`
     query firstTrackableLabels($trackable: ID!, $count: Int!) {
         node(id: $trackable) {
             ... on Trackable {
-                labels(first: $count, orderBy: { field: NAME }) {
+                labels(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultLabelInfo
                     }
@@ -26257,7 +26340,7 @@ export const AddLabelToTrackableDocument = gql`
     }
 `;
 export const GetPermissionUserListDocument = gql`
-    query getPermissionUserList($orderBy: GropiusUserOrder!, $count: Int!, $skip: Int!, $permission: ID!) {
+    query getPermissionUserList($orderBy: [GropiusUserOrder!]!, $count: Int!, $skip: Int!, $permission: ID!) {
         node(id: $permission) {
             ... on BasePermission {
                 users(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -26284,7 +26367,7 @@ export const GetFilteredPermissionUserListDocument = gql`
     ${DefaultUserInfoFragmentDoc}
 `;
 export const GetProjectListDocument = gql`
-    query getProjectList($orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
+    query getProjectList($orderBy: [ProjectOrder!]!, $count: Int!, $skip: Int!) {
         projects(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 id
@@ -26374,7 +26457,7 @@ export const DeleteProjectDocument = gql`
     }
 `;
 export const GetProjectPermissionListDocument = gql`
-    query getProjectPermissionList($orderBy: ProjectPermissionOrder!, $count: Int!, $skip: Int!, $project: ID!) {
+    query getProjectPermissionList($orderBy: [ProjectPermissionOrder!]!, $count: Int!, $skip: Int!, $project: ID!) {
         node(id: $project) {
             ... on Project {
                 permissions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -26416,7 +26499,7 @@ export const FirstProjectPermissionsDocument = gql`
     query firstProjectPermissions($project: ID!, $count: Int!) {
         node(id: $project) {
             ... on Project {
-                permissions(first: $count, orderBy: { field: NAME }) {
+                permissions(first: $count, orderBy: [{ field: NAME }]) {
                     nodes {
                         ...DefaultProjectPermissionInfo
                     }

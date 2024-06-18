@@ -27,7 +27,7 @@
                 <PaginatedList
                     name="issues"
                     :item-manager="itemManager"
-                    :sort-fields="Object.keys(sortFields)"
+                    :sort-fields="sortFields"
                     :to="issueRoute"
                     :sort-ascending-initially="false"
                     :dependencies="[selectedElementInfo.componentVersion.id, issueFilter]"
@@ -101,8 +101,8 @@ import {
     GraphRelationPartnerInfoFragment,
     IssueFilterInput,
     IssueListItemInfoFragment,
-    IssueOrderField,
-    OrderDirection
+    IssueOrder,
+    IssueOrderField
 } from "@/graphql/generated";
 import { SelectedElement } from "packages/graph-editor";
 import { ContextMenuData } from "./GraphEditor.vue";
@@ -218,11 +218,10 @@ const sortFields = {
     Updated: IssueOrderField.LastUpdatedAt
 };
 
-const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
+const itemManager: ItemManager<Issue, IssueOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: IssueOrder[],
         count: number,
         page: number
     ): Promise<[Issue[], number]> {
@@ -233,10 +232,7 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
             additionalFilter.isOpen != undefined;
         if (filter == undefined) {
             const parameters = {
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count
             };

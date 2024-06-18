@@ -2,7 +2,7 @@
     <PaginatedList
         name="labels"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(sortFields)"
+        :sort-fields="sortFields"
         :to="() => undefined"
         :dependencies="modifiedLabels"
         query-param-prefix=""
@@ -55,7 +55,7 @@ import CreateLabelDialog from "@/components/dialog/CreateLabelDialog.vue";
 import ImportLabelDialog from "@/components/dialog/ImportLabelDialog.vue";
 import UpdateLabelDialog from "@/components/dialog/UpdateLabelDialog.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { LabelOrderField, OrderDirection } from "@/graphql/generated";
+import { LabelOrder, LabelOrderField } from "@/graphql/generated";
 import { trackableKey } from "@/util/keys";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { inject } from "vue";
@@ -86,20 +86,16 @@ const sortFields = {
     Color: LabelOrderField.Color
 };
 
-const itemManager: ItemManager<Label, keyof typeof sortFields> = {
+const itemManager: ItemManager<Label, LabelOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: LabelOrder[],
         count: number,
         page: number
     ): Promise<[Label[], number]> {
         if (filter == undefined) {
             const res = await client.getLabelList({
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count,
                 trackable: trackableId.value

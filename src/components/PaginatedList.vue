@@ -12,16 +12,16 @@
             <slot name="search-append" />
             <div
                 class="sort-container d-flex mr-3"
-                :class="{ hidden: transformedSearchQuery != undefined, 'sort-container-small': sortFields.length <= 1 }"
+                :class="{ hidden: transformedSearchQuery != undefined, 'sort-container-small': !multipleSortFields }"
             >
                 <v-select
-                    v-if="sortFields.length > 1"
+                    v-if="multipleSortFields"
                     v-model="currentSortField"
                     label="Sort by"
                     class="ml-2"
                     :class="{ hidden: transformedSearchQuery != undefined }"
                     variant="outlined"
-                    :items="sortFields"
+                    :items="Object.keys(sortFields as Record<string, unknown>)"
                 ></v-select>
                 <v-btn icon variant="outlined" @click="toggleSortDirection()" class="ml-2">
                     <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'" />
@@ -51,7 +51,7 @@
         <slot />
     </div>
 </template>
-<script setup lang="ts" generic="T, S extends string">
+<script setup lang="ts" generic="T, S extends string, K extends string">
 import { watch } from "vue";
 import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
@@ -60,12 +60,12 @@ import CustomList from "./CustomList.vue";
 import { computed } from "vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
 import { WritableComputedRef } from "vue";
+import { OrderDirection } from "@/graphql/generated";
 
 export interface ItemManager<I, J> {
     fetchItems(
         filter: string | undefined,
-        sortField: J,
-        sortAscending: boolean,
+        orderBy: { field: J; direction: OrderDirection }[],
         count: number,
         page: number
     ): Promise<[I[], number]>;
@@ -73,7 +73,7 @@ export interface ItemManager<I, J> {
 
 const props = defineProps({
     sortFields: {
-        type: Array as PropType<S[]>,
+        type: Object as PropType<Record<K, S | "ID" | (S | "ID")[]>>,
         required: true
     },
     sortAscendingInitially: {
@@ -81,7 +81,7 @@ const props = defineProps({
         default: true
     },
     itemManager: {
-        type: Object as PropType<ItemManager<T, S>>,
+        type: Object as PropType<ItemManager<T, S | "ID">>,
         required: true
     },
     itemCount: {
@@ -112,6 +112,7 @@ const route = useRoute();
 const router = useRouter();
 
 const queryMode = computed(() => props.queryParamPrefix != undefined);
+const multipleSortFields = computed(() => Object.keys(props.sortFields as Record<K, unknown>).length > 1);
 
 const searchString = useQueryParam(
     "search",
@@ -120,10 +121,10 @@ const searchString = useQueryParam(
     (value) => value
 );
 const transformedSearchQuery = computed(() => transformSearchQuery(searchString.value));
-const currentSortField = useQueryParam(
+const currentSortField = useQueryParam<K>(
     "sort",
-    props.sortFields[0],
-    (value) => value as S,
+    Object.keys(props.sortFields as Record<K, unknown>)[0] as K,
+    (value) => value as K,
     (value) => value
 );
 const sortAscending = useQueryParam(
@@ -171,10 +172,16 @@ async function updateItems(resetPage: boolean) {
     if (resetPage) {
         currentPage.value = 1;
     }
+    const sortField: S | S[] | "ID" = (props.sortFields as Record<K, S | S[]>)[currentSortField.value];
+    const sortFields = Array.isArray(sortField) ? sortField : [sortField];
+    const sortFieldsWithId = sortFields.includes("ID") ? sortFields : ([...sortFields, "ID"] as const);
+
     const [items, count] = await props.itemManager.fetchItems(
         transformedSearchQuery.value,
-        currentSortField.value,
-        sortAscending.value,
+        sortFieldsWithId.map((field) => ({
+            field,
+            direction: sortAscending.value ? OrderDirection.Asc : OrderDirection.Desc
+        })),
         props.itemCount,
         currentPage.value - 1
     );
@@ -203,8 +210,8 @@ function useQueryParam<T>(
             return _value.value;
         },
         set: (value: T) => {
-            if (queryMode.value) {
-                updateQuery(key, value == "" ? undefined : stringify(value));
+            if (queryMode.value != undefined) {
+                updateQuery(key, value === "" ? undefined : stringify(value));
             } else {
                 _value.value = value;
             }

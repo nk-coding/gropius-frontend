@@ -14,7 +14,7 @@ query searchIssueStates($template: ID!, $query: String!, $count: Int!) {
 query firstIssueStates($template: ID!, $count: Int!) {
     node(id: $template) {
         ... on IssueTemplate {
-            issueStates(first: $count, orderBy: { field: NAME }) {
+            issueStates(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultIssueStateInfo
                 }

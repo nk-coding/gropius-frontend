@@ -2,7 +2,7 @@
     <PaginatedList
         name="components"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(sortFields)"
+        :sort-fields="sortFields"
         :to="(component: Component) => componentRoute(component)"
         query-param-prefix=""
     >
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { ClientReturnType, useClient } from "@/graphql/client";
-import { ComponentOrderField, OrderDirection } from "@/graphql/generated";
+import { ComponentOrder, ComponentOrderField, OrderDirection } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
@@ -39,23 +39,20 @@ const router = useRouter();
 
 const sortFields = {
     Name: ComponentOrderField.Name,
+    Template: [ComponentOrderField.TemplateName, ComponentOrderField.TemplateId],
     "[Default]": ComponentOrderField.Id
 };
 
-const itemManager: ItemManager<Component, keyof typeof sortFields> = {
+const itemManager: ItemManager<Component, ComponentOrderField> = {
     fetchItems: async function (
         filter: string,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: ComponentOrder[],
         count: number,
         page: number
     ): Promise<[Component[], number]> {
         if (filter == undefined) {
             const res = await client.getComponentList({
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count
             });

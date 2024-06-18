@@ -24,9 +24,8 @@ import {
     ProjectPermissionEntry,
     ProjectPermissionOrderField,
     DefaultProjectPermissionInfoFragment,
-    OrderDirection
+    ProjectPermissionOrder
 } from "@/graphql/generated";
-import { permissionSortFields } from "@/util/permissionSortFields";
 import { IdObject } from "@/util/types";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
@@ -38,20 +37,16 @@ const projectId = computed(() => route.params.trackable as string);
 
 const permissionEntries = Object.values(ProjectPermissionEntry);
 
-const itemManager: ItemManager<DefaultProjectPermissionInfoFragment, keyof typeof permissionSortFields> = {
+const itemManager: ItemManager<DefaultProjectPermissionInfoFragment, ProjectPermissionOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof permissionSortFields,
-        sortAscending: boolean,
+        orderBy: ProjectPermissionOrder[],
         count: number,
         page: number
     ): Promise<[DefaultProjectPermissionInfoFragment[], number]> {
         if (filter == undefined) {
             const res = await client.getProjectPermissionList({
-                orderBy: {
-                    field: permissionSortFields[sortField] as ProjectPermissionOrderField,
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count,
                 project: projectId.value

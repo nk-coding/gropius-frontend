@@ -13,7 +13,7 @@ query searchAssignmentTypes($template: ID!, $query: String!, $count: Int!) {
 query firstAssignmentTypes($template: ID!, $count: Int!) {
     node(id: $template) {
         ... on IssueTemplate {
-            assignmentTypes(first: $count, orderBy: { field: NAME }) {
+            assignmentTypes(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultAssignmentTypeInfo
                 }

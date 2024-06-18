@@ -1,5 +1,5 @@
 query getIssueList(
-    $orderBy: IssueOrder!
+    $orderBy: [IssueOrder!]!
     $count: Int!
     $skip: Int!
     $filter: IssueFilterInput
@@ -18,7 +18,7 @@ query getIssueList(
 }
 
 query getIssueListOnAggregatedIssue(
-    $orderBy: IssueOrder!
+    $orderBy: [IssueOrder!]!
     $count: Int!
     $skip: Int!
     $filter: IssueFilterInput
@@ -46,7 +46,7 @@ query getFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterIn
     }
 }
 
-query getParticipatingIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
+query getParticipatingIssueList($orderBy: [IssueOrder!]!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
     currentUser {
         participatedIssues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
@@ -73,7 +73,7 @@ query getIssue($id: ID!) {
             }
             createdAt
             lastUpdatedAt
-            timelineItems(orderBy: { field: CREATED_AT }) {
+            timelineItems(orderBy: [{ field: CREATED_AT }]) {
                 nodes {
                     ...DefaultTimelineItemInfo
                 }
@@ -277,7 +277,7 @@ query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
 query firstIssues($count: Int!, $trackable: ID!) {
     node(id: $trackable) {
         ... on Trackable {
-            issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: $count) {
+            issues(orderBy: [{ field: LAST_UPDATED_AT, direction: DESC }], first: $count) {
                 nodes {
                     ...DefaultIssueInfo
                 }

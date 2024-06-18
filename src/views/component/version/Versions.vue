@@ -2,7 +2,7 @@
     <PaginatedList
         name="versions"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(sortFields)"
+        :sort-fields="sortFields"
         :to="(componentVersion: ComponentVersion) => componentVersionRoute(componentVersion)"
         query-param-prefix=""
     >
@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { ComponentVersionOrderField, OrderDirection } from "@/graphql/generated";
+import { ComponentVersionOrder, ComponentVersionOrderField } from "@/graphql/generated";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import { computed } from "vue";
@@ -49,21 +49,17 @@ const sortFields = {
     Name: ComponentVersionOrderField.Name
 };
 
-const itemManager: ItemManager<ComponentVersion, keyof typeof sortFields> = {
+const itemManager: ItemManager<ComponentVersion, ComponentVersionOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: ComponentVersionOrder[],
         count: number,
         page: number
     ): Promise<[ComponentVersion[], number]> {
         if (filter == undefined) {
             const res = (
                 await client.getComponentVersionList({
-                    orderBy: {
-                        field: sortFields[sortField],
-                        direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                    },
+                    orderBy,
                     count,
                     skip: page * count,
                     component: trackableId.value

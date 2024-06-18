@@ -25,11 +25,10 @@ import ImportComponentPermissionDialog from "@/components/dialog/ImportComponent
 import { NodeReturnType, useClient } from "@/graphql/client";
 import {
     ComponentPermissionEntry,
+    ComponentPermissionOrder,
     ComponentPermissionOrderField,
-    DefaultComponentPermissionInfoFragment,
-    OrderDirection
+    DefaultComponentPermissionInfoFragment
 } from "@/graphql/generated";
-import { permissionSortFields } from "@/util/permissionSortFields";
 import { IdObject } from "@/util/types";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
@@ -41,20 +40,16 @@ const componentId = computed(() => route.params.trackable as string);
 
 const permissionEntries = Object.values(ComponentPermissionEntry);
 
-const itemManager: ItemManager<DefaultComponentPermissionInfoFragment, keyof typeof permissionSortFields> = {
+const itemManager: ItemManager<DefaultComponentPermissionInfoFragment, ComponentPermissionOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof permissionSortFields,
-        sortAscending: boolean,
+        orderBy: ComponentPermissionOrder[],
         count: number,
         page: number
     ): Promise<[DefaultComponentPermissionInfoFragment[], number]> {
         if (filter == undefined) {
             const res = await client.getComponentPermissionList({
-                orderBy: {
-                    field: permissionSortFields[sortField] as ComponentPermissionOrderField,
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count,
                 component: componentId.value

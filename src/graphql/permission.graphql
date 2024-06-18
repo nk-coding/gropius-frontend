@@ -1,4 +1,4 @@
-query getPermissionUserList($orderBy: GropiusUserOrder!, $count: Int!, $skip: Int!, $permission: ID!) {
+query getPermissionUserList($orderBy: [GropiusUserOrder!]!, $count: Int!, $skip: Int!, $permission: ID!) {
     node(id: $permission) {
         ... on BasePermission {
             users(orderBy: $orderBy, first: $count, skip: $skip) {

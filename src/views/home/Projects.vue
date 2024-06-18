@@ -2,7 +2,7 @@
     <PaginatedList
         name="projects"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(sortFields)"
+        :sort-fields="sortFields"
         :to="(project: Project) => projectRoute(project)"
         query-param-prefix=""
     >
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { ClientReturnType, useClient } from "@/graphql/client";
-import { ProjectOrderField, OrderDirection } from "@/graphql/generated";
+import { ProjectOrderField, ProjectOrder } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateProjectDialog from "@/components/dialog/CreateProjectDialog.vue";
@@ -42,20 +42,16 @@ const sortFields = {
     "[Default]": ProjectOrderField.Id
 };
 
-const itemManager: ItemManager<Project, keyof typeof sortFields> = {
+const itemManager: ItemManager<Project, ProjectOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: ProjectOrder[],
         count: number,
         page: number
     ): Promise<[Project[], number]> {
         if (filter == undefined) {
             const res = await client.getProjectList({
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count
             });

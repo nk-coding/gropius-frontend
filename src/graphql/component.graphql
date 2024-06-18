@@ -1,4 +1,4 @@
-query getComponentList($orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+query getComponentList($orderBy: [ComponentOrder!]!, $count: Int!, $skip: Int!) {
     components(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id
@@ -41,7 +41,7 @@ query getComponentDetails($id: ID!) {
         ...on Component {
             name
             description
-            issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: 20) {
+            issues(orderBy: [{ field: LAST_UPDATED_AT, direction: DESC }], first: 20) {
                 nodes {
                     ...IssueListItemInfo
                 }

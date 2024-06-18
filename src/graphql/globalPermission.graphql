@@ -1,4 +1,4 @@
-query getGlobalPermissionList($orderBy: GlobalPermissionOrder!, $count: Int!, $skip: Int!) {
+query getGlobalPermissionList($orderBy: [GlobalPermissionOrder!]!, $count: Int!, $skip: Int!) {
     globalPermissions(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             ...DefaultGlobalPermissionInfo

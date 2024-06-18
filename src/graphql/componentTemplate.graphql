@@ -25,7 +25,7 @@ query searchComponentTemplates($query: String!, $count: Int!) {
 }
 
 query firstComponentTemplates($count: Int!) {
-    componentTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
+    componentTemplates(first: $count, orderBy: [{ field: NAME }], filter: { isDeprecated: { eq: false } }) {
         nodes {
             ...DefaultComponentTemplateInfo
         }

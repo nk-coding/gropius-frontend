@@ -13,7 +13,7 @@ query searchIssueRelationTypes($template: ID!, $query: String!, $count: Int!) {
 query firstIssueRelationTypes($template: ID!, $count: Int!) {
     node(id: $template) {
         ... on IssueTemplate {
-            relationTypes(first: $count, orderBy: { field: NAME }) {
+            relationTypes(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultIssueRelationTypeInfo
                 }

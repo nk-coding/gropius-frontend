@@ -20,9 +20,8 @@ import {
     PermissionEntry,
     GlobalPermissionOrderField,
     DefaultGlobalPermissionInfoFragment,
-    OrderDirection
+    GlobalPermissionOrder
 } from "@/graphql/generated";
-import { permissionSortFields } from "@/util/permissionSortFields";
 import { IdObject } from "@/util/types";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
@@ -34,20 +33,16 @@ const globalId = computed(() => route.params.trackable as string);
 
 const permissionEntries = Object.values(PermissionEntry);
 
-const itemManager: ItemManager<DefaultGlobalPermissionInfoFragment, keyof typeof permissionSortFields> = {
+const itemManager: ItemManager<DefaultGlobalPermissionInfoFragment, GlobalPermissionOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof permissionSortFields,
-        sortAscending: boolean,
+        orderBy: GlobalPermissionOrder[],
         count: number,
         page: number
     ): Promise<[DefaultGlobalPermissionInfoFragment[], number]> {
         if (filter == undefined) {
             const res = await client.getGlobalPermissionList({
-                orderBy: {
-                    field: permissionSortFields[sortField] as GlobalPermissionOrderField,
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count
             });

@@ -1,4 +1,4 @@
-query getComponentPermissionList($orderBy: ComponentPermissionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
+query getComponentPermissionList($orderBy: [ComponentPermissionOrder!]!, $count: Int!, $skip: Int!, $component: ID!) {
     node(id: $component) {
         ... on Component {
             permissions(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -37,7 +37,7 @@ query searchComponentPermissions($component: ID!, $query: String!, $count: Int!)
 query firstComponentPermissions($component: ID!, $count: Int!) {
     node(id: $component) {
         ... on Component {
-            permissions(first: $count, orderBy: { field: NAME }) {
+            permissions(first: $count, orderBy: [{ field: NAME }]) {
                 nodes {
                     ...DefaultComponentPermissionInfo
                 }

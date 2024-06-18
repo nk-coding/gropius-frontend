@@ -2,7 +2,7 @@
     <PaginatedList
         name="issues"
         :item-manager="itemManager"
-        :sort-fields="Object.keys(sortFields)"
+        :sort-fields="sortFields"
         :to="(issue: Issue) => issueRoute(issue)"
         :sort-ascending-initially="false"
         :dependencies="[stateFilterInput]"
@@ -19,10 +19,10 @@
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
-import { IssueListItemInfoFragment, IssueOrderField, OrderDirection } from "@/graphql/generated";
+import { IssueListItemInfoFragment, IssueOrder, IssueOrderField } from "@/graphql/generated";
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
 import { IdObject } from "@/util/types";
@@ -65,23 +65,23 @@ const trackableId = computed(() => route.params.trackable as string);
 const sortFields = {
     Updated: IssueOrderField.LastUpdatedAt,
     Created: IssueOrderField.CreatedAt,
-    Title: IssueOrderField.Title
+    Title: IssueOrderField.Title,
+    Priority: [IssueOrderField.PriorityValue, IssueOrderField.PriorityId],
+    State: [IssueOrderField.StateIsOpen, IssueOrderField.StateName, IssueOrderField.StateId],
+    Type: [IssueOrderField.TypeName, IssueOrderField.TypeId],
+    Template: [IssueOrderField.TemplateName, IssueOrderField.TemplateId]
 };
 
-const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
+const itemManager: ItemManager<Issue, IssueOrderField> = {
     fetchItems: async function (
         filter: string | undefined,
-        sortField: keyof typeof sortFields,
-        sortAscending: boolean,
+        orderBy: IssueOrder[],
         count: number,
         page: number
     ): Promise<[Issue[], number]> {
         if (filter == undefined) {
             const res = await client.getIssueList({
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+                orderBy,
                 count,
                 skip: page * count,
                 trackable: trackableId.value,
