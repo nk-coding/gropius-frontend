@@ -39,7 +39,7 @@
                 </IconButton>
             </div>
             <div v-if="component.issues.nodes.length == 0" class="text-medium-emphasis">No issues</div>
-            <div v-else class="issue-list-wrapper flex-shrink-1">
+            <div v-else class="overflow-y-auto flex-shrink-1">
                 <CustomList :items="component.issues.nodes" :to="issueRoute">
                     <template #item="{ item }">
                         <IssueListItem :item="item" />

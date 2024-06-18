@@ -26048,7 +26048,7 @@ export const FirstIssuePrioritiesDocument = gql`
     query firstIssuePriorities($template: ID!, $count: Int!) {
         node(id: $template) {
             ... on IssueTemplate {
-                issuePriorities(first: $count, orderBy: [{ field: NAME }]) {
+                issuePriorities(first: $count, orderBy: [{ field: VALUE }, { field: NAME }]) {
                     nodes {
                         ...DefaultIssuePriorityInfo
                     }
