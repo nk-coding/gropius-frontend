@@ -104,7 +104,7 @@ import {
     IssueOrder,
     IssueOrderField
 } from "@/graphql/generated";
-import { SelectedElement } from "packages/graph-editor";
+import { SelectedElement } from "@gropius/graph-editor";
 import { ContextMenuData } from "./GraphEditor.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import IssueListItem from "@/components/IssueListItem.vue";
