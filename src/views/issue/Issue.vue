@@ -54,355 +54,357 @@
                 />
                 <div class="pt-3" />
             </div>
-            <v-sheet class="sidebar ml-8 mr-3 mb-3 pa-2" color="surface-container" rounded="xl">
-                <EditableCompartment
-                    name="Type"
-                    :editable="!!issue.manageIssues"
-                    close-on-value-change
-                    :model-value="issue.type"
-                >
-                    <template #display>
-                        <IssueType :type="issue.type" />
-                    </template>
-                    <template #edit>
-                        <IssueTypeAutocomplete
-                            class="mb-2"
-                            autofocus
-                            menu-mode="initial"
-                            hide-details
-                            :template="issue.template.id"
-                            :initial-items="[issue.type]"
-                            :model-value="issue.type.id"
-                            @update:model-value="updateIssueType"
-                        />
-                    </template>
-                </EditableCompartment>
-                <v-divider class="mx-2" />
-                <EditableCompartment
-                    name="State"
-                    :editable="!!issue.manageIssues"
-                    close-on-value-change
-                    :model-value="issue.state"
-                >
-                    <template #display>
-                        <IssueState :state="issue.state" />
-                    </template>
-                    <template #edit>
-                        <IssueStateAutocomplete
-                            class="mb-2"
-                            autofocus
-                            hide-details
-                            menu-mode="initial"
-                            :template="issue.template.id"
-                            :initial-items="[issue.state]"
-                            :model-value="issue.state.id"
-                            @update:model-value="updateIssueState"
-                        />
-                    </template>
-                </EditableCompartment>
-                <v-divider class="mx-2" />
-                <EditableCompartment
-                    name="Components & Projects"
-                    :editable="!!issue.manageIssues"
-                    close-on-value-change
-                    :model-value="issue.state"
-                >
-                    <template #display>
-                        <div class="d-flex flex-wrap ga-1">
-                            <AffectedByIssue
-                                v-for="(onTrackable, index) in trackables"
-                                :key="index"
-                                :affected-entity="onTrackable"
+            <v-sheet class="sidebar ml-8 mr-3 mb-3 d-flex flex-column py-2" color="surface-container" rounded="xl">
+                <div class="overflow-y-auto px-2">
+                    <EditableCompartment
+                        name="Type"
+                        :editable="!!issue.manageIssues"
+                        close-on-value-change
+                        :model-value="issue.type"
+                    >
+                        <template #display>
+                            <IssueType :type="issue.type" />
+                        </template>
+                        <template #edit>
+                            <IssueTypeAutocomplete
+                                class="mb-2"
+                                autofocus
+                                menu-mode="initial"
+                                hide-details
+                                :template="issue.template.id"
+                                :initial-items="[issue.type]"
+                                :model-value="issue.type.id"
+                                @update:model-value="updateIssueType"
                             />
-                        </div>
-                    </template>
-                    <template #edit>
-                        <div v-for="(onTrackable, index) in trackables" :key="index">
-                            <v-list-item
-                                class="px-0 py-2"
-                                :title="onTrackable.name"
-                                :subtitle="onTrackable.description || 'No description provided'"
-                            >
-                                <template #title>
-                                    <v-list-item-title class="mb-1">{{ onTrackable.name }}</v-list-item-title>
-                                </template>
-                                <template #prepend>
-                                    <v-icon
-                                        color="primary"
-                                        class="mr-2 opacity-100"
-                                        :icon="mapAffectedByIssueTypeToIcon(onTrackable.__typename)"
-                                    />
-                                </template>
-                                <template #append>
-                                    <IconButton
-                                        @click="removeFromTrackable(onTrackable.id)"
-                                        :disabled="onTrackable.id == trackable?.id"
-                                    >
-                                        <v-icon icon="mdi-close" />
-                                        <v-tooltip activator="parent"> Remove from trackable </v-tooltip>
-                                    </IconButton>
-                                </template>
-                            </v-list-item>
-                            <v-divider />
-                        </div>
-                        <TrackableAutocomplete
-                            :ignore="trackables.map((trackable) => trackable.id)"
-                            :dependency="[trackables]"
-                            :disabled="!issue.exportIssues"
-                            :menu-mode="!!issue.exportIssues ? 'repeating' : undefined"
-                            hide-details
-                            class="mt-3 mb-2"
-                            label="Add to trackable"
-                            autofocus
-                            auto-select-first
-                            @selected-item="addToTrackable"
-                        />
-                    </template>
-                </EditableCompartment>
-                <v-divider class="mx-2" />
-                <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
-                    <template #display>
-                        <div class="d-flex flex-wrap ga-1">
-                            <Label v-for="(label, index) in labels" :key="index" :label="label" />
-                        </div>
-                    </template>
-                    <template #edit>
-                        <div v-for="(label, index) in labels" :key="index">
-                            <v-list-item
-                                class="px-0 py-2"
-                                :title="label.name"
-                                :subtitle="label.description || 'No description provided'"
-                            >
-                                <template #title>
-                                    <v-list-item-title class="mb-1">{{ label.name }}</v-list-item-title>
-                                </template>
-                                <template #prepend>
-                                    <v-icon :color="label.color" class="mr-2 opacity-100" icon="mdi-circle " />
-                                </template>
-                                <template #append>
-                                    <IconButton @click="removeLabel(label.id)">
-                                        <v-icon icon="mdi-close" />
-                                        <v-tooltip activator="parent"> Remove label </v-tooltip>
-                                    </IconButton>
-                                </template>
-                            </v-list-item>
-                            <v-divider />
-                        </div>
-                        <LabelAutocomplete
-                            :issue="issueId"
-                            :ignore="labels.map((label) => label.id)"
-                            :dependency="[labels]"
-                            menu-mode="repeating"
-                            hide-details
-                            class="mt-3 mb-2"
-                            label="Add label"
-                            autofocus
-                            auto-select-first
-                            @selected-item="addLabel"
-                        />
-                    </template>
-                </EditableCompartment>
-                <v-divider class="mx-2" />
-                <TypedEditableCompartment
-                    name="Assignments"
-                    name-inline="assignment"
-                    :editable="!!issue.manageIssues"
-                    :items="assignments"
-                    :edited-types="editedAssignmentTypes"
-                    :type-name="(type) => type.name"
-                    @remove-item="removeAssignment"
-                    @toggle-type-edit="editedAssignmentTypes[$event] = !editedAssignmentTypes[$event]"
-                >
-                    <template #ItemInfo="{ item }">
-                        <User :user="item.user" class="d-block my-2 ml-2" />
-                    </template>
-                    <template #EditedItemInfo="{ item }">
-                        <User :user="item.user" class="d-block mb-2" />
-                    </template>
-                    <template #TypeAutocomplete="{ item }">
-                        <AssignmentTypeAutocomplete
-                            density="compact"
-                            hide-details
-                            autofocus
-                            menu-mode="initial"
-                            clearable
-                            persistent-clear
-                            class="mt-1 mb-3"
-                            :template="issue.template.id"
-                            :initial-items="item.type ? [item.type] : []"
-                            :model-value="item.type?.id"
-                            @update:model-value="updateAssignmentType(item, $event)"
-                            @click:clear="removeAssignmentType(item)"
-                        />
-                    </template>
-                    <template #ItemAutocomplete>
-                        <GropiusUserAutocomplete
-                            :filter="assignmentUserFilter"
-                            label="Assign user"
-                            class="mb-2"
-                            hide-details
-                            autofocus
-                            @selected-item="assignUser"
-                        />
-                    </template>
-                </TypedEditableCompartment>
-                <v-divider class="mx-2" />
-                <EditableCompartment
-                    name="Priority"
-                    :editable="!!issue.manageIssues"
-                    close-on-value-change
-                    :model-value="issue.priority"
-                >
-                    <template #display>
-                        <IssuePriority v-if="issue.priority != undefined" :priority="issue.priority" />
-                    </template>
-                    <template #edit>
-                        <IssuePriorityAutocomplete
-                            class="mb-2"
-                            autofocus
-                            hide-details
-                            menu-mode="initial"
-                            :template="issue.template.id"
-                            :initial-items="[issue.priority]"
-                            :model-value="issue.priority?.id"
-                            @update:model-value="updateIssuePriority"
-                        />
-                    </template>
-                </EditableCompartment>
-                <v-divider class="mx-2" />
-                <TypedEditableCompartment
-                    name="Outgoing Relations"
-                    name-inline="relation"
-                    :editable="!!issue.manageIssues"
-                    :items="outgoingRelations"
-                    :edited-types="editedRelationTypes"
-                    :type-name="(type) => type.name"
-                    @remove-item="removeOutgoingRelation"
-                    @toggle-type-edit="editedRelationTypes[$event] = !editedRelationTypes[$event]"
-                >
-                    <template #ItemInfo="{ item }">
-                        <IssueInfo
-                            v-if="item.relatedIssue != undefined"
-                            :issue="item.relatedIssue!"
-                            class="d-block my-2 ml-2"
-                        />
-                    </template>
-                    <template #EditedItemInfo="{ item }">
-                        <IssueInfo
-                            v-if="item.relatedIssue != undefined"
-                            :issue="item.relatedIssue!"
-                            class="d-block mb-2"
-                        />
-                    </template>
-                    <template #TypeAutocomplete="{ item }">
-                        <IssueRelationTypeAutocomplete
-                            density="compact"
-                            hide-details
-                            autofocus
-                            menu-mode="initial"
-                            clearable
-                            persistent-clear
-                            class="mt-1 mb-3"
-                            :template="issue.template.id"
-                            :initial-items="item.type ? [item.type] : []"
-                            :model-value="item.type?.id"
-                            @update:model-value="updateRelationType(item, $event)"
-                            @click:clear="removeRelationType(item)"
-                        />
-                    </template>
-                    <template #ItemAutocomplete>
-                        <ExternalIssueAutocomplete
-                            label="Add related issue"
-                            class="mb-2"
-                            hide-details
-                            autofocus
-                            menu-mode="initial"
-                            :initial-context="trackable ?? undefined"
-                            :ignore="[issueId]"
-                            @selected-item="addOutgoingRelation"
-                        />
-                    </template>
-                </TypedEditableCompartment>
-                <v-divider class="mx-2" />
-                <TypedEditableCompartment
-                    name="Incoming Relations"
-                    name-inline="relation"
-                    :editable="false"
-                    :items="issue.incomingRelations.nodes"
-                    :type-name="(type) => type.inverseName"
-                >
-                    <template #ItemInfo="{ item }">
-                        <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
-                    </template>
-                </TypedEditableCompartment>
-                <v-divider class="mx-2" />
-                <EditableCompartment name="Affects" :editable="!!issue.manageIssues">
-                    <template #display>
-                        <div v-for="(itemGroup, index) in groupedAffectedEntities" :key="index">
-                            <span class="text-subtitle-2">
-                                {{ itemGroup?.type }}
-                            </span>
-                            <div>
+                        </template>
+                    </EditableCompartment>
+                    <v-divider class="mx-2" />
+                    <EditableCompartment
+                        name="State"
+                        :editable="!!issue.manageIssues"
+                        close-on-value-change
+                        :model-value="issue.state"
+                    >
+                        <template #display>
+                            <IssueState :state="issue.state" />
+                        </template>
+                        <template #edit>
+                            <IssueStateAutocomplete
+                                class="mb-2"
+                                autofocus
+                                hide-details
+                                menu-mode="initial"
+                                :template="issue.template.id"
+                                :initial-items="[issue.state]"
+                                :model-value="issue.state.id"
+                                @update:model-value="updateIssueState"
+                            />
+                        </template>
+                    </EditableCompartment>
+                    <v-divider class="mx-2" />
+                    <EditableCompartment
+                        name="Components & Projects"
+                        :editable="!!issue.manageIssues"
+                        close-on-value-change
+                        :model-value="issue.state"
+                    >
+                        <template #display>
+                            <div class="d-flex flex-wrap ga-1">
                                 <AffectedByIssue
-                                    v-for="(item, index) in itemGroup.items"
+                                    v-for="(onTrackable, index) in trackables"
                                     :key="index"
-                                    :affected-entity="item"
-                                    class="mr-1"
+                                    :affected-entity="onTrackable"
                                 />
                             </div>
-                        </div>
-                    </template>
-                    <template #edit>
-                        <div v-for="(affectedEntity, index) in affectedEntities" :key="index">
-                            <v-list-item
-                                class="px-0 py-2"
-                                :subtitle="affectedEntity.description || 'No description provided'"
-                            >
-                                <template #title>
-                                    <v-list-item-title class="mb-1">{{ affectedEntity.name }}</v-list-item-title>
-                                </template>
-                                <template #prepend>
-                                    <v-icon
-                                        color="primary"
-                                        class="mr-2 opacity-100"
-                                        :icon="mapAffectedByIssueTypeToIcon(affectedEntity.__typename)"
+                        </template>
+                        <template #edit>
+                            <div v-for="(onTrackable, index) in trackables" :key="index">
+                                <v-list-item
+                                    class="px-0 py-2"
+                                    :title="onTrackable.name"
+                                    :subtitle="onTrackable.description || 'No description provided'"
+                                >
+                                    <template #title>
+                                        <v-list-item-title class="mb-1">{{ onTrackable.name }}</v-list-item-title>
+                                    </template>
+                                    <template #prepend>
+                                        <v-icon
+                                            color="primary"
+                                            class="mr-2 opacity-100"
+                                            :icon="mapAffectedByIssueTypeToIcon(onTrackable.__typename)"
+                                        />
+                                    </template>
+                                    <template #append>
+                                        <IconButton
+                                            @click="removeFromTrackable(onTrackable.id)"
+                                            :disabled="onTrackable.id == trackable?.id"
+                                        >
+                                            <v-icon icon="mdi-close" />
+                                            <v-tooltip activator="parent"> Remove from trackable </v-tooltip>
+                                        </IconButton>
+                                    </template>
+                                </v-list-item>
+                                <v-divider />
+                            </div>
+                            <TrackableAutocomplete
+                                :ignore="trackables.map((trackable) => trackable.id)"
+                                :dependency="[trackables]"
+                                :disabled="!issue.exportIssues"
+                                :menu-mode="!!issue.exportIssues ? 'repeating' : undefined"
+                                hide-details
+                                class="mt-3 mb-2"
+                                label="Add to trackable"
+                                autofocus
+                                auto-select-first
+                                @selected-item="addToTrackable"
+                            />
+                        </template>
+                    </EditableCompartment>
+                    <v-divider class="mx-2" />
+                    <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
+                        <template #display>
+                            <div class="d-flex flex-wrap ga-1">
+                                <Label v-for="(label, index) in labels" :key="index" :label="label" />
+                            </div>
+                        </template>
+                        <template #edit>
+                            <div v-for="(label, index) in labels" :key="index">
+                                <v-list-item
+                                    class="px-0 py-2"
+                                    :title="label.name"
+                                    :subtitle="label.description || 'No description provided'"
+                                >
+                                    <template #title>
+                                        <v-list-item-title class="mb-1">{{ label.name }}</v-list-item-title>
+                                    </template>
+                                    <template #prepend>
+                                        <v-icon :color="label.color" class="mr-2 opacity-100" icon="mdi-circle " />
+                                    </template>
+                                    <template #append>
+                                        <IconButton @click="removeLabel(label.id)">
+                                            <v-icon icon="mdi-close" />
+                                            <v-tooltip activator="parent"> Remove label </v-tooltip>
+                                        </IconButton>
+                                    </template>
+                                </v-list-item>
+                                <v-divider />
+                            </div>
+                            <LabelAutocomplete
+                                :issue="issueId"
+                                :ignore="labels.map((label) => label.id)"
+                                :dependency="[labels]"
+                                menu-mode="repeating"
+                                hide-details
+                                class="mt-3 mb-2"
+                                label="Add label"
+                                autofocus
+                                auto-select-first
+                                @selected-item="addLabel"
+                            />
+                        </template>
+                    </EditableCompartment>
+                    <v-divider class="mx-2" />
+                    <TypedEditableCompartment
+                        name="Assignments"
+                        name-inline="assignment"
+                        :editable="!!issue.manageIssues"
+                        :items="assignments"
+                        :edited-types="editedAssignmentTypes"
+                        :type-name="(type) => type.name"
+                        @remove-item="removeAssignment"
+                        @toggle-type-edit="editedAssignmentTypes[$event] = !editedAssignmentTypes[$event]"
+                    >
+                        <template #ItemInfo="{ item }">
+                            <User :user="item.user" class="d-block my-2 ml-2" />
+                        </template>
+                        <template #EditedItemInfo="{ item }">
+                            <User :user="item.user" class="d-block mb-2" />
+                        </template>
+                        <template #TypeAutocomplete="{ item }">
+                            <AssignmentTypeAutocomplete
+                                density="compact"
+                                hide-details
+                                autofocus
+                                menu-mode="initial"
+                                clearable
+                                persistent-clear
+                                class="mt-1 mb-3"
+                                :template="issue.template.id"
+                                :initial-items="item.type ? [item.type] : []"
+                                :model-value="item.type?.id"
+                                @update:model-value="updateAssignmentType(item, $event)"
+                                @click:clear="removeAssignmentType(item)"
+                            />
+                        </template>
+                        <template #ItemAutocomplete>
+                            <GropiusUserAutocomplete
+                                :filter="assignmentUserFilter"
+                                label="Assign user"
+                                class="mb-2"
+                                hide-details
+                                autofocus
+                                @selected-item="assignUser"
+                            />
+                        </template>
+                    </TypedEditableCompartment>
+                    <v-divider class="mx-2" />
+                    <EditableCompartment
+                        name="Priority"
+                        :editable="!!issue.manageIssues"
+                        close-on-value-change
+                        :model-value="issue.priority"
+                    >
+                        <template #display>
+                            <IssuePriority v-if="issue.priority != undefined" :priority="issue.priority" />
+                        </template>
+                        <template #edit>
+                            <IssuePriorityAutocomplete
+                                class="mb-2"
+                                autofocus
+                                hide-details
+                                menu-mode="initial"
+                                :template="issue.template.id"
+                                :initial-items="[issue.priority]"
+                                :model-value="issue.priority?.id"
+                                @update:model-value="updateIssuePriority"
+                            />
+                        </template>
+                    </EditableCompartment>
+                    <v-divider class="mx-2" />
+                    <TypedEditableCompartment
+                        name="Outgoing Relations"
+                        name-inline="relation"
+                        :editable="!!issue.manageIssues"
+                        :items="outgoingRelations"
+                        :edited-types="editedRelationTypes"
+                        :type-name="(type) => type.name"
+                        @remove-item="removeOutgoingRelation"
+                        @toggle-type-edit="editedRelationTypes[$event] = !editedRelationTypes[$event]"
+                    >
+                        <template #ItemInfo="{ item }">
+                            <IssueInfo
+                                v-if="item.relatedIssue != undefined"
+                                :issue="item.relatedIssue!"
+                                class="d-block my-2 ml-2"
+                            />
+                        </template>
+                        <template #EditedItemInfo="{ item }">
+                            <IssueInfo
+                                v-if="item.relatedIssue != undefined"
+                                :issue="item.relatedIssue!"
+                                class="d-block mb-2"
+                            />
+                        </template>
+                        <template #TypeAutocomplete="{ item }">
+                            <IssueRelationTypeAutocomplete
+                                density="compact"
+                                hide-details
+                                autofocus
+                                menu-mode="initial"
+                                clearable
+                                persistent-clear
+                                class="mt-1 mb-3"
+                                :template="issue.template.id"
+                                :initial-items="item.type ? [item.type] : []"
+                                :model-value="item.type?.id"
+                                @update:model-value="updateRelationType(item, $event)"
+                                @click:clear="removeRelationType(item)"
+                            />
+                        </template>
+                        <template #ItemAutocomplete>
+                            <ExternalIssueAutocomplete
+                                label="Add related issue"
+                                class="mb-2"
+                                hide-details
+                                autofocus
+                                menu-mode="initial"
+                                :initial-context="trackable ?? undefined"
+                                :ignore="[issueId]"
+                                @selected-item="addOutgoingRelation"
+                            />
+                        </template>
+                    </TypedEditableCompartment>
+                    <v-divider class="mx-2" />
+                    <TypedEditableCompartment
+                        name="Incoming Relations"
+                        name-inline="relation"
+                        :editable="false"
+                        :items="issue.incomingRelations.nodes"
+                        :type-name="(type) => type.inverseName"
+                    >
+                        <template #ItemInfo="{ item }">
+                            <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
+                        </template>
+                    </TypedEditableCompartment>
+                    <v-divider class="mx-2" />
+                    <EditableCompartment name="Affects" :editable="!!issue.manageIssues">
+                        <template #display>
+                            <div v-for="(itemGroup, index) in groupedAffectedEntities" :key="index">
+                                <span class="text-subtitle-2">
+                                    {{ itemGroup?.type }}
+                                </span>
+                                <div>
+                                    <AffectedByIssue
+                                        v-for="(item, index) in itemGroup.items"
+                                        :key="index"
+                                        :affected-entity="item"
+                                        class="mr-1"
                                     />
-                                </template>
-                                <template #append>
-                                    <IconButton @click="removeAffectedEntity(affectedEntity.id)">
-                                        <v-icon icon="mdi-close" />
-                                        <v-tooltip activator="parent"> Remove affected entity </v-tooltip>
-                                    </IconButton>
-                                </template>
-                            </v-list-item>
-                            <v-divider />
-                        </div>
-                        <AffectedByIssueAutocomplete
-                            :dependency="[affectedEntities]"
-                            :initial-context="trackable ?? undefined"
-                            :ignore="affectedEntities.map((entity) => entity.id)"
-                            menu-mode="repeating"
-                            hide-details
-                            class="mt-3 mb-2"
-                            label="Add affected entity"
-                            autofocus
-                            auto-select-first
-                            item-title="name"
-                            item-value="id"
-                            @selected-item="addAffectedEntity"
+                                </div>
+                            </div>
+                        </template>
+                        <template #edit>
+                            <div v-for="(affectedEntity, index) in affectedEntities" :key="index">
+                                <v-list-item
+                                    class="px-0 py-2"
+                                    :subtitle="affectedEntity.description || 'No description provided'"
+                                >
+                                    <template #title>
+                                        <v-list-item-title class="mb-1">{{ affectedEntity.name }}</v-list-item-title>
+                                    </template>
+                                    <template #prepend>
+                                        <v-icon
+                                            color="primary"
+                                            class="mr-2 opacity-100"
+                                            :icon="mapAffectedByIssueTypeToIcon(affectedEntity.__typename)"
+                                        />
+                                    </template>
+                                    <template #append>
+                                        <IconButton @click="removeAffectedEntity(affectedEntity.id)">
+                                            <v-icon icon="mdi-close" />
+                                            <v-tooltip activator="parent"> Remove affected entity </v-tooltip>
+                                        </IconButton>
+                                    </template>
+                                </v-list-item>
+                                <v-divider />
+                            </div>
+                            <AffectedByIssueAutocomplete
+                                :dependency="[affectedEntities]"
+                                :initial-context="trackable ?? undefined"
+                                :ignore="affectedEntities.map((entity) => entity.id)"
+                                menu-mode="repeating"
+                                hide-details
+                                class="mt-3 mb-2"
+                                label="Add affected entity"
+                                autofocus
+                                auto-select-first
+                                item-title="name"
+                                item-value="id"
+                                @selected-item="addAffectedEntity"
+                            />
+                        </template>
+                    </EditableCompartment>
+                    <template v-for="field in templatedFields" :key="field.name">
+                        <v-divider class="mx-2" />
+                        <TemplatedFieldEditableCompartment
+                            :name="field.name"
+                            :schema="field.schema"
+                            :model-value="field.value"
+                            :editable="!!issue.manageIssues"
+                            @save="updateTemplatedField(field.name, $event)"
                         />
                     </template>
-                </EditableCompartment>
-                <template v-for="field in templatedFields" :key="field.name">
-                    <v-divider class="mx-2" />
-                    <TemplatedFieldEditableCompartment
-                        :name="field.name"
-                        :schema="field.schema"
-                        :model-value="field.value"
-                        :editable="!!issue.manageIssues"
-                        @save="updateTemplatedField(field.name, $event)"
-                    />
-                </template>
+                </div>
             </v-sheet>
         </div>
     </div>
@@ -905,6 +907,6 @@ async function removeFromTrackable(trackableId: string) {
     width: min(40%, 400px);
     max-height: calc(100% - 12px);
     height: fit-content;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 </style>
