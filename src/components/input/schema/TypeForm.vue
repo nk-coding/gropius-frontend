@@ -1,5 +1,12 @@
 <template>
-    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name" :readonly="readonly" />
+    <v-text-field
+        v-if="isString || isNumber"
+        v-model="cachedValue"
+        :rules="rules"
+        :label="name"
+        :readonly="readonly"
+        :clearable="schema.nullable"
+    />
     <v-checkbox v-else-if="isBoolean" v-model="cachedValue" :rules="rules" :label="name" :readonly="readonly" />
 </template>
 <script setup lang="ts">
