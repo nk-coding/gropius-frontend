@@ -67,15 +67,17 @@ watch(cachedValue, (value) => {
     let parsedValue: null | undefined | string | number | boolean = undefined;
     if (isNumber.value) {
         const parsedFloat = Number.parseFloat(value as string);
-        if (!Number.isNaN(parsedFloat) || (value as string).trim() == "NaN") {
+        if (value === null) {
+            parsedValue = null;
+        } else if (!Number.isNaN(parsedFloat) || (value as string).trim() == "NaN") {
             parsedValue = parsedFloat;
         }
     } else if (isString.value) {
-        parsedValue = value as string;
+        parsedValue = value as string | null;
     } else if (isBoolean.value) {
-        parsedValue = value as boolean;
+        parsedValue = value as boolean | null;
     } else if (isTimestamp.value) {
-        parsedValue = value as string;
+        parsedValue = value as string | null;
     }
     if (parsedValue !== undefined) {
         model.value = parsedValue;
