@@ -133,7 +133,8 @@ function updateColorMode() {
 function logout() {
     store.setNewTokenPair("", "");
     router.push({
-        name: "login"
+        name: "home",
+        force: true
     });
 }
 

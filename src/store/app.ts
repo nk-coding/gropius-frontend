@@ -3,10 +3,10 @@ import axios from "axios";
 import { useLocalStorage } from "@vueuse/core";
 import { jwtDecode } from "jwt-decode";
 import { pushErrorMessage } from "@/util/withErrorMessage";
-import { TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
 import { Mutex } from "async-mutex";
 import { shallowRef } from "vue";
+import { TokenScope } from "@/util/oauth";
 
 interface GlobalUserPermissions {
     canCreateProjects: boolean;
@@ -23,8 +23,7 @@ export const useAppStore = defineStore("app", {
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
         accessTokenValidUntil: useLocalStorage<number>("accessTokenValidUntil", 0),
-        errors: [] as string[],
-        clientId: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID as string | undefined
+        errors: [] as string[]
     }),
     getters: {
         tokenValidityDuration(): number {
@@ -68,16 +67,18 @@ export const useAppStore = defineStore("app", {
         async forceTokenRefresh(): Promise<void> {
             await this.tokenRefreshLock.runExclusive(async () => {
                 try {
-                    const tokenResponse = (
-                        await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
-                            grant_type: "refresh_token",
-                            refresh_token: this.refreshToken,
-                            client_id: await this.getClientId()
-                        })
-                    ).data;
-                    this.accessToken = tokenResponse.access_token;
-                    this.refreshToken = tokenResponse.refresh_token;
-                    this.accessTokenValidUntil = this.tokenValidityDuration + Date.now() - 30 * 1000;
+                    if (this.refreshToken) {
+                        const tokenResponse = (
+                            await axios.post("/auth/oauth/token", {
+                                grant_type: "refresh_token",
+                                refresh_token: this.refreshToken,
+                                client_id: "gropius-auth-client"
+                            })
+                        ).data;
+                        this.accessToken = tokenResponse.access_token;
+                        this.refreshToken = tokenResponse.refresh_token;
+                        this.accessTokenValidUntil = this.tokenValidityDuration + Date.now() - 30 * 1000;
+                    }
                 } catch {
                     this.accessToken = "";
                     this.refreshToken = "";
@@ -132,12 +133,6 @@ export const useAppStore = defineStore("app", {
         },
         popError(): string | undefined {
             return this.errors.pop();
-        },
-        async getClientId(): Promise<string> {
-            if (this.clientId == undefined) {
-                this.clientId = (await axios.get("/api/login-client-id")).data;
-            }
-            return this.clientId!;
         }
     }
 });
