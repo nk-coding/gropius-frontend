@@ -66,7 +66,7 @@ import {
     RelationTemplateFilterInput
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
-import { asyncComputed } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import GraphEditor, { ContextMenuData, GraphLayoutWrapper } from "@/components/GraphEditor.vue";
 import {
     Graph,
@@ -105,7 +105,7 @@ const trackableId = computed(() => route.params.trackable as string);
 const graphVersionCounter = ref(0);
 
 const evaluating = ref(false);
-const originalGraph = asyncComputed(
+const originalGraph = computedAsync(
     async () => {
         graphVersionCounter.value;
         if (!trackableId.value) {

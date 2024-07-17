@@ -49,7 +49,7 @@ import { toTypedSchema } from "@vee-validate/yup";
 import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
-import { asyncComputed } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { watch } from "vue";
 import { IdObject } from "@/util/types";
@@ -81,7 +81,7 @@ const [description, descriptionProps] = defineField("description", fieldConfig);
 const [repositoryURL, repositoryURLProps] = defineField("repositoryURL", fieldConfig);
 
 const templatedFields = ref<Field[]>([]);
-const templateValue = asyncComputed(
+const templateValue = computedAsync(
     async () => {
         if (template.value == null) {
             return null;
@@ -128,3 +128,8 @@ function cancelCreateComponent() {
     createComponentDialog.value = false;
 }
 </script>
+<style scoped>
+.wrap-input {
+    min-width: 250px;
+}
+</style>

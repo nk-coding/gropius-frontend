@@ -1,13 +1,10 @@
 import { useAppStore } from "@/store/app";
-import { OAuthRespose, TokenScope } from "@/util/oauth";
+import { buildOAuthUrl, OAuthRespose, TokenScope } from "@/util/oauth";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
 import { RouteLocationNormalized, NavigationGuardNext, RouteLocationRaw } from "vue-router";
 
-export async function handleOAuthResponse(
-    tokenResponse: OAuthRespose,
-    store: ReturnType<typeof useAppStore>
-) {
+export async function handleOAuthResponse(tokenResponse: OAuthRespose, store: ReturnType<typeof useAppStore>) {
     store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
 }
 
@@ -16,7 +13,7 @@ export async function onLoginEnter(
     from: RouteLocationNormalized
 ): Promise<RouteLocationRaw | boolean> {
     const oauthCode = to.query["code"] ?? "";
-    const state = JSON.parse(to.query["state"] as string | undefined ?? "{}");
+    const state = JSON.parse((to.query["state"] as string | undefined) ?? "{}");
     const store = useAppStore();
     if (oauthCode !== undefined && oauthCode.length > 0) {
         try {
@@ -36,7 +33,7 @@ export async function onLoginEnter(
             return {
                 path: state.from,
                 replace: true
-            }
+            };
         } catch (err) {
             return {
                 name: "home",
@@ -58,14 +55,10 @@ export async function onAnyEnter(
     return await authorizeIfRequired(to);
 }
 
-
 async function authorizeIfRequired(to: RouteLocationNormalized) {
     const store = useAppStore();
     if (!(await store.isLoggedIn())) {
-        const state = {
-            from: to.fullPath
-        };
-        window.location.href = `/auth/oauth/authorize?client_id=gropius-auth-client&response_type=code&redirect_uri=${window.location.origin}/login&scope=${TokenScope.BACKEND}&state=${encodeURIComponent(JSON.stringify(state))}`;
+        window.location.href = buildOAuthUrl([TokenScope.LOGIN_SERVICE, TokenScope.BACKEND], to.fullPath);
         true;
     } else {
         store.validateUser();

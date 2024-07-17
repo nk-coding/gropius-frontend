@@ -44,6 +44,11 @@ const routes: RouteRecordRaw[] = [
                         component: () => import("../views/admin/Permissions.vue")
                     },
                     {
+                        path: "strategy-instances",
+                        name: "admin-strategy-instances",
+                        component: () => import("../views/admin/StrategyInstances.vue")
+                    },
+                    {
                         path: "graphiql",
                         name: "admin-graphiql",
                         component: () => import("../views/admin/GraphiQL.vue")

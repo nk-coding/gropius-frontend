@@ -71,6 +71,12 @@ const rightSidebarItems = computed(() => {
                 disabled = false;
                 break;
             }
+            case "admin-strategy-instances": {
+                name = "strategy instance";
+                eventName = "create-strategy-instance";
+                disabled = false;
+                break;
+            }
             default: {
                 throw new Error("Unknown route");
             }
@@ -100,6 +106,12 @@ const leftSidebarItems = computed(() => {
                     name: "Access",
                     color: "secondary",
                     to: { name: "admin-permissions" }
+                },
+                {
+                    icon: "mdi-cogs",
+                    name: "Strategies",
+                    color: "secondary",
+                    to: { name: "admin-strategy-instances" }
                 },
                 {
                     icon: "mdi-api",

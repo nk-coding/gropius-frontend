@@ -4,14 +4,7 @@
             <v-form @submit.prevent="updatePermission">
                 <v-card-title class="pl-4">Update permission</v-card-title>
                 <div class="pa-4">
-                    <div class="d-flex flex-wrap mx-n2">
-                        <v-text-field
-                            v-model="name"
-                            v-bind="nameProps"
-                            label="Name"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                    </div>
+                    <v-text-field v-model="name" v-bind="nameProps" label="Name" class="mb-1 flex-1-1-0" />
                     <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
                     <PermissionEntryCheckboxGrid v-model="entries" :permission-entries="permissionEntries" />
                 </div>

@@ -15,6 +15,7 @@ export type Events = {
     "add-component-version-to-project": undefined;
     "layout-component-graph": undefined;
     "title-segment-changed": undefined;
+    "create-strategy-instance": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {
