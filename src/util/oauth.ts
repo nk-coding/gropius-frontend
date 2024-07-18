@@ -9,7 +9,7 @@ export interface OAuthRespose {
 export enum TokenScope {
     LOGIN_SERVICE = "login",
     LOGIN_SERVICE_REGISTER = "login-register",
-    BACKEND = "backend",
+    BACKEND = "backend"
 }
 
 export function buildOAuthUrl(scope: TokenScope[], redirectTo: string): string {
@@ -20,7 +20,7 @@ export function buildOAuthUrl(scope: TokenScope[], redirectTo: string): string {
             response_type: "code",
             scope: scope.join(" "),
             redirect_uri: window.location.origin + "/login",
-            state: JSON.stringify({ from: redirectTo }),
+            state: JSON.stringify({ from: redirectTo, register: scope.includes(TokenScope.LOGIN_SERVICE_REGISTER) })
         }).toString()
     );
 }

@@ -43,14 +43,18 @@ const model = defineModel({
 
 async function updateStrategyInstance(state: StrategyInstance, updatedInstanceConfig: boolean) {
     const strategyInstance = await blockWithErrorMessage(async () => {
-        const res = await axios.put(`/auth/api/login/strategyInstance/${model.value?.id}`, {
-            ...state,
-            instanceConfig: updatedInstanceConfig ? state.instanceConfig : undefined
-        }, {
-            headers: {
-                Authorization: `Bearer ${await store.getAccessToken()}`
+        const res = await axios.put(
+            `/auth/api/login/strategyInstance/${model.value?.id}`,
+            {
+                ...state,
+                instanceConfig: updatedInstanceConfig ? state.instanceConfig : undefined
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${await store.getAccessToken()}`
+                }
             }
-        });
+        );
         return res.data as IdObject;
     }, "Error updating strategy instance");
     updateStrategyInstanceDialog.value = false;

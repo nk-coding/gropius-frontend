@@ -2,11 +2,7 @@ import { useAppStore } from "@/store/app";
 import { buildOAuthUrl, OAuthRespose, TokenScope } from "@/util/oauth";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
-import { RouteLocationNormalized, NavigationGuardNext, RouteLocationRaw } from "vue-router";
-
-export async function handleOAuthResponse(tokenResponse: OAuthRespose, store: ReturnType<typeof useAppStore>) {
-    store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
-}
+import { RouteLocationNormalized, RouteLocationRaw } from "vue-router";
 
 export async function onLoginEnter(
     to: RouteLocationNormalized,
@@ -28,8 +24,23 @@ export async function onLoginEnter(
                     ).data,
                 "Could not login."
             );
-
-            await handleOAuthResponse(tokenResponse, store);
+            if (state.register) {
+                withErrorMessage(async () => {
+                    await axios.post(
+                        "/auth/api/login/registration/self-link",
+                        {
+                            register_token: tokenResponse.access_token
+                        },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${await store.getAccessToken()}`
+                            }
+                        }
+                    );
+                }, "Could not link account.");
+            } else {
+                await handleOAuthResponse(tokenResponse, store);
+            }
             return {
                 path: state.from,
                 replace: true
@@ -64,4 +75,8 @@ async function authorizeIfRequired(to: RouteLocationNormalized) {
         store.validateUser();
     }
     return true;
+}
+
+async function handleOAuthResponse(tokenResponse: OAuthRespose, store: ReturnType<typeof useAppStore>) {
+    store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
 }

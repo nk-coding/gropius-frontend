@@ -232,7 +232,7 @@ const routes: RouteRecordRaw[] = [
         name: "login",
         component: () => import("../views/RouterOnly.vue"),
         beforeEnter: onLoginEnter
-    },
+    }
 ];
 
 const router = createRouter({
