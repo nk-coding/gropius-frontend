@@ -1,5 +1,5 @@
 <template>
-    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
+    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 update-label-content" elevation="0">
         <v-form @submit.prevent="submitChanges">
             <v-card-title class="pl-4">{{ title }}</v-card-title>
             <div class="pa-4">
@@ -146,7 +146,7 @@ const submitChanges = handleSubmit(async (state) => {
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
-.create-label-dialog {
+.update-label-content {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
 }
 

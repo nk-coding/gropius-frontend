@@ -4,7 +4,7 @@
             <v-window-item :value="1">
                 <div class="d-flex flex-column align-center">
                     <img :src="user.avatar" class="large-avatar rounded-circle mb-2" />
-                    <p class="text-h5 text-on-surface text-ellipsis w-100">Hi {{ user.displayName }}</p>
+                    <p class="text-h5 text-on-surface text-ellipsis max-width-100">Hi {{ user.displayName }}</p>
                     <p class="text-medium-emphasis">
                         {{ user.username }}
                     </p>
@@ -122,5 +122,9 @@ async function showAccounts() {
 .account-card {
     width: 300px;
     overflow: hidden !important;
+}
+
+.max-width-100 {
+    max-width: 100%;
 }
 </style>
