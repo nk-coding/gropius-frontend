@@ -49,12 +49,7 @@
                             </template>
                         </v-list-item>
                     </v-sheet>
-                    <DefaultButton
-                        variant="tonal"
-                        class="w-100"
-                        :href="buildOAuthUrl([TokenScope.LOGIN_SERVICE_REGISTER], route.fullPath)"
-                        >Add account</DefaultButton
-                    >
+                    <DefaultButton variant="tonal" class="w-100" :href="oauthUrl">Add account</DefaultButton>
                 </div>
             </v-window-item>
         </v-window>
@@ -69,6 +64,7 @@ import { useRoute, useRouter } from "vue-router";
 import User from "./info/User.vue";
 import { buildOAuthUrl } from "@/util/oauth";
 import { TokenScope } from "@/util/oauth";
+import { computedAsync } from "@vueuse/core";
 
 interface Account {
     id: string;
@@ -93,6 +89,10 @@ const router = useRouter();
 
 const windowPage = ref(1);
 const accounts = ref<Account[]>([]);
+
+const oauthUrl = computedAsync(async () => {
+    return buildOAuthUrl([TokenScope.LOGIN_SERVICE_REGISTER], route.fullPath);
+}, undefined);
 
 function logout() {
     store.setNewTokenPair("", "");

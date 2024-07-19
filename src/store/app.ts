@@ -23,6 +23,7 @@ export const useAppStore = defineStore("app", {
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
         accessTokenValidUntil: useLocalStorage<number>("accessTokenValidUntil", 0),
+        codeVerifier: useLocalStorage<string>("codeVerifier", ""),
         errors: [] as string[]
     }),
     getters: {

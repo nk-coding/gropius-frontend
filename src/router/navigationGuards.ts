@@ -19,7 +19,8 @@ export async function onLoginEnter(
                         await axios.post("/auth/oauth/token", {
                             grant_type: "authorization_code",
                             client_id: "gropius-auth-client",
-                            code: oauthCode
+                            code: oauthCode,
+                            code_verifier: store.codeVerifier
                         })
                     ).data,
                 "Could not login."
@@ -69,7 +70,7 @@ export async function onAnyEnter(
 async function authorizeIfRequired(to: RouteLocationNormalized) {
     const store = useAppStore();
     if (!(await store.isLoggedIn())) {
-        window.location.href = buildOAuthUrl([TokenScope.LOGIN_SERVICE, TokenScope.BACKEND], to.fullPath);
+        window.location.href = await buildOAuthUrl([TokenScope.LOGIN_SERVICE, TokenScope.BACKEND], to.fullPath);
         true;
     } else {
         store.validateUser();
