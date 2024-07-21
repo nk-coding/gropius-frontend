@@ -103,7 +103,7 @@ const strategyInstances = computedAsync(async () => {
         );
     }, "Error loading strategies");
     return withErrorMessage(async () => {
-        const res = await axios.get("/auth/api/login/strategyInstance");
+        const res = await axios.get("/auth/api/login/strategy-instance");
         const instances = res.data as StrategyInstance[];
         return instances.map((instance) => {
             instance.callbackUrl = needsRedirectFlow.get(instance.type) ? instance.callbackUrl : undefined;
@@ -114,7 +114,7 @@ const strategyInstances = computedAsync(async () => {
 
 async function updateStrategyInstance(strategyInstanceId: string) {
     strategyInstanceToUpdate.value = await withErrorMessage(async () => {
-        const res = await axios.get(`/auth/api/login/strategyInstance/${strategyInstanceId}`, {
+        const res = await axios.get(`/auth/api/login/strategy-instance/${strategyInstanceId}`, {
             headers: {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }
@@ -125,7 +125,7 @@ async function updateStrategyInstance(strategyInstanceId: string) {
 
 async function deleteStrategyInstance(strategyInstanceId: string) {
     await withErrorMessage(async () => {
-        const res = await axios.delete(`/auth/api/login/strategyInstance/${strategyInstanceId}`, {
+        const res = await axios.delete(`/auth/api/login/strategy-instance/${strategyInstanceId}`, {
             headers: {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }

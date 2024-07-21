@@ -42,7 +42,7 @@
                             class="w-100 pr-1 pl-3"
                         >
                             <template #append>
-                                <IconButton>
+                                <IconButton :href="`/auth/flow/update?id=${encodeURIComponent(account.id)}`">
                                     <v-icon icon="mdi-cog" />
                                     <v-tooltip activator="parent">Settings</v-tooltip>
                                 </IconButton>
@@ -104,7 +104,7 @@ function logout() {
 
 async function showAccounts() {
     accounts.value = (
-        await axios.get("/auth/api/login/user/self/loginData", {
+        await axios.get("/auth/api/login/user/self/login-data", {
             headers: {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }
