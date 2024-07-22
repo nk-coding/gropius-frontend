@@ -45,7 +45,7 @@ onEvent("create-strategy-instance", () => {
 
 async function createStrategyInstance(state: StrategyInstance) {
     const strategyInstance = await blockWithErrorMessage(async () => {
-        const res = await axios.post("/auth/api/login/strategyInstance", state, {
+        const res = await axios.post("/auth/api/login/strategy-instance", state, {
             headers: {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }

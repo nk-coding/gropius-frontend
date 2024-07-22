@@ -44,7 +44,7 @@ const model = defineModel({
 async function updateStrategyInstance(state: StrategyInstance, updatedInstanceConfig: boolean) {
     const strategyInstance = await blockWithErrorMessage(async () => {
         const res = await axios.put(
-            `/auth/api/login/strategyInstance/${model.value?.id}`,
+            `/auth/api/login/strategy-instance/${model.value?.id}`,
             {
                 ...state,
                 instanceConfig: updatedInstanceConfig ? state.instanceConfig : undefined
