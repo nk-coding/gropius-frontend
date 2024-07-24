@@ -15,7 +15,7 @@
                     <v-tooltip activator="parent">Close</v-tooltip>
                 </IconButton>
             </div>
-            <CopyText v-if="cachedModel != undefined" :model-value="cachedModel" />
+            <CopyText v-if="cachedModel != undefined" :model-value="cachedModel" class="ml-4 my-4" />
         </v-card>
     </v-dialog>
 </template>
@@ -44,9 +44,5 @@ const cachedModel = useCachedRef(model);
 @use "@/styles/settings.scss";
 .redirect-url-dialog {
     width: min(700px, calc(100vw - 3 * settings.$side-bar-width));
-}
-
-.wrap-input {
-    min-width: 250px;
 }
 </style>

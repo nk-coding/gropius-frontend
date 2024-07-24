@@ -1,12 +1,12 @@
 <template>
     <v-dialog v-model="updateStrategyInstanceDialog" persistent width="auto">
         <StrategyInstanceDialogContent
-            v-if="model != undefined"
+            v-if="cachedModel != undefined"
             title="Update strategy instance"
             discard-title="Discard strategy instance?"
             discard-message="Discard changes?"
             submit-action="Update strategy instance"
-            :initial-value="model"
+            :initial-value="cachedModel"
             :submit-disabled="submitDisabled"
             @submit="updateStrategyInstance"
             @cancel="updateStrategyInstanceDialog = false"
@@ -20,6 +20,7 @@ import StrategyInstanceDialogContent, { StrategyInstance } from "./StrategyInsta
 import { IdObject } from "@/util/types";
 import axios from "axios";
 import { useAppStore } from "@/store/app";
+import { useCachedRef } from "@/util/useCachedRef";
 
 const updateStrategyInstanceDialog = computed({
     get: () => model.value != null,
@@ -40,6 +41,8 @@ const model = defineModel({
     type: Object as PropType<(StrategyInstance & IdObject) | null>,
     required: false
 });
+
+const cachedModel = useCachedRef(model);
 
 async function updateStrategyInstance(state: StrategyInstance, updatedInstanceConfig: boolean) {
     const strategyInstance = await blockWithErrorMessage(async () => {

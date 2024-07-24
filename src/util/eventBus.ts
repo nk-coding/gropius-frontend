@@ -16,6 +16,7 @@ export type Events = {
     "layout-component-graph": undefined;
     "title-segment-changed": undefined;
     "create-strategy-instance": undefined;
+    "create-auth-client": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {

@@ -86,14 +86,6 @@ const updateCounter = ref(0);
 const strategyInstanceToUpdate = ref<StrategyInstance | undefined>();
 const callbackUrlToShow = ref<string>();
 
-const nodeName = computed(() => {
-    if (route.name?.toString().startsWith("component")) {
-        return "component";
-    } else {
-        return "project";
-    }
-});
-
 const strategyInstances = computedAsync(async () => {
     updateCounter.value;
     const needsRedirectFlow = await withErrorMessage(async () => {
@@ -125,7 +117,7 @@ async function updateStrategyInstance(strategyInstanceId: string) {
 
 async function deleteStrategyInstance(strategyInstanceId: string) {
     await withErrorMessage(async () => {
-        const res = await axios.delete(`/auth/api/login/strategy-instance/${strategyInstanceId}`, {
+        await axios.delete(`/auth/api/login/strategy-instance/${strategyInstanceId}`, {
             headers: {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }

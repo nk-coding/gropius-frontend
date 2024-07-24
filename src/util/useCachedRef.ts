@@ -7,5 +7,5 @@ export function useCachedRef<T>(baseRef: Ref<T>) {
             cache.value = value;
         }
     });
-    return readonly(cache);
+    return cache;
 }

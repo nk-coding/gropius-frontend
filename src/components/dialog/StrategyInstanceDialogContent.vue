@@ -1,5 +1,5 @@
 <template>
-    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
+    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 strategy-instance-dialog-content" elevation="0">
         <v-form @submit.prevent="submitChanges" v-model="isValid">
             <v-card-title class="pl-4">{{ title }}</v-card-title>
             <div class="pa-4">
@@ -203,7 +203,9 @@ function submitChanges() {
     }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/settings.scss";
+
 .wrap-input {
     min-width: 250px;
 }
@@ -212,5 +214,9 @@ function submitChanges() {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     gap: 0 10px;
+}
+
+.strategy-instance-dialog-content {
+    width: min(600px, calc(100vw - 3 * settings.$side-bar-width));
 }
 </style>

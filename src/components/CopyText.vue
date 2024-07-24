@@ -1,5 +1,5 @@
 <template>
-    <div class="ml-4 my-4 d-flex align-center">
+    <div class="d-flex align-center">
         <v-text-field :model-value="modelValue" readonly hide-details />
         <IconButton v-if="isSecureContext" @click="copyToClipboard()" class="ml-1" density="default">
             <v-icon

@@ -77,6 +77,12 @@ const rightSidebarItems = computed(() => {
                 disabled = false;
                 break;
             }
+            case "admin-auth-clients": {
+                name = "auth client";
+                eventName = "create-auth-client";
+                disabled = false;
+                break;
+            }
             default: {
                 throw new Error("Unknown route");
             }
@@ -112,6 +118,12 @@ const leftSidebarItems = computed(() => {
                     name: "Strategies",
                     color: "secondary",
                     to: { name: "admin-strategy-instances" }
+                },
+                {
+                    icon: "mdi-cogs",
+                    name: "OAuth2",
+                    color: "secondary",
+                    to: { name: "admin-auth-clients" }
                 },
                 {
                     icon: "mdi-api",
