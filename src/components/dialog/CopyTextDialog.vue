@@ -4,11 +4,11 @@
             v-if="cachedModel"
             color="surface-elevated-3"
             rounded="lger"
-            class="pa-3 pb-5 redirect-url-dialog"
+            class="pa-3 pb-5 copy-text-dialog"
             elevation="0"
         >
             <div class="d-flex align-center">
-                <v-card-title class="pl-4">Callback URL</v-card-title>
+                <v-card-title class="pl-4">{{ title }}</v-card-title>
                 <v-spacer />
                 <IconButton @click="showDialog = false">
                     <v-icon icon="mdi-close" />
@@ -33,6 +33,13 @@ const showDialog = computed({
     }
 });
 
+defineProps({
+    title: {
+        type: String,
+        required: true,
+    },
+})
+
 const model = defineModel({
     type: String,
     required: false
@@ -42,7 +49,7 @@ const cachedModel = useCachedRef(model);
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
-.redirect-url-dialog {
+.copy-text-dialog {
     width: min(700px, calc(100vw - 3 * settings.$side-bar-width));
 }
 </style>

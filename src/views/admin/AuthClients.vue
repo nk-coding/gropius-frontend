@@ -16,6 +16,10 @@
                                 >Invalid</v-chip
                             >
                         </div>
+                        <IconButton @click="authClientIdToShow = item.id" class="mr-2">
+                            <v-icon icon="mdi-identifier" />
+                            <v-tooltip activator="parent" location="bottom">Copy auth client id</v-tooltip>
+                        </IconButton>
                         <IconButton @click="updateAuthClient(item.id)" class="mr-2">
                             <v-icon icon="mdi-pencil" />
                             <v-tooltip activator="parent" location="bottom">Edit auth client</v-tooltip>
@@ -41,6 +45,7 @@
         <CreateAuthClientDialog @created-auth-client="updateCounter++" />
         <UpdateAuthClientDialog v-model="authClientToUpdate" @updated-auth-client="updateCounter++" />
         <AuthClientSecretsDialog v-model="authClientToShowSecrets" />
+        <CopyTextDialog v-model="authClientIdToShow" title="Auth client id" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -49,6 +54,7 @@ import ListItem from "@/components/ListItem.vue";
 import { AuthClientInput } from "@/components/dialog/AuthClientDialogContent.vue";
 import AuthClientSecretsDialog, { AuthClientWithSecrets } from "@/components/dialog/AuthClientSecretsDialog.vue";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
+import CopyTextDialog from "@/components/dialog/CopyTextDialog.vue";
 import CreateAuthClientDialog from "@/components/dialog/CreateAuthClientDialog.vue";
 import UpdateAuthClientDialog from "@/components/dialog/UpdateAuthClientDialog.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -77,6 +83,7 @@ const client = useClient();
 const updateCounter = ref(0);
 const authClientToUpdate = ref<AuthClientInput | undefined>();
 const authClientToShowSecrets = ref<AuthClientWithSecrets>();
+const authClientIdToShow = ref<string>();
 
 const authClients = computedAsync(async () => {
     updateCounter.value;

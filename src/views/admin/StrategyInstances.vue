@@ -46,7 +46,7 @@
         </CustomList>
         <CreateStrategyInstanceDialog @created-strategy-instance="updateCounter++" />
         <UpdateStrategyInstanceDialog v-model="strategyInstanceToUpdate" @updated-strategy-instance="updateCounter++" />
-        <RedirectUrlDialog v-model="callbackUrlToShow" />
+        <CopyTextDialog v-model="callbackUrlToShow" title="Callback URL" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -54,14 +54,14 @@ import CustomList from "@/components/CustomList.vue";
 import ListItem from "@/components/ListItem.vue";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import CreateStrategyInstanceDialog from "@/components/dialog/CreateStrategyInstanceDialog.vue";
-import RedirectUrlDialog from "@/components/dialog/RedirectUrlDialog.vue";
 import UpdateStrategyInstanceDialog from "@/components/dialog/UpdateStrategyInstanceDialog.vue";
 import { useAppStore } from "@/store/app";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
 import axios from "axios";
-import { computed, ref } from "vue";
+import {  ref } from "vue";
 import { useRoute } from "vue-router";
+import CopyTextDialog from "@/components/dialog/CopyTextDialog.vue";
 
 interface StrategyInstance {
     type: string;
