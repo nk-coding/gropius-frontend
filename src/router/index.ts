@@ -1,5 +1,5 @@
 // Composables
-import { onAnyEnter, onLoginEnter, onRegisterEnter } from "@/router/navigationGuards";
+import { onAnyEnter, onLoginEnter } from "@/router/navigationGuards";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -42,6 +42,16 @@ const routes: RouteRecordRaw[] = [
                         path: "",
                         name: "admin-permissions",
                         component: () => import("../views/admin/Permissions.vue")
+                    },
+                    {
+                        path: "strategy-instances",
+                        name: "admin-strategy-instances",
+                        component: () => import("../views/admin/StrategyInstances.vue")
+                    },
+                    {
+                        path: "auth-clients",
+                        name: "admin-auth-clients",
+                        component: () => import("../views/admin/AuthClients.vue")
                     },
                     {
                         path: "graphiql",
@@ -225,19 +235,8 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/login",
         name: "login",
-        component: () => import("../views/auth/Login.vue"),
+        component: () => import("../views/RouterOnly.vue"),
         beforeEnter: onLoginEnter
-    },
-    {
-        path: "/logout",
-        name: "logout",
-        component: () => import("../views/auth/Logout.vue")
-    },
-    {
-        path: "/register",
-        name: "register",
-        component: () => import("../views/auth/Register.vue"),
-        beforeEnter: onRegisterEnter
     }
 ];
 

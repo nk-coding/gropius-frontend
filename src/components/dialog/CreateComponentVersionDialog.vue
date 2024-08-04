@@ -48,7 +48,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
-import { asyncComputed } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { IdObject } from "@/util/types";
 
@@ -84,7 +84,7 @@ const [version, versionProps] = defineField("version", fieldConfig);
 const [description, descriptionProps] = defineField("description", fieldConfig);
 
 const templatedFields = ref<Field[]>([]);
-const templateValue = asyncComputed(
+const templateValue = computedAsync(
     async () => {
         const templateRes = await withErrorMessage(async () => {
             return client.getComponentVersionTemplate({ component: props.component });
@@ -130,3 +130,8 @@ function cancelCreateComponentVersion() {
     createComponentVersionDialog.value = false;
 }
 </script>
+<style scoped>
+.wrap-input {
+    min-width: 250px;
+}
+</style>

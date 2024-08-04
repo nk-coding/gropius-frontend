@@ -22,6 +22,9 @@
             <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="<ListItem<C>>item"></slot>
             <div v-else class="placeholder-item" />
         </template>
+        <template #chip="props">
+            <slot name="chip" v-bind="props" />
+        </template>
     </v-autocomplete>
 </template>
 <script setup lang="ts" generic="T extends IdObject, C extends IdObject">

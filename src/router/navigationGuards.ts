@@ -1,114 +1,83 @@
 import { useAppStore } from "@/store/app";
-import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
+import { buildOAuthUrl, OAuthRespose, TokenScope } from "@/util/oauth";
+import { withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
-import { RouteLocationNormalized, NavigationGuardNext, RouteLocationRaw } from "vue-router";
-import { OAuthRespose, TokenScope } from "../views/auth/model";
-
-export async function handleOAuthResponse(
-    tokenResponse: OAuthRespose,
-    store = useAppStore()
-): Promise<RouteLocationRaw | boolean> {
-    store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
-
-    const scopes = tokenResponse.scope.split(" ");
-    if (scopes.includes(TokenScope.BACKEND)) {
-        return {
-            name: "home",
-            replace: true
-        };
-    }
-    if (scopes.includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
-        return {
-            name: "register",
-            replace: true
-        };
-    }
-
-    withErrorMessage(() => {
-        throw new Error(
-            `Access token has no valid known scope. Expected scope ${TokenScope.BACKEND} or ${TokenScope.LOGIN_SERVICE_REGISTER}. Got ${tokenResponse.scope}`
-        );
-    }, "Login failed.");
-    return {
-        name: "login",
-        replace: true
-    };
-}
+import { RouteLocationNormalized, RouteLocationRaw } from "vue-router";
 
 export async function onLoginEnter(
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
 ): Promise<RouteLocationRaw | boolean> {
     const oauthCode = to.query["code"] ?? "";
+    const state = JSON.parse((to.query["state"] as string | undefined) ?? "{}");
     const store = useAppStore();
-    if (await store.isLoggedIn()) {
-        return {
-            name: "logout",
-            replace: true
-        };
-    }
     if (oauthCode !== undefined && oauthCode.length > 0) {
         try {
             const tokenResponse: OAuthRespose = await withErrorMessage(
                 async () =>
                     (
-                        await axios.post("/api/login/authenticate/oauth/some_value/token", {
+                        await axios.post("/auth/oauth/token", {
                             grant_type: "authorization_code",
-                            client_id: await store.getClientId(),
-                            code: oauthCode
+                            client_id: "gropius-auth-client",
+                            code: oauthCode,
+                            code_verifier: store.codeVerifier
                         })
                     ).data,
                 "Could not login."
             );
-
-            return await handleOAuthResponse(tokenResponse, store);
+            if (state.register) {
+                withErrorMessage(async () => {
+                    await axios.post(
+                        "/auth/api/login/registration/self-link",
+                        {
+                            register_token: tokenResponse.access_token
+                        },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${await store.getAccessToken()}`
+                            }
+                        }
+                    );
+                }, "Could not link account.");
+            } else {
+                await handleOAuthResponse(tokenResponse, store);
+            }
+            return {
+                path: state.from,
+                replace: true
+            };
         } catch (err) {
             return {
-                name: "login",
+                name: "home",
                 replace: true
             };
         }
-    } else if ((await store.getValidTokenScopes()).includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
-        return {
-            name: "register",
-            replace: true
-        };
+    } else {
+        return authorizeIfRequired(to);
     }
-    return true;
-}
-
-export async function onRegisterEnter(
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalized
-): Promise<RouteLocationRaw | boolean> {
-    const tokenScope = await useAppStore().getValidTokenScopes();
-    if (!tokenScope.includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
-        return {
-            name: "login",
-            replace: true
-        };
-    }
-    return true;
 }
 
 export async function onAnyEnter(
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
 ): Promise<RouteLocationRaw | boolean> {
-    if (to.name == "login" || to.name == "register") {
+    if (to.name == "login") {
         return true;
     }
+    return await authorizeIfRequired(to);
+}
+
+async function authorizeIfRequired(to: RouteLocationNormalized) {
     const store = useAppStore();
     if (!(await store.isLoggedIn())) {
-        if (from.name == "login" || to.redirectedFrom?.name == "login") {
-            pushErrorMessage("Redirect loop. This should not happen.");
-            return false;
-        }
-        return {
-            name: "login"
-        };
+        window.location.href = await buildOAuthUrl([TokenScope.LOGIN_SERVICE, TokenScope.BACKEND], to.fullPath);
+        true;
     } else {
         store.validateUser();
     }
     return true;
+}
+
+async function handleOAuthResponse(tokenResponse: OAuthRespose, store: ReturnType<typeof useAppStore>) {
+    store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
 }

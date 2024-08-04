@@ -6,7 +6,15 @@
             class="pa-3 pb-5 manage-permission-users-dialog"
             elevation="0"
         >
-            <v-card-title class="pl-4">Manage users</v-card-title>
+            <div class="d-flex align-center">
+                <v-card-title class="pl-4">Manage users</v-card-title>
+                <v-spacer />
+                <IconButton @click="managePermissionUsersDialog = false">
+                    <v-icon icon="mdi-close" />
+                    <v-tooltip activator="parent">Close</v-tooltip>
+                </IconButton>
+            </div>
+
             <div class="d-flex align-center ma-3">
                 <GropiusUserAutocomplete label="Add user" hide-details autofocus @selected-item="addUser($event.id)" />
                 <v-switch

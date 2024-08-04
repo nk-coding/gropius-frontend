@@ -32,25 +32,8 @@
                 </v-btn>
                 <v-btn v-if="store.user != undefined" icon size="small" variant="text" class="ml-3 avatar-button">
                     <img :src="store.user.avatar" class="avatar rounded-circle" />
-                    <v-menu activator="parent">
-                        <v-card
-                            color="surface-elevated-3"
-                            rounded="lger"
-                            class="mt-2 pa-3 d-flex flex-column align-center account-card"
-                            elevation="4"
-                        >
-                            <img :src="store.user.avatar" class="large-avatar rounded-circle mb-2" />
-                            <p class="text-h5 text-on-surface text-ellipsis">Hi {{ store.user.displayName }}</p>
-                            <p class="text-medium-emphasis">
-                                {{ store.user.username }}
-                            </p>
-                            <p v-if="store.user.email" class="text-medium-emphasis text-ellipsis">
-                                {{ store.user.email }}
-                            </p>
-                            <DefaultButton variant="tonal" class="mt-3 w-100 text-ellipsis" @click="logout"
-                                >Logout</DefaultButton
-                            >
-                        </v-card>
+                    <v-menu activator="parent" :close-on-content-click="false">
+                        <AccountCard :user="store.user" />
                     </v-menu>
                 </v-btn>
             </div>
@@ -81,6 +64,7 @@ import { useTheme } from "vuetify/lib/framework.mjs";
 import SideBar, { SideBarItem } from "./SideBar.vue";
 import ErrorSnackbar from "./ErrorSnackbar.vue";
 import { useAppStore } from "@/store/app";
+import AccountCard from "./AccountCard.vue";
 
 export type TitleSegment = {
     path: RouteLocationRaw;
@@ -130,13 +114,6 @@ function updateColorMode() {
     theme.global.name.value = lightMode.value ? "light" : "dark";
 }
 
-function logout() {
-    store.setNewTokenPair("", "");
-    router.push({
-        name: "login"
-    });
-}
-
 updateColorMode();
 </script>
 <style scoped lang="scss">
@@ -161,16 +138,6 @@ updateColorMode();
 .avatar {
     width: 100%;
     height: 100%;
-}
-
-.large-avatar {
-    width: 80px;
-    height: 80px;
-}
-
-.account-card {
-    width: 300px;
-    overflow: hidden !important;
 }
 
 .text-ellipsis {

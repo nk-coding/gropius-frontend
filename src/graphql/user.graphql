@@ -11,6 +11,14 @@ query getCurrentUser {
     canCreateTemplates: hasGlobalPermission(permission: CAN_CREATE_TEMPLATES)
 }
 
+query getUser($id: ID!) {
+    node(id: $id) {
+        ... on User {
+            ...DefaultUserInfo
+        }
+    }
+}
+
 fragment DefaultUserInfo on User {
     id
     username

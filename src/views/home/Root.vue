@@ -71,6 +71,18 @@ const rightSidebarItems = computed(() => {
                 disabled = false;
                 break;
             }
+            case "admin-strategy-instances": {
+                name = "strategy instance";
+                eventName = "create-strategy-instance";
+                disabled = false;
+                break;
+            }
+            case "admin-auth-clients": {
+                name = "auth client";
+                eventName = "create-auth-client";
+                disabled = false;
+                break;
+            }
             default: {
                 throw new Error("Unknown route");
             }
@@ -100,6 +112,18 @@ const leftSidebarItems = computed(() => {
                     name: "Access",
                     color: "secondary",
                     to: { name: "admin-permissions" }
+                },
+                {
+                    icon: "mdi-cogs",
+                    name: "Strategies",
+                    color: "secondary",
+                    to: { name: "admin-strategy-instances" }
+                },
+                {
+                    icon: "mdi-cogs",
+                    name: "OAuth2",
+                    color: "secondary",
+                    to: { name: "admin-auth-clients" }
                 },
                 {
                     icon: "mdi-api",

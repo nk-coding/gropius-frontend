@@ -87,7 +87,7 @@ import { DefaultIssueIconInfoFragment } from "@/graphql/generated";
 import { computed } from "vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInputVue, { Field } from "../input/schema/TemplatedFieldsInput.vue";
-import { asyncComputed } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { IdObject } from "@/util/types";
 
@@ -149,7 +149,7 @@ const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
 });
 
 const templatedFields = ref<Field[]>([]);
-const templateValue = asyncComputed(
+const templateValue = computedAsync(
     async () => {
         if (template.value == null) {
             return null;

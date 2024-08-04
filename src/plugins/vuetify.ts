@@ -55,6 +55,10 @@ export default createVuetify({
             variant: "outlined",
             density: "comfortable"
         },
+        VCombobox: {
+            variant: "outlined",
+            density: "comfortable"
+        },
         VCheckbox: {
             density: "comfortable",
             color: "primary"

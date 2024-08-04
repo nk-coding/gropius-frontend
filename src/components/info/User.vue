@@ -9,7 +9,7 @@
             }"
         />
         <span v-if="showName" class="text-high-emphasis" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</span>
-        <v-tooltip activator="parent" location="top" class="rich-tooltip">
+        <v-tooltip v-if="showTooltip" activator="parent" location="top" class="rich-tooltip">
             <img :src="user.avatar" class="rounded-circle overlay-avatar" />
             <div class="d-flex text-body-1 text-on-surface">
                 <span class="text-on-surface">{{ user.displayName }}</span>
@@ -36,6 +36,11 @@ defineProps({
         default: true
     },
     showName: {
+        type: Boolean,
+        required: false,
+        default: true
+    },
+    showTooltip: {
         type: Boolean,
         required: false,
         default: true

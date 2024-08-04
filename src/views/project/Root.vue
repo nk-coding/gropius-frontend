@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import BaseLayout from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { asyncComputed } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import { computed, provide, ref } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
@@ -34,7 +34,7 @@ onEvent("title-segment-changed", () => {
     titleSegmentDependency.value++;
 });
 
-const project = asyncComputed(
+const project = computedAsync(
     async () => {
         if (!projectId.value) {
             return null;
