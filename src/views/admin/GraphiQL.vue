@@ -31,8 +31,8 @@ const gqlFetcher = createGraphiQLFetcher({
  * A GraphiQL component with the Explorer plugin.
  */
 function GraphiQLWithExplorer() {
-    var [query, setQuery] = React.useState("");
-    var [variables, setVariables] = React.useState("");
+    const [query, setQuery] = React.useState("");
+    const [variables, setVariables] = React.useState("");
     // @ts-ignore-next-line taken from official example, however types seem to be incorrect
     const plugin = explorerPlugin();
     const props: GraphiQLProps = {
