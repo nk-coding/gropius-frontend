@@ -22,7 +22,7 @@
             <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="<ListItem<C>>item"></slot>
             <div v-else class="placeholder-item" />
         </template>
-        <template #chip="props">
+        <template v-if="$slots.chip" #chip="props">
             <slot name="chip" v-bind="props" />
         </template>
     </v-autocomplete>
