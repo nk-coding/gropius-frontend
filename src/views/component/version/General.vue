@@ -26,32 +26,18 @@
                 <v-textarea v-model="modelValue.value" label="Description" :readonly="!component.admin" />
             </InputWrapper>
         </DetailCompartment>
-        <DetailCompartment name="Templated Fields" class="mt-4">
-            <div v-if="componentVersion.templatedFields.length == 0" class="mt-n1 text-medium-emphasis">
-                No templated fields available
-            </div>
-            <InputWrapper
-                v-for="templatedField in templatedFields"
-                :key="templatedField.name"
-                v-model="templatedField.value"
-                :readonly="!component.admin"
-                v-slot="{ modelValue }"
-                @save="save({ templatedFields: [{ name: templatedField.name, value: $event }] })"
-            >
-                <MetaForm
-                    :schema="templatedField.schema"
-                    :root-schema="templatedField.schema"
-                    v-model="modelValue.value"
-                    :readonly="!component.admin"
-                />
-            </InputWrapper>
-        </DetailCompartment>
+        <TemplatedFieldsDetailCompartment
+            :templated-node="componentVersion"
+            :readonly="!component.admin"
+            :save="save"
+            class="mt-4"
+        />
     </div>
 </template>
 <script lang="ts" setup>
 import DetailCompartment from "@/components/DetailCompartment.vue";
 import InputWrapper from "@/components/input/InputWrapper.vue";
-import MetaForm from "@/components/input/schema/MetaForm.vue";
+import TemplatedFieldsDetailCompartment from "@/components/TemplatedFieldsDetailCompartment.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { UpdateComponentVersionInput } from "@/graphql/generated";
 import { eventBusKey, trackableKey } from "@/util/keys";
@@ -82,21 +68,6 @@ const componentVersion = computedAsync(
     null,
     { shallow: false }
 );
-
-const templatedFields = computed(() => {
-    if (componentVersion.value == undefined) {
-        return [];
-    }
-    const templatedFieldsValues = new Map<string, any>();
-    for (const field of componentVersion.value.templatedFields) {
-        templatedFieldsValues.set(field.name, field.value);
-    }
-    return componentVersion.value.template.templateFieldSpecifications.map((field) => ({
-        name: field.name,
-        schema: field.value,
-        value: templatedFieldsValues.get(field.name)
-    }));
-});
 
 async function save(input: Omit<UpdateComponentVersionInput, "id">) {
     await withErrorMessage(
