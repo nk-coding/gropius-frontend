@@ -18,12 +18,7 @@
                 <v-textarea v-model="modelValue.value" label="Description" :readonly="!ims.admin" />
             </InputWrapper>
         </DetailCompartment>
-        <TemplatedFieldsDetailCompartment
-            :templated-node="ims"
-            :readonly="!ims.admin"
-            :save="save"
-            class="mt-4"
-        />
+        <TemplatedFieldsDetailCompartment :templated-node="ims" :readonly="!ims.admin" :save="save" class="mt-4" />
     </div>
 </template>
 <script lang="ts" setup>
