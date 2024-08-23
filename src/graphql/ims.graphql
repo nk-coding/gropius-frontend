@@ -1,0 +1,18 @@
+query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
+    imss(orderBy: $orderBy, first: $count, skip: $skip) {
+        nodes {
+            id
+            name
+            description
+        }
+        totalCount
+    }
+}
+
+query getFilteredIMSList($query: String!, $count: Int!) {
+    searchIMSs(query: $query, first: $count) {
+        id
+        name
+        description
+    }
+}
