@@ -1,6 +1,6 @@
 <template>
     <PaginatedList
-        name="imss"
+        name="IMSs"
         :item-manager="itemManager"
         :sort-fields="sortFields"
         :to="(ims: IMS) => imsRoute(ims)"
@@ -13,16 +13,15 @@
                 :italic-subtitle="!item.description"
             />
         </template>
-        <CreateProjectDialog @created-project="(project: IdObject) => selectProject(project)" />
+        <CreateIMSDialog @created-ims="(ims: IdObject) => selectIMS(ims)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { ClientReturnType, useClient } from "@/graphql/client";
-import { ProjectOrderField, ProjectOrder } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
-import CreateProjectDialog from "@/components/dialog/CreateProjectDialog.vue";
+import CreateIMSDialog from "@/components/dialog/CreateIMSDialog.vue";
 import { IdObject } from "@/util/types";
 import { ImsOrder } from "@/graphql/generated";
 import { ImsOrderField } from "@/graphql/generated";
@@ -62,15 +61,15 @@ const itemManager: ItemManager<IMS, ImsOrderField> = {
     }
 };
 
-function selectProject(project: IdObject) {
-    router.push(imsRoute(project));
+function selectIMS(ims: IdObject) {
+    router.push(imsRoute(ims));
 }
 
-function imsRoute(project: IdObject): RouteLocationRaw {
+function imsRoute(ims: IdObject): RouteLocationRaw {
     return {
-        name: "project",
+        name: "ims",
         params: {
-            trackable: project.id
+            ims: ims.id
         }
     };
 }

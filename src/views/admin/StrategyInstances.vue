@@ -59,7 +59,7 @@ import { useAppStore } from "@/store/app";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
 import axios from "axios";
-import {  ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import CopyTextDialog from "@/components/dialog/CopyTextDialog.vue";
 

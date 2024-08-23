@@ -1,9 +1,13 @@
+fragment DefaultIMSInfo on IMS {
+    id
+    name
+    description
+}
+
 query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
     imss(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
-            id
-            name
-            description
+            ...DefaultIMSInfo
         }
         totalCount
     }
@@ -11,8 +15,67 @@ query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
 
 query getFilteredIMSList($query: String!, $count: Int!) {
     searchIMSs(query: $query, first: $count) {
+        ...DefaultIMSInfo
+    }
+}
+
+query getIMS($id: ID!) {
+    node(id: $id) {
         id
-        name
-        description
+        ...on IMS {
+            name
+            description
+            syncTrackables: hasPermission(permission: SYNC_TRACKABLES)
+            admin: hasPermission(permission: ADMIN)
+        }
+    }
+}
+
+query getIMSGeneralDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on IMS {
+            name
+            description
+            templatedFields {
+                name
+                value
+            }
+            template {
+                templateFieldSpecifications {
+                    name
+                    value
+                }
+            }
+            admin: hasPermission(permission: ADMIN)
+        }
+    }
+}
+
+query searchIMSs($query: String!, $count: Int!, $filter: IMSFilterInput) {
+    searchIMSs(query: $query, first: $count, filter: $filter) {
+        ...DefaultIMSInfo
+    }
+}
+
+mutation createIMS($input: CreateIMSInput!) {
+    createIMS(input: $input) {
+        ims {
+            id
+        }
+    }
+}
+
+mutation updateIMS($input: UpdateIMSInput!) {
+    updateIMS(input: $input) {
+        ims {
+            id
+        }
+    }
+}
+
+mutation deleteIMS($id: ID!) {
+    deleteIMS(input: { id: $id }) {
+        __typename
     }
 }

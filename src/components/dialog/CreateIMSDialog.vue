@@ -1,8 +1,8 @@
 <template>
     <v-dialog v-model="createImsDialog" persistent width="auto">
         <TemplatedNodeDialogContent
-            item-name="ims"
-            confirmation-message="Create ims"
+            item-name="IMS"
+            confirmation-message="Create IMS"
             :form-meta="meta"
             :form-validate="validate"
             :submit-disabled="submitDisabled"
@@ -18,7 +18,7 @@
                         label="Name"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                    <ImsTemplateAutocomplete
+                    <IMSTemplateAutocomplete
                         v-model="template"
                         v-bind="templateProps"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
@@ -45,7 +45,7 @@ import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
-import ImsTemplateAutocomplete from "../input/ImsTemplateAutocomplete.vue";
+import IMSTemplateAutocomplete from "../input/IMSTemplateAutocomplete.vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { computedAsync } from "@vueuse/core";
@@ -65,8 +65,7 @@ const schema = toTypedSchema(
     yup.object().shape({
         name: yup.string().required().label("Name"),
         template: yup.string().required().label("Template"),
-        description: yup.string().notRequired().label("Description"),
-        repositoryURL: yup.string().notRequired().label("Repository URL")
+        description: yup.string().notRequired().label("Description")
     })
 );
 
@@ -85,9 +84,9 @@ const templateValue = computedAsync(
             return null;
         }
         const templateRes = await withErrorMessage(async () => {
-            return client.getImsTemplate({ id: template.value! });
+            return client.getIMSTemplate({ id: template.value! });
         }, "Error loading template");
-        const templateNode = templateRes.node as NodeReturnType<"getImsTemplate", "IMSTemplate">;
+        const templateNode = templateRes.node as NodeReturnType<"getIMSTemplate", "IMSTemplate">;
         return templateNode;
     },
     null,
@@ -116,7 +115,7 @@ const createIms = handleSubmit(async (state) => {
                 templatedFields: templatedFields.value
             }
         });
-        return res.createIms.ims;
+        return res.createIMS.ims;
     }, "Error creating ims");
     createImsDialog.value = false;
     emit("created-ims", ims);

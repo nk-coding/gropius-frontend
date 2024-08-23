@@ -36,9 +36,9 @@ const showDialog = computed({
 defineProps({
     title: {
         type: String,
-        required: true,
-    },
-})
+        required: true
+    }
+});
 
 const model = defineModel({
     type: String,

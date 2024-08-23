@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: "imss",
                 name: "imss",
-                component: () => import("../views/home/Imss.vue")
+                component: () => import("../views/home/IMSs.vue")
             },
             {
                 path: "admin",
@@ -217,6 +217,44 @@ const routes: RouteRecordRaw[] = [
                         path: ":issue",
                         name: "project-issue",
                         component: () => import("../views/issue/Issue.vue")
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        path: "/imss/:ims",
+        component: () => import("../views/ims/Root.vue"),
+        children: [
+            {
+                path: "",
+                name: "ims",
+                component: () => import("../views/ims/Projects.vue")
+            }
+        ]
+    },
+    {
+        path: "/imss/:ims",
+        component: () => import("../views/ims/Root.vue"),
+        children: [
+            {
+                path: "details",
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "ims-details-general",
+                        component: () => import("../views/ims/details/General.vue")
+                    },
+                    {
+                        path: "permissions",
+                        name: "ims-details-permissions",
+                        component: () => import("../views/ims/details/Permissions.vue")
+                    },
+                    {
+                        path: "danger",
+                        name: "ims-details-danger",
+                        component: () => import("../views/ims/details/Danger.vue")
                     }
                 ]
             }
