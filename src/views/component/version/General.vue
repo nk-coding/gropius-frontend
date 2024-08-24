@@ -18,7 +18,7 @@
                 <v-text-field v-model="modelValue.value" label="Version" :readonly="!component.admin" />
             </InputWrapper>
             <InputWrapper
-                v-model="component.description"
+                v-model="componentVersion.description"
                 v-slot="{ modelValue }"
                 @save="save({ description: $event })"
                 :readonly="!component.admin"

@@ -7,7 +7,7 @@ fragment DefaultIMSInfo on IMS {
 query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
     imss(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
-            ...DefaultIMSInfo
+            ...DefaultSyncPermissionTargetInfo
         }
         totalCount
     }
@@ -15,7 +15,7 @@ query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
 
 query getFilteredIMSList($query: String!, $count: Int!) {
     searchIMSs(query: $query, first: $count) {
-        ...DefaultIMSInfo
+        ...DefaultSyncPermissionTargetInfo
     }
 }
 

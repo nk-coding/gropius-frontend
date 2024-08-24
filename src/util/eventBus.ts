@@ -10,6 +10,7 @@ export type Events = {
     "create-label": undefined;
     "import-label": undefined;
     "create-ims": undefined;
+    "create-ims-project": undefined;
     "create-permission": undefined;
     "import-permission": undefined;
     "add-component-version-to-project": undefined;

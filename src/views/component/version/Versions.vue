@@ -45,8 +45,8 @@ const route = useRoute();
 const trackableId = computed(() => route.params.trackable as string);
 
 const sortFields = {
-    "[Default]": ComponentVersionOrderField.Id,
-    Name: ComponentVersionOrderField.Name
+    Name: ComponentVersionOrderField.Name,
+    "[Default]": ComponentVersionOrderField.Id
 };
 
 const itemManager: ItemManager<ComponentVersion, ComponentVersionOrderField> = {

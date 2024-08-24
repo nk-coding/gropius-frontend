@@ -11,7 +11,11 @@
                 :title="item.name"
                 :subtitle="item.description || 'No description provided'"
                 :italic-subtitle="!item.description"
-            />
+            >
+                <template #append>
+                    <SyncAllowedControls :target="item" />
+                </template>
+            </ListItem>
         </template>
         <CreateIMSDialog @created-ims="(ims: IdObject) => selectIMS(ims)" />
     </PaginatedList>
@@ -25,6 +29,7 @@ import CreateIMSDialog from "@/components/dialog/CreateIMSDialog.vue";
 import { IdObject } from "@/util/types";
 import { ImsOrder } from "@/graphql/generated";
 import { ImsOrderField } from "@/graphql/generated";
+import SyncAllowedControls from "@/components/input/SyncAllowedControls.vue";
 
 type IMS = ClientReturnType<"getIMSList">["imss"]["nodes"][0];
 
@@ -74,9 +79,3 @@ function imsRoute(ims: IdObject): RouteLocationRaw {
     };
 }
 </script>
-<style scoped lang="scss">
-@use "@/styles/settings";
-.issue-container {
-    min-width: settings.$icon-with-number-width;
-}
-</style>

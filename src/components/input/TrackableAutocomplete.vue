@@ -1,5 +1,5 @@
 <template>
-    <FetchingAutocomplete mode="add" :fetch="searchTrackables" item-title="name" item-value="id">
+    <FetchingAutocomplete :mode="mode" :fetch="searchTrackables" item-title="name" item-value="id">
         <template #item="{ props, item: trackable }">
             <v-list-item :title="trackable.raw.name" :subtitle="trackable.raw.description" v-bind="props">
                 <template #prepend>
@@ -31,6 +31,11 @@ const props = defineProps({
     filter: {
         type: Object as PropType<TrackableFilterInput>,
         required: false
+    },
+    mode: {
+        type: String as PropType<"add" | "model">,
+        required: false,
+        default: "add"
     }
 });
 

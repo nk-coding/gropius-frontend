@@ -92,6 +92,25 @@ const leftSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name?.toString().startsWith("ims-project-")) {
+        return [
+            [
+                {
+                    icon: "mdi-home",
+                    name: "General",
+                    color: "secondary",
+                    to: imsPath("ims-project-general")
+                }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: imsPath("ims-project-danger")
+                }
+            ]
+        ];
     } else {
         return [];
     }
@@ -115,6 +134,19 @@ const rightSidebarItems = computed(() => {
                     color: "secondary",
                     onClick: () => {
                         eventBus?.emit("import-permission", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "ims") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create IMS project`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-ims-project", undefined);
                     }
                 }
             ]

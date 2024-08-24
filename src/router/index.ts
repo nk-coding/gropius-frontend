@@ -228,8 +228,30 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: "",
-                name: "ims",
-                component: () => import("../views/ims/Projects.vue")
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "ims",
+                        component: () => import("../views/ims/project/Projects.vue")
+                    },
+                    {
+                        path: "project/:project",
+                        component: () => import("../views/RouterOnly.vue"),
+                        children: [
+                            {
+                                path: "",
+                                name: "ims-project-general",
+                                component: () => import("../views/ims/project/General.vue")
+                            },
+                            {
+                                path: "danger",
+                                name: "ims-project-danger",
+                                component: () => import("../views/ims/project/Danger.vue")
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },

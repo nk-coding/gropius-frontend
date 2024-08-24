@@ -1,14 +1,14 @@
 <template>
-    <v-dialog v-model="createIMSDialog" persistent width="auto">
+    <v-dialog v-model="createIMSProjectDialog" persistent width="auto">
         <TemplatedNodeDialogContent
-            item-name="IMS"
-            confirmation-message="Create IMS"
+            item-name="IMS project"
+            confirmation-message="Create IMS project"
             :form-meta="meta"
             :form-validate="validate"
             :submit-disabled="submitDisabled"
             color="surface-elevated-3"
             @cancel="cancelCreateIMS"
-            @confirm="createIMS"
+            @confirm="createIMSProject"
         >
             <template #general>
                 <div class="d-flex flex-wrap mx-n2">
@@ -18,9 +18,17 @@
                         label="Name"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                    <IMSTemplateAutocomplete
-                        v-model="template"
-                        v-bind="templateProps"
+                    <IMSAutocomplete
+                        v-if="props.ims == undefined"
+                        v-model="ims"
+                        v-bind="imsProps"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    />
+                    <TrackableAutocomplete
+                        v-if="props.trackable == undefined"
+                        v-model="trackable"
+                        mode="model"
+                        v-bind="trackableProps"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
                 </div>
@@ -45,49 +53,68 @@ import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
-import IMSTemplateAutocomplete from "../input/IMSTemplateAutocomplete.vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { computedAsync } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { watch } from "vue";
 import { IdObject } from "@/util/types";
+import TrackableAutocomplete from "../input/TrackableAutocomplete.vue";
+import IMSAutocomplete from "../input/IMSAutocomplete.vue";
 
-const createIMSDialog = ref(false);
+const createIMSProjectDialog = ref(false);
 const client = useClient();
 const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
+const props = defineProps({
+    ims: {
+        type: String,
+        required: false
+    },
+    trackable: {
+        type: String,
+        required: false
+    }
+});
+
 const emit = defineEmits<{
-    (event: "created-ims", ims: IdObject): void;
+    (event: "created-ims-project", ims: IdObject): void;
 }>();
 
 const schema = toTypedSchema(
     yup.object().shape({
         name: yup.string().required().label("Name"),
-        template: yup.string().required().label("Template"),
+        ims: yup.string().required().label("IMS"),
+        trackable: yup.string().required().label("Trackable"),
         description: yup.string().notRequired().label("Description")
     })
 );
 
 const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
-    validationSchema: schema
+    validationSchema: schema,
+    initialValues: {
+        ims: props.ims,
+        trackable: props.trackable
+    }
 });
 
 const [name, nameProps] = defineField("name", fieldConfig);
-const [template, templateProps] = defineField("template", fieldConfig);
+const [ims, imsProps] = defineField("ims", fieldConfig);
+const [trackable, trackableProps] = defineField("trackable", fieldConfig);
 const [description, descriptionProps] = defineField("description", fieldConfig);
 
 const templatedFields = ref<Field[]>([]);
 const templateValue = computedAsync(
     async () => {
-        if (template.value == null) {
+        const id = props.ims ?? ims.value;
+        if (id == null) {
             return null;
         }
         const templateRes = await withErrorMessage(async () => {
-            return client.getIMSTemplate({ id: template.value! });
-        }, "Error loading template");
-        const templateNode = templateRes.node as NodeReturnType<"getIMSTemplate", "IMSTemplate">;
-        return templateNode;
+            return client.getIMSProjectTemplate({ id });
+        }, "Error loading IMS");
+        const imsNode = templateRes.node as NodeReturnType<"getIMSProjectTemplate", "IMS">;
+        return imsNode.template.imsProjectTemplate;
     },
     null,
     { shallow: false }
@@ -101,28 +128,28 @@ watch(templateValue, (newValue, oldValue) => {
     }
 });
 
-onEvent("create-ims", () => {
+onEvent("create-ims-project", () => {
     resetForm();
-    createIMSDialog.value = true;
+    createIMSProjectDialog.value = true;
 });
 
-const createIMS = handleSubmit(async (state) => {
+const createIMSProject = handleSubmit(async (state) => {
     const ims = await blockWithErrorMessage(async () => {
-        const res = await client.createIMS({
+        const res = await client.createIMSProject({
             input: {
                 ...state,
                 description: state.description ?? "",
                 templatedFields: templatedFields.value
             }
         });
-        return res.createIMS.ims;
-    }, "Error creating IMS");
-    createIMSDialog.value = false;
-    emit("created-ims", ims);
+        return res.createIMSProject.imsProject;
+    }, "Error creating IMS project");
+    createIMSProjectDialog.value = false;
+    emit("created-ims-project", ims);
 });
 
 function cancelCreateIMS() {
-    createIMSDialog.value = false;
+    createIMSProjectDialog.value = false;
 }
 </script>
 <style scoped>

@@ -8,6 +8,16 @@ fragment DefaultIMSTemplateInfo on IMSTemplate {
     }
 }
 
+fragment DefaultIMSProjectTemplateInfo on IMSProjectTemplate {
+    id
+    name
+    description
+    templateFieldSpecifications {
+        name
+        value
+    }
+}
+
 query searchIMSTemplates($query: String!, $count: Int!) {
     searchIMSTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
         ...DefaultIMSTemplateInfo
@@ -26,6 +36,18 @@ query getIMSTemplate($id: ID!) {
     node(id: $id) {
         ...on IMSTemplate {
             ...DefaultIMSTemplateInfo
+        }
+    }
+}
+
+query getIMSProjectTemplate($id: ID!) {
+    node(id: $id) {
+        ...on IMS {
+            template {
+                imsProjectTemplate {
+                    ...DefaultIMSProjectTemplateInfo
+                }
+            }
         }
     }
 }

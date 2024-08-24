@@ -4500,6 +4500,10 @@ export type Ims = BaseNode &
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
+        /** Checks if the current user allows to sync other users' data to this target */
+        isSyncOthersAllowed: Scalars["Boolean"]["output"];
+        /** Checks if the current user allows to sync their data to this target */
+        isSyncSelfAllowed: Scalars["Boolean"]["output"];
         /** The name of this entity. */
         name: Scalars["String"]["output"];
         /** Permissions for this IMS. */
@@ -5092,6 +5096,10 @@ export type ImsProject = BaseNode &
         ims?: Maybe<Ims>;
         /** The IMSIssues synced to by this project. */
         imsIssues: ImsIssueConnection;
+        /** Checks if the current user allows to sync other users' data to this target */
+        isSyncOthersAllowed: Scalars["Boolean"]["output"];
+        /** Checks if the current user allows to sync their data to this target */
+        isSyncSelfAllowed: Scalars["Boolean"]["output"];
         /** The name of this entity. */
         name: Scalars["String"]["output"];
         /** The users which allow to sync the data of other users to this target. */
@@ -13965,6 +13973,10 @@ export type SyncPermissionTarget = {
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
+    /** Checks if the current user allows to sync other users' data to this target */
+    isSyncOthersAllowed: Scalars["Boolean"]["output"];
+    /** Checks if the current user allows to sync their data to this target */
+    isSyncSelfAllowed: Scalars["Boolean"]["output"];
     /** The name of this entity. */
     name: Scalars["String"]["output"];
     /** The users which allow to sync the data of other users to this target. */
@@ -18039,7 +18051,14 @@ export type GetImsListQuery = {
     imss: {
         __typename?: "IMSConnection";
         totalCount: number;
-        nodes: Array<{ __typename?: "IMS"; id: string; name: string; description: string }>;
+        nodes: Array<{
+            __typename: "IMS";
+            id: string;
+            name: string;
+            description: string;
+            isSyncSelfAllowed: boolean;
+            isSyncOthersAllowed: boolean;
+        }>;
     };
 };
 
@@ -18050,7 +18069,14 @@ export type GetFilteredImsListQueryVariables = Exact<{
 
 export type GetFilteredImsListQuery = {
     __typename?: "Query";
-    searchIMSs: Array<{ __typename?: "IMS"; id: string; name: string; description: string }>;
+    searchIMSs: Array<{
+        __typename: "IMS";
+        id: string;
+        name: string;
+        description: string;
+        isSyncSelfAllowed: boolean;
+        isSyncOthersAllowed: boolean;
+    }>;
 };
 
 export type GetImsQueryVariables = Exact<{
@@ -18562,8 +18588,276 @@ export type CreateImsPermissionMutation = {
     };
 };
 
+export type DefaultImsProjectInfoFragment = {
+    __typename: "IMSProject";
+    id: string;
+    name: string;
+    description: string;
+    isSyncSelfAllowed: boolean;
+    isSyncOthersAllowed: boolean;
+    ims?: { __typename?: "IMS"; name: string } | null;
+};
+
+export type GetImsProjectListFromImsQueryVariables = Exact<{
+    orderBy: Array<ImsProjectOrder> | ImsProjectOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    ims: Scalars["ID"]["input"];
+}>;
+
+export type GetImsProjectListFromImsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | {
+              __typename?: "IMS";
+              projects: {
+                  __typename?: "IMSProjectConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename: "IMSProject";
+                      id: string;
+                      name: string;
+                      description: string;
+                      isSyncSelfAllowed: boolean;
+                      isSyncOthersAllowed: boolean;
+                      ims?: { __typename?: "IMS"; name: string } | null;
+                  }>;
+              };
+          }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type GetFilteredImsProjectListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    filter: ImsProjectFilterInput;
+}>;
+
+export type GetFilteredImsProjectListQuery = {
+    __typename?: "Query";
+    searchIMSProjects: Array<{
+        __typename: "IMSProject";
+        id: string;
+        name: string;
+        description: string;
+        isSyncSelfAllowed: boolean;
+        isSyncOthersAllowed: boolean;
+        ims?: { __typename?: "IMS"; name: string } | null;
+    }>;
+};
+
+export type GetImsProjectGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetImsProjectGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | {
+              __typename?: "IMSProject";
+              name: string;
+              description: string;
+              id: string;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              template: {
+                  __typename?: "IMSProjectTemplate";
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+              ims?: { __typename?: "IMS"; syncTrackables: boolean } | null;
+              trackable:
+                  | { __typename?: "Component"; manageIMS: boolean }
+                  | { __typename?: "Project"; manageIMS: boolean };
+          }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
+export type CreateImsProjectMutationVariables = Exact<{
+    input: CreateImsProjectInput;
+}>;
+
+export type CreateImsProjectMutation = {
+    __typename?: "Mutation";
+    createIMSProject: { __typename?: "CreateIMSProjectPayload"; imsProject: { __typename?: "IMSProject"; id: string } };
+};
+
+export type UpdateImsProjectMutationVariables = Exact<{
+    input: UpdateImsProjectInput;
+}>;
+
+export type UpdateImsProjectMutation = {
+    __typename?: "Mutation";
+    updateIMSProject: { __typename?: "UpdateIMSProjectPayload"; imsProject: { __typename?: "IMSProject"; id: string } };
+};
+
+export type DeleteImsProjectMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteImsProjectMutation = {
+    __typename?: "Mutation";
+    deleteIMSProject: { __typename: "DeleteNodePayload" };
+};
+
 export type DefaultImsTemplateInfoFragment = {
     __typename?: "IMSTemplate";
+    id: string;
+    name: string;
+    description: string;
+    templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+};
+
+export type DefaultImsProjectTemplateInfoFragment = {
+    __typename?: "IMSProjectTemplate";
     id: string;
     name: string;
     description: string;
@@ -18645,6 +18939,108 @@ export type GetImsTemplateQuery = {
               description: string;
               templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
           }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type GetImsProjectTemplateQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetImsProjectTemplateQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | {
+              __typename?: "IMS";
+              template: {
+                  __typename?: "IMSTemplate";
+                  imsProjectTemplate: {
+                      __typename?: "IMSProjectTemplate";
+                      id: string;
+                      name: string;
+                      description: string;
+                      templateFieldSpecifications: Array<{
+                          __typename?: "JSONField";
+                          name: string;
+                          value?: any | null;
+                      }>;
+                  };
+              };
+          }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
         | { __typename?: "IMSUser" }
         | { __typename?: "IMSUserTemplate" }
         | { __typename?: "IncomingRelationTypeChangedEvent" }
@@ -23101,6 +23497,40 @@ export type DefaultRelationTemplateInfoFragment = {
     description: string;
 };
 
+type DefaultSyncPermissionTargetInfo_Ims_Fragment = {
+    __typename: "IMS";
+    id: string;
+    name: string;
+    description: string;
+    isSyncSelfAllowed: boolean;
+    isSyncOthersAllowed: boolean;
+};
+
+type DefaultSyncPermissionTargetInfo_ImsProject_Fragment = {
+    __typename: "IMSProject";
+    id: string;
+    name: string;
+    description: string;
+    isSyncSelfAllowed: boolean;
+    isSyncOthersAllowed: boolean;
+};
+
+export type DefaultSyncPermissionTargetInfoFragment =
+    | DefaultSyncPermissionTargetInfo_Ims_Fragment
+    | DefaultSyncPermissionTargetInfo_ImsProject_Fragment;
+
+export type UpdateSyncPermissionsMutationVariables = Exact<{
+    input: UpdateSyncPermissionsInput;
+}>;
+
+export type UpdateSyncPermissionsMutation = {
+    __typename?: "Mutation";
+    updateSyncPermissions: {
+        __typename?: "UpdateSyncPermissionsPayload";
+        syncPermissionTarget: { __typename: "IMS" } | { __typename: "IMSProject" };
+    };
+};
+
 type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
     __typename: "AddedAffectedEntityEvent";
     id: string;
@@ -25312,8 +25742,41 @@ export const DefaultImsPermissionInfoFragmentDoc = gql`
         }
     }
 `;
+export const DefaultSyncPermissionTargetInfoFragmentDoc = gql`
+    fragment DefaultSyncPermissionTargetInfo on SyncPermissionTarget {
+        __typename
+        id
+        name
+        description
+        isSyncSelfAllowed
+        isSyncOthersAllowed
+    }
+`;
+export const DefaultImsProjectInfoFragmentDoc = gql`
+    fragment DefaultIMSProjectInfo on IMSProject {
+        id
+        name
+        description
+        ims {
+            name
+        }
+        ...DefaultSyncPermissionTargetInfo
+    }
+    ${DefaultSyncPermissionTargetInfoFragmentDoc}
+`;
 export const DefaultImsTemplateInfoFragmentDoc = gql`
     fragment DefaultIMSTemplateInfo on IMSTemplate {
+        id
+        name
+        description
+        templateFieldSpecifications {
+            name
+            value
+        }
+    }
+`;
+export const DefaultImsProjectTemplateInfoFragmentDoc = gql`
+    fragment DefaultIMSProjectTemplateInfo on IMSProjectTemplate {
         id
         name
         description
@@ -26595,20 +27058,20 @@ export const GetImsListDocument = gql`
     query getIMSList($orderBy: [IMSOrder!]!, $count: Int!, $skip: Int!) {
         imss(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
-                ...DefaultIMSInfo
+                ...DefaultSyncPermissionTargetInfo
             }
             totalCount
         }
     }
-    ${DefaultImsInfoFragmentDoc}
+    ${DefaultSyncPermissionTargetInfoFragmentDoc}
 `;
 export const GetFilteredImsListDocument = gql`
     query getFilteredIMSList($query: String!, $count: Int!) {
         searchIMSs(query: $query, first: $count) {
-            ...DefaultIMSInfo
+            ...DefaultSyncPermissionTargetInfo
         }
     }
-    ${DefaultImsInfoFragmentDoc}
+    ${DefaultSyncPermissionTargetInfoFragmentDoc}
 `;
 export const GetImsDocument = gql`
     query getIMS($id: ID!) {
@@ -26761,6 +27224,81 @@ export const CreateImsPermissionDocument = gql`
         }
     }
 `;
+export const GetImsProjectListFromImsDocument = gql`
+    query getIMSProjectListFromIMS($orderBy: [IMSProjectOrder!]!, $count: Int!, $skip: Int!, $ims: ID!) {
+        node(id: $ims) {
+            ... on IMS {
+                projects(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...DefaultIMSProjectInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${DefaultImsProjectInfoFragmentDoc}
+`;
+export const GetFilteredImsProjectListDocument = gql`
+    query getFilteredIMSProjectList($query: String!, $count: Int!, $filter: IMSProjectFilterInput!) {
+        searchIMSProjects(query: $query, first: $count, filter: $filter) {
+            ...DefaultIMSProjectInfo
+        }
+    }
+    ${DefaultImsProjectInfoFragmentDoc}
+`;
+export const GetImsProjectGeneralDetailsDocument = gql`
+    query getIMSProjectGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on IMSProject {
+                name
+                description
+                templatedFields {
+                    name
+                    value
+                }
+                template {
+                    templateFieldSpecifications {
+                        name
+                        value
+                    }
+                }
+                ims {
+                    syncTrackables: hasPermission(permission: SYNC_TRACKABLES)
+                }
+                trackable {
+                    manageIMS: hasPermission(permission: MANAGE_IMS)
+                }
+            }
+        }
+    }
+`;
+export const CreateImsProjectDocument = gql`
+    mutation createIMSProject($input: CreateIMSProjectInput!) {
+        createIMSProject(input: $input) {
+            imsProject {
+                id
+            }
+        }
+    }
+`;
+export const UpdateImsProjectDocument = gql`
+    mutation updateIMSProject($input: UpdateIMSProjectInput!) {
+        updateIMSProject(input: $input) {
+            imsProject {
+                id
+            }
+        }
+    }
+`;
+export const DeleteImsProjectDocument = gql`
+    mutation deleteIMSProject($id: ID!) {
+        deleteIMSProject(input: { id: $id }) {
+            __typename
+        }
+    }
+`;
 export const SearchImsTemplatesDocument = gql`
     query searchIMSTemplates($query: String!, $count: Int!) {
         searchIMSTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
@@ -26788,6 +27326,20 @@ export const GetImsTemplateDocument = gql`
         }
     }
     ${DefaultImsTemplateInfoFragmentDoc}
+`;
+export const GetImsProjectTemplateDocument = gql`
+    query getIMSProjectTemplate($id: ID!) {
+        node(id: $id) {
+            ... on IMS {
+                template {
+                    imsProjectTemplate {
+                        ...DefaultIMSProjectTemplateInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultImsProjectTemplateInfoFragmentDoc}
 `;
 export const GetIssueListDocument = gql`
     query getIssueList(
@@ -27567,6 +28119,15 @@ export const SearchRelationTemplatesDocument = gql`
         }
     }
     ${DefaultRelationTemplateInfoFragmentDoc}
+`;
+export const UpdateSyncPermissionsDocument = gql`
+    mutation updateSyncPermissions($input: UpdateSyncPermissionsInput!) {
+        updateSyncPermissions(input: $input) {
+            syncPermissionTarget {
+                __typename
+            }
+        }
+    }
 `;
 export const SearchTrackablesDocument = gql`
     query searchTrackables($query: String!, $count: Int!, $filter: TrackableFilterInput) {
@@ -28591,6 +29152,96 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        getIMSProjectListFromIMS(
+            variables: GetImsProjectListFromImsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetImsProjectListFromImsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetImsProjectListFromImsQuery>(GetImsProjectListFromImsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getIMSProjectListFromIMS",
+                "query",
+                variables
+            );
+        },
+        getFilteredIMSProjectList(
+            variables: GetFilteredImsProjectListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredImsProjectListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredImsProjectListQuery>(GetFilteredImsProjectListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredIMSProjectList",
+                "query",
+                variables
+            );
+        },
+        getIMSProjectGeneralDetails(
+            variables: GetImsProjectGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetImsProjectGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetImsProjectGeneralDetailsQuery>(GetImsProjectGeneralDetailsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getIMSProjectGeneralDetails",
+                "query",
+                variables
+            );
+        },
+        createIMSProject(
+            variables: CreateImsProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateImsProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateImsProjectMutation>(CreateImsProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createIMSProject",
+                "mutation",
+                variables
+            );
+        },
+        updateIMSProject(
+            variables: UpdateImsProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateImsProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateImsProjectMutation>(UpdateImsProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateIMSProject",
+                "mutation",
+                variables
+            );
+        },
+        deleteIMSProject(
+            variables: DeleteImsProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteImsProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteImsProjectMutation>(DeleteImsProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteIMSProject",
+                "mutation",
+                variables
+            );
+        },
         searchIMSTemplates(
             variables: SearchImsTemplatesQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -28632,6 +29283,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIMSTemplate",
+                "query",
+                variables
+            );
+        },
+        getIMSProjectTemplate(
+            variables: GetImsProjectTemplateQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetImsProjectTemplateQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetImsProjectTemplateQuery>(GetImsProjectTemplateDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getIMSProjectTemplate",
                 "query",
                 variables
             );
@@ -29599,6 +30265,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "searchRelationTemplates",
                 "query",
+                variables
+            );
+        },
+        updateSyncPermissions(
+            variables: UpdateSyncPermissionsMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateSyncPermissionsMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateSyncPermissionsMutation>(UpdateSyncPermissionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateSyncPermissions",
+                "mutation",
                 variables
             );
         },
