@@ -78,7 +78,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (event: "created-ims-project", ims: IdObject): void;
+    (event: "created-ims-project", ims: IdObject & { ims: IdObject }): void;
 }>();
 
 const schema = toTypedSchema(
@@ -145,7 +145,7 @@ const createIMSProject = handleSubmit(async (state) => {
         return res.createIMSProject.imsProject;
     }, "Error creating IMS project");
     createIMSProjectDialog.value = false;
-    emit("created-ims-project", ims);
+    emit("created-ims-project", { id: ims.id, ims: { id: state.ims } });
 });
 
 function cancelCreateIMS() {

@@ -94,7 +94,12 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: "labels",
                         name: "component-details-labels",
-                        component: () => import("../views/label/Labels.vue")
+                        component: () => import("../views/trackable/Labels.vue")
+                    },
+                    {
+                        path: "sync",
+                        name: "component-details-sync",
+                        component: () => import("../views/trackable/IMSProjects.vue")
                     },
                     {
                         path: "permissions",
@@ -185,7 +190,12 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: "labels",
                         name: "project-details-labels",
-                        component: () => import("../views/label/Labels.vue")
+                        component: () => import("../views/trackable/Labels.vue")
+                    },
+                    {
+                        path: "sync",
+                        name: "project-details-sync",
+                        component: () => import("../views/trackable/IMSProjects.vue")
                     },
                     {
                         path: "permissions",

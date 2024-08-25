@@ -14,7 +14,7 @@
     </v-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 defineProps({
     title: {
@@ -35,9 +35,22 @@ defineProps({
     }
 });
 
+const model = defineModel({
+    type: Boolean,
+    default: false
+});
+
 const emit = defineEmits(["confirm", "cancel"]);
 
-const dialog = ref(false);
+const dialog = ref(model.value);
+
+watch(model, (value) => {
+    dialog.value = value;
+});
+
+watch(dialog, (value) => {
+    model.value = value;
+});
 
 function cancel() {
     dialog.value = false;

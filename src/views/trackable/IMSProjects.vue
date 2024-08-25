@@ -3,7 +3,9 @@
         name="IMS projects"
         :item-manager="itemManager"
         :sort-fields="sortFields"
-        :to="(imsProject: IMSProject) => imsProjectRoute(imsProject)"
+        :to="
+            (imsProject: IMSProject) => (imsProject.ims ? imsProjectRoute(imsProject.id, imsProject.ims.id) : undefined)
+        "
         query-param-prefix=""
     >
         <template #item="{ item }">
@@ -18,8 +20,8 @@
             </ListItem>
         </template>
         <CreateIMSProjectDialog
-            :ims="ims"
-            @created-ims-project="(imsProject: IdObject) => selectIMSProject(imsProject)"
+            :trackable="trackable"
+            @created-ims-project="(imsProject) => selectIMSProject(imsProject)"
         />
     </PaginatedList>
 </template>
@@ -40,10 +42,11 @@ const client = useClient();
 const router = useRouter();
 const route = useRoute();
 
-const ims = computed(() => route.params.ims as string);
+const trackable = computed(() => route.params.trackable as string);
 
 const sortFields = {
     Name: ImsProjectOrderField.Name,
+    IMS: [ImsProjectOrderField.ImsName, ImsProjectOrderField.ImsId],
     "[Default]": ImsProjectOrderField.Id
 };
 
@@ -56,35 +59,35 @@ const itemManager: ItemManager<IMSProject, ImsProjectOrderField> = {
     ): Promise<[IMSProject[], number]> {
         if (filter == undefined) {
             const res = (
-                await client.getIMSProjectListFromIMS({
+                await client.getIMSProjectListFromTrackable({
                     orderBy,
                     count,
                     skip: page * count,
-                    ims: ims.value
+                    trackable: trackable.value
                 })
-            ).node as NodeReturnType<"getIMSProjectListFromIMS", "IMS">;
-            return [res.projects.nodes, res.projects.totalCount];
+            ).node as NodeReturnType<"getIMSProjectListFromTrackable", "Component">;
+            return [res.syncsTo.nodes, res.syncsTo.totalCount];
         } else {
             const res = await client.getFilteredIMSProjectList({
                 query: filter,
                 count,
-                filter: { ims: { id: { eq: ims.value } } }
+                filter: { trackable: { id: { eq: trackable.value } } }
             });
             return [res.searchIMSProjects, res.searchIMSProjects.length];
         }
     }
 };
 
-function selectIMSProject(imsProject: IdObject) {
-    router.push(imsProjectRoute(imsProject));
+function selectIMSProject(imsProject: IdObject & { ims: IdObject }) {
+    router.push(imsProjectRoute(imsProject.id, imsProject.ims.id));
 }
 
-function imsProjectRoute(imsProject: IdObject): RouteLocationRaw {
+function imsProjectRoute(id: string, ims: string): RouteLocationRaw {
     return {
         name: "ims-project-general",
         params: {
-            ims: ims.value,
-            project: imsProject.id
+            ims,
+            project: id
         }
     };
 }

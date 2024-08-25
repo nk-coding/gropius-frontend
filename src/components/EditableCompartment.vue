@@ -41,7 +41,7 @@
             <div class="pseudo-overlay-content"></div>
         </v-overlay>
         <ConfirmationDialog
-            ref="confirmationDialog"
+            v-model="confirmationDialog"
             title="Discard changes"
             message="Discard unsaved changes?"
             :activator="undefined"
@@ -86,12 +86,12 @@ const emit = defineEmits<{
 }>();
 
 const editMode = ref(false);
-const confirmationDialog = ref<InstanceType<typeof ConfirmationDialog>>();
+const confirmationDialog = ref(false);
 const compartmentSheet = ref<VSheet>();
 
 watch(
     () => props.modelValue,
-    (value) => {
+    () => {
         if (editMode.value && props.closeOnValueChange) {
             closeEditMode();
         }
@@ -104,7 +104,7 @@ function onClickOutside(e: MouseEvent) {
             return;
         }
         if (props.hasUnsavedChanges) {
-            confirmationDialog.value!.dialog = true;
+            confirmationDialog.value = true;
         } else {
             closeEditMode();
         }

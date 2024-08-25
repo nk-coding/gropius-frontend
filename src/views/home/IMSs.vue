@@ -13,7 +13,7 @@
                 :italic-subtitle="!item.description"
             >
                 <template #append>
-                    <SyncAllowedControls :target="item" />
+                    <SyncSelfAllowedSwitch :target="item" />
                 </template>
             </ListItem>
         </template>
@@ -29,7 +29,7 @@ import CreateIMSDialog from "@/components/dialog/CreateIMSDialog.vue";
 import { IdObject } from "@/util/types";
 import { ImsOrder } from "@/graphql/generated";
 import { ImsOrderField } from "@/graphql/generated";
-import SyncAllowedControls from "@/components/input/SyncAllowedControls.vue";
+import SyncSelfAllowedSwitch from "@/components/input/SyncSelfAllowedSwitch.vue";
 
 type IMS = ClientReturnType<"getIMSList">["imss"]["nodes"][0];
 

@@ -55,7 +55,7 @@ function imsPath(name: string): RouteLocationRaw {
 }
 
 const titleSegments = computed(() => [
-    { icon: "$component", path: "/imss" },
+    { icon: "$ims", path: "/imss" },
     { name: ims.value?.name ?? "", path: imsPath("") }
 ]);
 

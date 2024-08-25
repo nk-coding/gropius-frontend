@@ -95,6 +95,13 @@ const leftSidebarItems = computed(() => {
                     to: componentPath("component-details-labels")
                 },
                 {
+                    icon: "$ims",
+                    name: "Syncs to",
+                    color: "secondary",
+                    to: componentPath("component-details-sync"),
+                    disabled: !(component?.value?.manageIMS ?? false)
+                },
+                {
                     icon: "mdi-shield-lock",
                     name: "Access",
                     color: "secondary",
@@ -200,6 +207,19 @@ const rightSidebarItems = computed(() => {
                     disabled: !(component?.value?.manageLabels ?? false),
                     onClick: () => {
                         eventBus?.emit("import-label", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "component-details-sync") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create IMS project`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-ims-project", undefined);
                     }
                 }
             ]

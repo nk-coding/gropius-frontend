@@ -1,6 +1,8 @@
 <template>
     <div class="pa-4 h-100 overflow-y-auto">
         <DetailCompartment name="Danger Zone" color="error-container">
+            <SyncOthersAllowedSwitch :target="imsId" />
+            <v-divider class="mb-3 mt-1" />
             <DefaultButton color="error">
                 Delete IMS
                 <ConfirmationDialog
@@ -16,6 +18,7 @@
 <script lang="ts" setup>
 import DetailCompartment from "@/components/DetailCompartment.vue";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
+import SyncOthersAllowedSwitch from "@/components/input/SyncOthersAllowedSwitch.vue";
 import { useClient } from "@/graphql/client";
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
