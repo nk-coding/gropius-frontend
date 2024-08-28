@@ -25,6 +25,14 @@ query searchProjects($query: String!, $count: Int!, $filter: ProjectFilterInput)
     }
 }
 
+query firstProjects($count: Int!, $filter: ProjectFilterInput) {
+    projects(first: $count, filter: $filter) {
+        nodes {
+            ...DefaultTrackableInfo
+        }
+    }
+}
+
 query getProject($id: ID!) {
     node(id: $id) {
         id

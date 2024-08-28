@@ -29,7 +29,8 @@ async function searchIMSs(filter: string, count: number): Promise<DefaultImsInfo
             const res = await client.searchIMSs({ query, count, filter: props.filter });
             return res.searchIMSs;
         } else {
-            return [];
+            const res = await client.firstIMSs({ count, filter: props.filter });
+            return res.imss.nodes;
         }
     }, "Error searching IMSs");
     return searchRes;

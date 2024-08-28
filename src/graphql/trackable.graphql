@@ -17,6 +17,14 @@ query searchTrackables($query: String!, $count: Int!, $filter: TrackableFilterIn
     }
 }
 
+query firstTrackables($count: Int!, $filter: TrackableFilterInput) {
+    trackables(first: $count, filter: $filter) {
+        nodes {
+            ...DefaultTrackableInfo
+        }
+    }
+}
+
 mutation addIssueToTrackable($issue: ID!, $trackable: ID!) {
     addIssueToTrackable(input: { issue: $issue, trackable: $trackable }) {
         addedToTrackableEvent {

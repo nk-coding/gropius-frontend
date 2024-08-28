@@ -66,7 +66,8 @@ async function searchProjects(filter: string, count: number): Promise<DefaultTra
             const res = await client.searchProjects({ query, count });
             return res.searchProjects;
         } else {
-            return [];
+            const res = await client.firstProjects({ count });
+            return res.projects.nodes;
         }
     }, "Error searching projects");
 }

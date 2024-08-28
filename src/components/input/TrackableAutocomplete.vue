@@ -48,7 +48,8 @@ async function searchTrackables(filter: string, count: number): Promise<DefaultT
             const res = await client.searchTrackables({ query, count, filter: props.filter });
             return res.searchTrackables;
         } else {
-            return [];
+            const res = await client.firstTrackables({ count, filter: props.filter });
+            return res.trackables.nodes;
         }
     }, "Error searching trackables");
     const ignoredTrackables = new Set(props.ignore);

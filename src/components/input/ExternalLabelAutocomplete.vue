@@ -66,7 +66,8 @@ async function searchTrackables(filter: string, count: number): Promise<DefaultT
             const res = await client.searchTrackables({ query, count });
             return res.searchTrackables;
         } else {
-            return [];
+            const res = await client.firstTrackables({ count });
+            return res.trackables.nodes;
         }
     }, "Error searching trackables");
 }

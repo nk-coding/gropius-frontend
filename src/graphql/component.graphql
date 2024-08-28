@@ -84,6 +84,14 @@ query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterIn
     }
 }
 
+query firstComponents($count: Int!, $filter: ComponentFilterInput) {
+    components(first: $count, filter: $filter) {
+        nodes {
+            ...DefaultTrackableInfo
+        }
+    }
+}
+
 mutation createComponent($input: CreateComponentInput!) {
     createComponent(input: $input) {
         component {

@@ -58,6 +58,14 @@ query searchIMSs($query: String!, $count: Int!, $filter: IMSFilterInput) {
     }
 }
 
+query firstIMSs($count: Int!, $filter: IMSFilterInput) {
+    imss(first: $count, filter: $filter) {
+        nodes {
+            ...DefaultIMSInfo
+        }
+    }
+}
+
 mutation createIMS($input: CreateIMSInput!) {
     createIMS(input: $input) {
         ims {

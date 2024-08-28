@@ -75,7 +75,8 @@ async function searchComponents(filter: string, count: number): Promise<DefaultT
             const res = await client.searchComponents({ query, count, filter: props.componentFilter });
             return res.searchComponents;
         } else {
-            return [];
+            const res = await client.firstComponents({ count, filter: props.componentFilter });
+            return res.components.nodes;
         }
     }, "Error searching components");
 }

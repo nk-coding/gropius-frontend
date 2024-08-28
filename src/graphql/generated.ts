@@ -12009,6 +12009,8 @@ export type Query = {
     searchTrackables: Array<Trackable>;
     /** Search for nodes of type User */
     searchUsers: Array<User>;
+    /** Query for nodes of type Trackable */
+    trackables: TrackableConnection;
 };
 
 export type QueryArtefactTemplatesArgs = {
@@ -12284,6 +12286,16 @@ export type QuerySearchUsersArgs = {
     filter?: InputMaybe<UserFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QueryTrackablesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<TrackableFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<TrackableOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -16305,6 +16317,19 @@ export type SearchComponentsQuery = {
     searchComponents: Array<{ __typename: "Component"; id: string; name: string; description: string }>;
 };
 
+export type FirstComponentsQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<ComponentFilterInput>;
+}>;
+
+export type FirstComponentsQuery = {
+    __typename?: "Query";
+    components: {
+        __typename?: "ComponentConnection";
+        nodes: Array<{ __typename: "Component"; id: string; name: string; description: string }>;
+    };
+};
+
 export type CreateComponentMutationVariables = Exact<{
     input: CreateComponentInput;
 }>;
@@ -18276,6 +18301,19 @@ export type SearchImSsQueryVariables = Exact<{
 export type SearchImSsQuery = {
     __typename?: "Query";
     searchIMSs: Array<{ __typename?: "IMS"; id: string; name: string; description: string }>;
+};
+
+export type FirstImSsQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<ImsFilterInput>;
+}>;
+
+export type FirstImSsQuery = {
+    __typename?: "Query";
+    imss: {
+        __typename?: "IMSConnection";
+        nodes: Array<{ __typename?: "IMS"; id: string; name: string; description: string }>;
+    };
 };
 
 export type CreateImsMutationVariables = Exact<{
@@ -23082,6 +23120,19 @@ export type SearchProjectsQuery = {
     searchProjects: Array<{ __typename: "Project"; id: string; name: string; description: string }>;
 };
 
+export type FirstProjectsQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<ProjectFilterInput>;
+}>;
+
+export type FirstProjectsQuery = {
+    __typename?: "Query";
+    projects: {
+        __typename?: "ProjectConnection";
+        nodes: Array<{ __typename: "Project"; id: string; name: string; description: string }>;
+    };
+};
+
 export type GetProjectQueryVariables = Exact<{
     id: Scalars["ID"]["input"];
 }>;
@@ -25576,6 +25627,22 @@ export type SearchTrackablesQuery = {
     >;
 };
 
+export type FirstTrackablesQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<TrackableFilterInput>;
+}>;
+
+export type FirstTrackablesQuery = {
+    __typename?: "Query";
+    trackables: {
+        __typename?: "TrackableConnection";
+        nodes: Array<
+            | { __typename: "Component"; id: string; name: string; description: string }
+            | { __typename: "Project"; id: string; name: string; description: string }
+        >;
+    };
+};
+
 export type AddIssueToTrackableMutationVariables = Exact<{
     issue: Scalars["ID"]["input"];
     trackable: Scalars["ID"]["input"];
@@ -26937,6 +27004,16 @@ export const SearchComponentsDocument = gql`
     }
     ${DefaultTrackableInfoFragmentDoc}
 `;
+export const FirstComponentsDocument = gql`
+    query firstComponents($count: Int!, $filter: ComponentFilterInput) {
+        components(first: $count, filter: $filter) {
+            nodes {
+                ...DefaultTrackableInfo
+            }
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
+`;
 export const CreateComponentDocument = gql`
     mutation createComponent($input: CreateComponentInput!) {
         createComponent(input: $input) {
@@ -27339,6 +27416,16 @@ export const SearchImSsDocument = gql`
     query searchIMSs($query: String!, $count: Int!, $filter: IMSFilterInput) {
         searchIMSs(query: $query, first: $count, filter: $filter) {
             ...DefaultIMSInfo
+        }
+    }
+    ${DefaultImsInfoFragmentDoc}
+`;
+export const FirstImSsDocument = gql`
+    query firstIMSs($count: Int!, $filter: IMSFilterInput) {
+        imss(first: $count, filter: $filter) {
+            nodes {
+                ...DefaultIMSInfo
+            }
         }
     }
     ${DefaultImsInfoFragmentDoc}
@@ -28204,6 +28291,16 @@ export const SearchProjectsDocument = gql`
     }
     ${DefaultTrackableInfoFragmentDoc}
 `;
+export const FirstProjectsDocument = gql`
+    query firstProjects($count: Int!, $filter: ProjectFilterInput) {
+        projects(first: $count, filter: $filter) {
+            nodes {
+                ...DefaultTrackableInfo
+            }
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
+`;
 export const GetProjectDocument = gql`
     query getProject($id: ID!) {
         node(id: $id) {
@@ -28386,6 +28483,16 @@ export const SearchTrackablesDocument = gql`
     query searchTrackables($query: String!, $count: Int!, $filter: TrackableFilterInput) {
         searchTrackables(query: $query, first: $count, filter: $filter) {
             ...DefaultTrackableInfo
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
+`;
+export const FirstTrackablesDocument = gql`
+    query firstTrackables($count: Int!, $filter: TrackableFilterInput) {
+        trackables(first: $count, filter: $filter) {
+            nodes {
+                ...DefaultTrackableInfo
+            }
         }
     }
     ${DefaultTrackableInfoFragmentDoc}
@@ -28661,6 +28768,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponents",
+                "query",
+                variables
+            );
+        },
+        firstComponents(
+            variables: FirstComponentsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstComponentsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstComponentsQuery>(FirstComponentsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstComponents",
                 "query",
                 variables
             );
@@ -29236,6 +29358,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIMSs",
+                "query",
+                variables
+            );
+        },
+        firstIMSs(
+            variables: FirstImSsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstImSsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstImSsQuery>(FirstImSsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstIMSs",
                 "query",
                 variables
             );
@@ -30309,6 +30446,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        firstProjects(
+            variables: FirstProjectsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstProjectsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstProjectsQuery>(FirstProjectsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstProjects",
+                "query",
+                variables
+            );
+        },
         getProject(
             variables: GetProjectQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -30578,6 +30730,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackables",
+                "query",
+                variables
+            );
+        },
+        firstTrackables(
+            variables: FirstTrackablesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstTrackablesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstTrackablesQuery>(FirstTrackablesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstTrackables",
                 "query",
                 variables
             );

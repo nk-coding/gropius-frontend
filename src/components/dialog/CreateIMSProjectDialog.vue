@@ -22,6 +22,7 @@
                         v-if="props.ims == undefined"
                         v-model="ims"
                         v-bind="imsProps"
+                        label="IMS"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
                     <TrackableAutocomplete
@@ -29,6 +30,7 @@
                         v-model="trackable"
                         mode="model"
                         v-bind="trackableProps"
+                        label="Component/Project"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
                 </div>
