@@ -322,6 +322,8 @@ function removeIndentation(lines: string[], diff: number): string {
     }
 
     .contains-task-list {
+        padding: 0 !important;
+
         .task-list-item {
             padding: 2px 15px 2px 42px;
             margin-right: -15px;
@@ -342,8 +344,6 @@ function removeIndentation(lines: string[], diff: number): string {
         li:not(.task-list-item) {
             margin-left: 24px;
         }
-
-        padding: 0 !important;
     }
 }
 

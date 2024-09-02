@@ -55,6 +55,7 @@ import ListItem from "@/components/ListItem.vue";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import CreateStrategyInstanceDialog from "@/components/dialog/CreateStrategyInstanceDialog.vue";
 import UpdateStrategyInstanceDialog from "@/components/dialog/UpdateStrategyInstanceDialog.vue";
+import { StrategyInstance as StrategyInstanceDetails } from "@/components/dialog/StrategyInstanceDialogContent.vue";
 import { useAppStore } from "@/store/app";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
@@ -62,6 +63,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import CopyTextDialog from "@/components/dialog/CopyTextDialog.vue";
+import { IdObject } from "@/util/types";
 
 interface StrategyInstance {
     type: string;
@@ -83,7 +85,7 @@ const route = useRoute();
 const store = useAppStore();
 
 const updateCounter = ref(0);
-const strategyInstanceToUpdate = ref<StrategyInstance | undefined>();
+const strategyInstanceToUpdate = ref<StrategyInstanceDetails & IdObject | undefined>();
 const callbackUrlToShow = ref<string>();
 
 const strategyInstances = computedAsync(async () => {
@@ -111,7 +113,7 @@ async function updateStrategyInstance(strategyInstanceId: string) {
                 Authorization: `Bearer ${await store.getAccessToken()}`
             }
         });
-        return res.data as StrategyInstance;
+        return res.data as StrategyInstanceDetails & IdObject;
     }, "Error loading strategy instance");
 }
 

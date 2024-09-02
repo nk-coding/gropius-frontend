@@ -7,7 +7,7 @@
                     v-model="model.name"
                     label="Name"
                     class="mb-1"
-                    :rules="[(value) => value.trim().length > 0 || 'Name is required']"
+                    :rules="[(value: string) => value.trim().length > 0 || 'Name is required']"
                 />
                 <v-combobox v-model="model.redirectUrls" label="Redirect URLs" multiple class="mb-1" />
                 <GropiusUserModelAutocomplete

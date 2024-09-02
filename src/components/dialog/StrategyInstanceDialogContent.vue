@@ -16,7 +16,7 @@
                     <v-text-field
                         v-model="model.name"
                         label="Name"
-                        :rules="[(value) => value.trim().length > 0 || 'Name is required']"
+                        :rules="[(value: string) => value.trim().length > 0 || 'Name is required']"
                         class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
                 </div>

@@ -79,7 +79,7 @@ const props = defineProps({
     }
 });
 
-const model = defineModel({
+const model = defineModel<any>({
     required: false
 });
 

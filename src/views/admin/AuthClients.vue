@@ -61,6 +61,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { DefaultUserInfoFragment } from "@/graphql/generated";
 import { useAppStore } from "@/store/app";
 import { TokenScope } from "@/util/oauth";
+import { IdObject } from "@/util/types";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
 import axios from "axios";
@@ -81,7 +82,7 @@ const store = useAppStore();
 const client = useClient();
 
 const updateCounter = ref(0);
-const authClientToUpdate = ref<AuthClientInput | undefined>();
+const authClientToUpdate = ref<AuthClientInput & IdObject | undefined>();
 const authClientToShowSecrets = ref<AuthClientWithSecrets>();
 const authClientIdToShow = ref<string>();
 
