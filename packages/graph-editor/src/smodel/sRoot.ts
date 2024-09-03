@@ -179,7 +179,8 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .hidden-path {
                 fill: none;
                 stroke: transparent;
-                stroke-width: calc(12px / var(--diagram-zoom));
+                stroke-width: calc(52px / var(--diagram-zoom));
+                pointer-events: visibleStroke;
             }
 
             .sprotty .path-resize-x {

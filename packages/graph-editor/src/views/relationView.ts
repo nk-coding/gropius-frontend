@@ -17,7 +17,10 @@ export class RelationView implements IView {
         }
         const { start, end, segments } = relationPath;
         let lastSegment = segments.at(-1)!;
-        let endVector = Math2D.scale({ x: lastSegment.dx ?? 0, y: lastSegment.dy ?? 0 }, -1);
+        let endVector = Math2D.sub(lastSegment.start, {
+            x: lastSegment.x ?? lastSegment.start.x,
+            y: lastSegment.y ?? lastSegment.start.y
+        });
         if (Math2D.length(endVector) == 0) {
             endVector = { x: 1, y: 0 };
         }
@@ -56,8 +59,11 @@ export class RelationView implements IView {
                 const x = segment.x + Math.sign(endVector.x) * offset;
                 pathParts.push(`H ${x}`);
                 resizeChildren.push(
-                    svg("path", {
-                        d: `M ${currentPoint.x} ${currentPoint.y} H ${x}`,
+                    svg("line", {
+                        x1: currentPoint.x,
+                        y1: currentPoint.y,
+                        x2: x,
+                        y2: currentPoint.y,
                         class: {
                             "hidden-path": true,
                             "path-resize-x": true
@@ -66,14 +72,17 @@ export class RelationView implements IView {
                             "data-index": i
                         }
                     })
-                )
+                );
                 currentPoint.x = x;
             } else {
                 const y = segment.y + Math.sign(endVector.y) * offset;
                 pathParts.push(`V ${y}`);
                 resizeChildren.push(
-                    svg("path", {
-                        d: `M ${currentPoint.x} ${currentPoint.y} V ${y}`,
+                    svg("line", {
+                        x1: currentPoint.x,
+                        y1: currentPoint.y,
+                        x2: currentPoint.x,
+                        y2: y,
                         class: {
                             "hidden-path": true,
                             "path-resize-y": true
@@ -82,7 +91,7 @@ export class RelationView implements IView {
                             "data-index": i
                         }
                     })
-                )
+                );
                 currentPoint.y = y;
             }
             pathParts.push(`L ${currentPoint.x} ${currentPoint.y}`);

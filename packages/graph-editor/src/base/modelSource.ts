@@ -8,7 +8,9 @@ import {
     IssueType as GropiusIssueType,
     IssueRelation as GropiusIssueRelation,
     Selectable as GropiusSelectable,
-    SegmentLayout
+    SegmentLayout,
+    ElementLayout,
+    RelationLayout
 } from "../gropiusModel";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
@@ -423,9 +425,14 @@ export abstract class GraphModelSource extends LocalModelSource {
             const layout = partialLayout[element.id];
             if (element.type === Component.TYPE || element.type === Interface.TYPE) {
                 const component = element as Component | Interface;
-                const typedLayout = layout as { pos: { x: number; y: number } };
+                const typedLayout = layout as ElementLayout;
                 component.x = typedLayout.pos.x;
                 component.y = typedLayout.pos.y;
+            } else if (element.type === Relation.TYPE) {
+                const relation = element as Relation;
+                const typedLayout = layout as RelationLayout;
+                relation.points = typedLayout.points;
+                relation.segments = typedLayout.segments;
             }
         }
         if (children != undefined) {

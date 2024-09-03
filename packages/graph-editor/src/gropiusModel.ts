@@ -91,14 +91,26 @@ export enum SegmentLayout {
     HORIZONTAL_VERTICAL = "HORIZONTAL_VERTICAL"
 }
 
+export namespace SegmentLayout {
+    export function invert(layout: SegmentLayout): SegmentLayout {
+        switch (layout) {
+            case SegmentLayout.VERTICAL_HORIZONTAL:
+                return SegmentLayout.HORIZONTAL_VERTICAL;
+            case SegmentLayout.HORIZONTAL_VERTICAL:
+                return SegmentLayout.VERTICAL_HORIZONTAL;
+        }
+    }
+}
+
+export interface ElementLayout {
+    pos: Point;
+}
+
+export interface RelationLayout {
+    points: Point[];
+    segments: SegmentLayout[];
+}
+
 export interface GraphLayout {
-    [id: string]:
-        | {
-              pos: Point;
-          }
-        | {
-              points: Point[];
-              segments: SegmentLayout[];
-          }
-        | undefined;
+    [id: string]: ElementLayout | RelationLayout | undefined;
 }

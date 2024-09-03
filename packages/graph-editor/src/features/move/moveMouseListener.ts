@@ -7,7 +7,7 @@ import {
     isViewport,
     moveFeature
 } from "sprotty";
-import { Action, Point, hasOwnProperty } from "sprotty-protocol";
+import { Action, Point } from "sprotty-protocol";
 import { MoveHandler } from "./moveHandler";
 import { Component } from "../../model/component";
 import { Interface } from "../../model/interface";
@@ -17,11 +17,14 @@ import { ElementMoveHandler } from "./elementMoveHandler";
 import { SRoot } from "../../smodel/sRoot";
 import { SContextMenu } from "../../smodel/sContextMenu";
 import { roundToPrecision } from "../../base/roundToPrecision";
+import { SRelation } from "../../smodel/sRelation";
+import { RelationMoveHandler } from "./relationMoveHandler";
+import { SIssueAffected } from "../../smodel/sIssueAffected";
 
 export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;
     private moveHandler?: MoveHandler;
-    private targetElement?: Element;
+    private targetElement?: HTMLElement;
     private changeRevision = -1;
 
     override mouseDown(target: SModelElementImpl, event: MouseEvent): Action[] {
@@ -29,7 +32,7 @@ export class MoveMouseListener extends MouseListener {
             const moveableTarget = findParentByFeature(target, isMovable);
             if (moveableTarget != undefined && !(target instanceof SContextMenu)) {
                 this.startPosition = { x: event.pageX, y: event.pageY };
-                this.targetElement = event.target as Element | undefined;
+                this.targetElement = event.target as HTMLElement | undefined;
             } else {
                 this.startPosition = undefined;
                 this.targetElement = undefined;
@@ -79,7 +82,27 @@ export class MoveMouseListener extends MouseListener {
         return [result];
     }
 
-    private createHandler(target: SModelElementImpl, targetElement?: Element): MoveHandler | undefined {
+    private createHandler(target: SModelElementImpl, targetElement?: HTMLElement): MoveHandler | undefined {
+        if (target instanceof SRelation) {
+            const index = targetElement?.dataset?.index;
+            const path = target.path;
+            const elementIndex = target.root.index;
+            if (index != undefined && path != undefined && typeof target.end === "string") {
+                return new RelationMoveHandler(
+                    target.id,
+                    path,
+                    parseInt(index),
+                    (elementIndex.getById(target.start) as SIssueAffected).shape.outline,
+                    (elementIndex.getById(target.end) as SIssueAffected).shape.outline
+                );
+            } else {
+                return undefined;
+            }
+        }
+        return this.createMoveHandler(target);
+    }
+
+    private createMoveHandler(target: SModelElementImpl): ElementMoveHandler | undefined {
         const selected = this.getSelectedElements(target.root).filter((element) => {
             return element.type === Component.TYPE || element.type === Interface.TYPE;
         }) as (SComponent | SInterface)[];
