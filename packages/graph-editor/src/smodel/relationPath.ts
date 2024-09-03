@@ -3,6 +3,8 @@ import { SegmentLayout } from "../gropiusModel";
 import { LineEngine } from "../line/engine/lineEngine";
 import { SIssueAffected } from "./sIssueAffected";
 import { SRelation } from "./sRelation";
+import { Math2D } from "../line/math";
+import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../base/roundToPrecision";
 
 export type RelationPathSegment =
     | {
@@ -29,29 +31,29 @@ export namespace RelationPath {
         }
         const segments: RelationPathSegment[] = [];
         let startProjectionPoint: Point;
+        const start = relation.root.index.getById(relation.start) as SIssueAffected;
         if (relation.points.length > 0) {
             startProjectionPoint = relation.points[0];
         } else {
             if (typeof relation.end === "string") {
                 const end = relation.root.index.getById(relation.end) as SIssueAffected;
-                startProjectionPoint = Bounds.center(end.shape.bounds);
+                startProjectionPoint = calculateProjectionPoint(start, end);
             } else {
                 startProjectionPoint = relation.end;
             }
         }
-        const start = relation.root.index.getById(relation.start) as SIssueAffected;
+        
         const startShape = start.shape;
         const startPoint = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
             startProjectionPoint,
             startShape.outline,
-            relation.segments[0]
+            SegmentLayout.HORIZONTAL_VERTICAL
         ).point;
 
         let prevPoint = startPoint;
         for (let i = 0; i < relation.points.length; i++) {
             const point = relation.points[i];
-            const segment = relation.segments[i];
-            segments.push(...createSegments(prevPoint, point, segment));
+            segments.push(...createSegments(prevPoint, point, SegmentLayout.HORIZONTAL_VERTICAL));
             prevPoint = point;
         }
 
@@ -61,23 +63,69 @@ export namespace RelationPath {
             if (relation.points.length > 0) {
                 endProjectionPoint = relation.points.at(-1)!;
             } else {
-                endProjectionPoint = startPoint;
+                endProjectionPoint = startProjectionPoint;
             }
             const end = relation.root.index.getById(relation.end) as SIssueAffected;
             const endShape = end.shape;
             endPoint = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
                 endProjectionPoint,
                 endShape.outline,
-                SegmentLayout.invert(relation.segments.at(-1)!)
+                SegmentLayout.VERTICAL_HORIZONTAL
             ).point;
         } else {
             endPoint = relation.end;
         }
-        segments.push(...createSegments(prevPoint, endPoint, relation.segments.at(-1)!));
+        segments.push(
+            ...createSegments(
+                prevPoint,
+                endPoint,
+                SegmentLayout.HORIZONTAL_VERTICAL
+            )
+        );
         return RelationPath.simplify({ start: startPoint, end: endPoint, segments });
     }
 
-    function createSegments(startPoint: Point, point: Point, layout: SegmentLayout): RelationPathSegment[] {
+    function calculateProjectionPoint(start: SIssueAffected, end: SIssueAffected) {
+        const startBounds = start.shape.bounds;
+        const endBounds = end.shape.bounds;
+        const center = Math2D.linearInterpolate(Bounds.center(startBounds), Bounds.center(endBounds), 0.5);
+        const roundedCenter = { x: roundToPrecision(center.x), y: roundToPrecision(center.y) };
+        const xOverlap = Math2D.findRangeOverlap(
+            startBounds.x,
+            startBounds.x + startBounds.width,
+            endBounds.x,
+            endBounds.x + endBounds.width
+        );
+        if (xOverlap != undefined) {
+            const overlapCenter = (xOverlap[0] + xOverlap[1]) / 2;
+            if (Math2D.isInRange(floorToPrecision(overlapCenter), ...xOverlap)) {
+                roundedCenter.x = floorToPrecision(overlapCenter);
+            } else if (Math2D.isInRange(ceilToPrecision(roundedCenter.x), ...xOverlap)) {
+                roundedCenter.x = ceilToPrecision(roundedCenter.x);
+            }
+        }
+        const yOverlap = Math2D.findRangeOverlap(
+            startBounds.y,
+            startBounds.y + startBounds.height,
+            endBounds.y,
+            endBounds.y + endBounds.height
+        );
+        if (yOverlap != undefined) {
+            const overlapCenter = (yOverlap[0] + yOverlap[1]) / 2;
+            if (Math2D.isInRange(floorToPrecision(overlapCenter), ...yOverlap)) {
+                roundedCenter.y = floorToPrecision(overlapCenter);
+            } else if (Math2D.isInRange(ceilToPrecision(roundedCenter.y), ...yOverlap)) {
+                roundedCenter.y = ceilToPrecision(roundedCenter.y);
+            }
+        }
+        return roundedCenter;
+    }
+
+    function createSegments(
+        startPoint: Point,
+        point: Point,
+        layout: SegmentLayout
+    ): RelationPathSegment[] {
         if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
             return [
                 {

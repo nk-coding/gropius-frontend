@@ -1,4 +1,4 @@
-import { RelationStyle, SegmentLayout } from "../gropiusModel";
+import { RelationStyle } from "../gropiusModel";
 import { Relation } from "../model/relation";
 import { SSelectable } from "./sSelectable";
 import { Point } from "sprotty-protocol";
@@ -9,7 +9,6 @@ export class SRelation extends SSelectable implements Relation {
     start!: string;
     end?: string | Point;
     points!: Point[];
-    segments!: SegmentLayout[];
     style!: RelationStyle;
     selected = false;
     path!: RelationPath | null;

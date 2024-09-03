@@ -6,6 +6,7 @@ import { RelationLayout, SegmentLayout } from "../../gropiusModel";
 import { Line } from "../../line/model/line";
 import { UpdateLayoutAction } from "./updateLayoutAction";
 import { Math2D } from "../../line/math";
+import { roundToPrecision } from "../../base/roundToPrecision";
 
 type BaseSegment =
     | {
@@ -64,13 +65,34 @@ export class RelationMoveHandler implements MoveHandler {
         }
         let newLayout: RelationLayout;
         if (replacedStartSegments > 0 && replacedEndSegments > 0) {
-            newLayout = this.calculateNewLayout(newStartPoint!, startSegments, endSegments);
+            newLayout = this.layoutFromPath(newStartPoint!, [...startSegments, ...endSegments]);
         } else if (replacedStartSegments > 0) {
-            newLayout = undefined as any;
+            newLayout = this.layoutFromPath(newStartPoint!, [
+                ...startSegments,
+                ...this.path.segments.slice(replacedStartSegments)
+            ]);
         } else if (replacedEndSegments > 0) {
-            newLayout = undefined as any;
+            const segmentToModify = this.path.segments.at(-replacedEndSegments - 1)!;
+            const modifiedSegment = {
+                x: segmentToModify.x ? segmentToModify.x + moveVector.x : undefined,
+                y: segmentToModify.y ? segmentToModify.y + moveVector.y : undefined
+            } as BaseSegment;
+            newLayout = this.layoutFromPath(this.path.start, [
+                ...this.path.segments.slice(0, segmentCount - replacedEndSegments - 1),
+                modifiedSegment,
+                ...endSegments
+            ]);
         } else {
-            newLayout = undefined as any;
+            const segmentToModifiy = this.path.segments[this.segment - 1];
+            const modifiedSegment = {
+                x: segmentToModifiy.x ? segmentToModifiy.x + moveVector.x : undefined,
+                y: segmentToModifiy.y ? segmentToModifiy.y + moveVector.y : undefined
+            } as BaseSegment;
+            newLayout = this.layoutFromPath(this.path.start, [
+                ...this.path.segments.slice(0, this.segment - 1),
+                modifiedSegment,
+                ...this.path.segments.slice(this.segment)
+            ]);
         }
         const action: UpdateLayoutAction = {
             kind: UpdateLayoutAction.KIND,
@@ -81,15 +103,10 @@ export class RelationMoveHandler implements MoveHandler {
         return action;
     }
 
-    private calculateNewLayout(start: Point, startSegments: BaseSegment[], endSegments: BaseSegment[]): RelationLayout {
-        return this.layoutFromPath(start, [...startSegments, ...endSegments]);
-    }
-
     private layoutFromPath(start: Point, path: BaseSegment[]): RelationLayout {
         const simplified = RelationPath.simplifyPath(start, path);
         if (simplified.length > 1) {
             const points: Point[] = [];
-            const layout: SegmentLayout[] = [SegmentLayout.HORIZONTAL_VERTICAL];
             let current = { x: start.x, y: start.y };
             for (let i = 0; i < simplified.length - 1; i++) {
                 const segment = simplified[i];
@@ -99,13 +116,16 @@ export class RelationMoveHandler implements MoveHandler {
                     current = { x: current.x, y: segment.y };
                 }
                 points.push(current);
-                layout.push(SegmentLayout.HORIZONTAL_VERTICAL);
             }
-            return { points, segments: layout };
+            return { points };
         } else {
             return {
-                points: [{ x: (start.x + (simplified[0].x ?? start.x)) / 2, y: (start.y + (simplified[0].y ?? start.y)) / 2 }],
-                segments: [SegmentLayout.HORIZONTAL_VERTICAL, SegmentLayout.HORIZONTAL_VERTICAL]
+                points: [
+                    {
+                        x: start.x + (simplified[0].x ?? start.x) / 2,
+                        y: start.y + (simplified[0].y ?? start.y) / 2
+                    }
+                ]
             };
         }
     }

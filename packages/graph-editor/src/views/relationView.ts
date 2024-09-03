@@ -94,7 +94,6 @@ export class RelationView implements IView {
                 );
                 currentPoint.y = y;
             }
-            pathParts.push(`L ${currentPoint.x} ${currentPoint.y}`);
         }
 
         const pathPath = pathParts.join(" ");

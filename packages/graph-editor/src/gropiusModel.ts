@@ -108,7 +108,6 @@ export interface ElementLayout {
 
 export interface RelationLayout {
     points: Point[];
-    segments: SegmentLayout[];
 }
 
 export interface GraphLayout {

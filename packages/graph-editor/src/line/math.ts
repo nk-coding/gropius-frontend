@@ -170,4 +170,20 @@ export namespace Math2D {
     export function isInRange(value: number, start: number, end: number): boolean {
         return value >= Math.min(start, end) && value <= Math.max(start, end);
     }
+
+    export function findRangeOverlap(
+        start1: number,
+        end1: number,
+        start2: number,
+        end2: number
+    ): [number, number] | undefined {
+        const overlapStart = Math.max(start1, start2);
+        const overlapEnd = Math.min(end1, end2);
+    
+        if (overlapStart <= overlapEnd) {
+            return [overlapStart, overlapEnd];
+        } else {
+            return undefined; // No overlap
+        }
+    }
 }

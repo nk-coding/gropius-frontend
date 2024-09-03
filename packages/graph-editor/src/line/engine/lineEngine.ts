@@ -47,13 +47,13 @@ export class LineEngine {
             x: roundToPrecision(point.x),
             y: roundToPrecision(point.y)
         }
-        const result = this.projectPointOrthogonal(point, line);
+        const result = this.projectPointOrthogonal(roundedPoint, line);
         if (result.priority) {
             return result;
         }
         let altProjectionPoint1: Point;
         let altProjectionPoint2: Point;
-        if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
+        if (layout == SegmentLayout.VERTICAL_HORIZONTAL) {
             altProjectionPoint1 = { x: floorToPrecision(result.point.x), y: roundedPoint.y };
             altProjectionPoint2 = { x: ceilToPrecision(result.point.x), y: roundedPoint.y };
         } else {

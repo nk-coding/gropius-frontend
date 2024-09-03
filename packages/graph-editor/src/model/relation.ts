@@ -9,7 +9,6 @@ export interface Relation extends Selectable {
     end?: string | Point;
     style: RelationStyle;
     points: Point[];
-    segments: SegmentLayout[];
 }
 
 export namespace Relation {
