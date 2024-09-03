@@ -30,54 +30,35 @@ export class RelationMoveHandler implements MoveHandler {
         let replacedStartSegments = 0;
         let replacedEndSegments = 0;
         const movedSegment = this.path.segments[this.segment];
-        const vertical = movedSegment.x != undefined;
+        // do we move a vertical segment
+        const vertical = movedSegment.y != undefined;
         const segmentCount = this.path.segments.length;
         const startSegments: BaseSegment[] = [];
         let newStartPoint: Point | undefined = undefined;
         const endSegments: BaseSegment[] = [];
         let moveVector: Point;
         if (vertical) {
-            moveVector = { x: 0, y: dy };
-        } else {
             moveVector = { x: dx, y: 0 };
+        } else {
+            moveVector = { x: 0, y: dy };
         }
-        if (this.segment == 0) {
-            replacedStartSegments = 1;
+        if (this.segment <= 1) {
+            replacedStartSegments = this.segment + 1;
             const [segments, projectedPoint] = this.projectPointOnElement(
                 Math2D.add(RelationPath.segmentEnd(movedSegment), moveVector),
                 true,
-                this.verticalToLayout(!vertical)
+                vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL
             );
             startSegments.push(...segments);
             newStartPoint = projectedPoint;
         }
-        if (this.segment == 1) {
-            replacedStartSegments = 2;
-            const [segments, projectedPoint] = this.projectPointOnElement(
-                Math2D.add(RelationPath.segmentEnd(movedSegment), moveVector),
-                true,
-                this.verticalToLayout(vertical)
-            );
-            startSegments.push(...segments);
-            newStartPoint = projectedPoint;
-        }
-        if (this.segment == segmentCount - 1) {
-            replacedEndSegments = 1;
+        if (this.segment >= segmentCount - 2) {
+            replacedEndSegments = segmentCount - this.segment;
             endSegments.push(
                 ...this.projectPointOnElement(
                     Math2D.add(movedSegment.start, moveVector),
                     false,
-                    this.verticalToLayout(!vertical)
-                )[0]
-            );
-        }
-        if (this.segment == segmentCount - 2) {
-            replacedEndSegments = 2;
-            endSegments.push(
-                ...this.projectPointOnElement(
-                    Math2D.add(movedSegment.start, moveVector),
-                    false,
-                    this.verticalToLayout(vertical)
+                    vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL
                 )[0]
             );
         }
@@ -152,12 +133,12 @@ export class RelationMoveHandler implements MoveHandler {
         } else {
             if (start) {
                 if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
-                    result.push({ y: point.y }, { x: point.x });
-                } else {
                     result.push({ x: point.x }, { y: point.y });
+                } else {
+                    result.push({ y: point.y }, { x: point.x });
                 }
             } else {
-                if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
+                if (layout == SegmentLayout.VERTICAL_HORIZONTAL) {
                     result.push({ x: projectedPoint.x }, { y: projectedPoint.y });
                 } else {
                     result.push({ y: projectedPoint.y }, { x: projectedPoint.x });
@@ -165,13 +146,5 @@ export class RelationMoveHandler implements MoveHandler {
             }
         }
         return [result, projectedPoint];
-    }
-
-    private verticalToLayout(vertical: boolean): SegmentLayout {
-        if (vertical) {
-            return SegmentLayout.VERTICAL_HORIZONTAL;
-        } else {
-            return SegmentLayout.HORIZONTAL_VERTICAL;
-        }
     }
 }
