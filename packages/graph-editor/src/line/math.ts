@@ -179,7 +179,7 @@ export namespace Math2D {
     ): [number, number] | undefined {
         const overlapStart = Math.max(start1, start2);
         const overlapEnd = Math.min(end1, end2);
-    
+
         if (overlapStart <= overlapEnd) {
             return [overlapStart, overlapEnd];
         } else {

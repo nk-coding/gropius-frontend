@@ -46,7 +46,7 @@ export class LineEngine {
         const roundedPoint = {
             x: roundToPrecision(point.x),
             y: roundToPrecision(point.y)
-        }
+        };
         const result = this.projectPointOrthogonal(roundedPoint, line);
         if (result.priority) {
             return result;
@@ -69,10 +69,10 @@ export class LineEngine {
             if (altResult2.priority) {
                 altResult = altResult2;
             } else {
-                throw new Error("Failed to project point with precision")
+                throw new Error("Failed to project point with precision");
             }
         }
-        return altResult
+        return altResult;
     }
 
     /**

@@ -6,7 +6,6 @@ import { RelationLayout, SegmentLayout } from "../../gropiusModel";
 import { Line } from "../../line/model/line";
 import { UpdateLayoutAction } from "./updateLayoutAction";
 import { Math2D } from "../../line/math";
-import { roundToPrecision } from "../../base/roundToPrecision";
 
 type BaseSegment =
     | {
@@ -119,14 +118,15 @@ export class RelationMoveHandler implements MoveHandler {
             }
             return { points };
         } else {
-            return {
+            const res = {
                 points: [
                     {
-                        x: start.x + (simplified[0].x ?? start.x) / 2,
-                        y: start.y + (simplified[0].y ?? start.y) / 2
+                        x: (start.x + (simplified[0].x ?? start.x)) / 2,
+                        y: (start.y + (simplified[0].y ?? start.y)) / 2
                     }
                 ]
             };
+            return res;
         }
     }
 

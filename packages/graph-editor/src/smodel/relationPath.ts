@@ -42,7 +42,7 @@ export namespace RelationPath {
                 startProjectionPoint = relation.end;
             }
         }
-        
+
         const startShape = start.shape;
         const startPoint = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
             startProjectionPoint,
@@ -75,13 +75,7 @@ export namespace RelationPath {
         } else {
             endPoint = relation.end;
         }
-        segments.push(
-            ...createSegments(
-                prevPoint,
-                endPoint,
-                SegmentLayout.HORIZONTAL_VERTICAL
-            )
-        );
+        segments.push(...createSegments(prevPoint, endPoint, SegmentLayout.HORIZONTAL_VERTICAL));
         return RelationPath.simplify({ start: startPoint, end: endPoint, segments });
     }
 
@@ -121,11 +115,7 @@ export namespace RelationPath {
         return roundedCenter;
     }
 
-    function createSegments(
-        startPoint: Point,
-        point: Point,
-        layout: SegmentLayout
-    ): RelationPathSegment[] {
+    function createSegments(startPoint: Point, point: Point, layout: SegmentLayout): RelationPathSegment[] {
         if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
             return [
                 {
@@ -168,7 +158,7 @@ export namespace RelationPath {
                 if (lastSegment?.x != undefined) {
                     lastSegment.x = segment.x;
                 } else {
-                    segments.push(segment);
+                    segments.push({ ...segment });
                 }
                 lastPoint.x = segment.x;
             }
@@ -177,7 +167,7 @@ export namespace RelationPath {
                 if (lastSegment?.y != undefined) {
                     lastSegment.y = segment.y;
                 } else {
-                    segments.push(segment);
+                    segments.push({ ...segment });
                 }
                 lastPoint.y = segment.y;
             }

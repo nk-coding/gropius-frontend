@@ -31,5 +31,3 @@ export class SRelation extends SSelectable implements Relation {
         }
     }
 }
-
-
