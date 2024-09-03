@@ -42,6 +42,7 @@ export class RelationView implements IView {
         });
         children.push(endMarker);
 
+        const resizeChildren: (VNode | undefined)[] = [];
         const endOffset = markerInfo.startOffset - markerInfo.lineOffset;
         const pathParts = [`M ${start.x} ${start.y}`];
         const currentPoint = { x: start.x, y: start.y };
@@ -54,12 +55,34 @@ export class RelationView implements IView {
             if (segment.x != undefined) {
                 const x = segment.x + Math.sign(endVector.x) * offset;
                 pathParts.push(`H ${x}`);
-                //TODO add edit part
+                resizeChildren.push(
+                    svg("path", {
+                        d: `M ${currentPoint.x} ${currentPoint.y} H ${x}`,
+                        class: {
+                            "hidden-path": true,
+                            "path-resize-x": true
+                        },
+                        attrs: {
+                            "data-index": i
+                        }
+                    })
+                )
                 currentPoint.x = x;
             } else {
                 const y = segment.y + Math.sign(endVector.y) * offset;
                 pathParts.push(`V ${y}`);
-                //TODO add edit part
+                resizeChildren.push(
+                    svg("path", {
+                        d: `M ${currentPoint.x} ${currentPoint.y} V ${y}`,
+                        class: {
+                            "hidden-path": true,
+                            "path-resize-y": true
+                        },
+                        attrs: {
+                            "data-index": i
+                        }
+                    })
+                )
                 currentPoint.y = y;
             }
             pathParts.push(`L ${currentPoint.x} ${currentPoint.y}`);
@@ -112,7 +135,8 @@ export class RelationView implements IView {
                     selectable: true
                 }
             },
-            ...children
+            ...children,
+            ...resizeChildren
         );
     }
 }

@@ -69,7 +69,11 @@ export namespace RelationPath {
         }
         const start = relation.root.index.getById(relation.start) as SIssueAffected;
         const startShape = start.shape;
-        const startPoint = LineEngine.DEFAULT.projectPointOrthogonal(startProjectionPoint, startShape.outline).point;
+        const startPoint = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
+            startProjectionPoint,
+            startShape.outline,
+            relation.segments[0]
+        ).point;
 
         let prevPoint = startPoint;
         for (let i = 0; i < relation.points.length; i++) {
@@ -89,7 +93,13 @@ export namespace RelationPath {
             }
             const end = relation.root.index.getById(relation.end) as SIssueAffected;
             const endShape = end.shape;
-            endPoint = LineEngine.DEFAULT.projectPointOrthogonal(endProjectionPoint, endShape.outline).point;
+            endPoint = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
+                endProjectionPoint,
+                endShape.outline,
+                relation.segments.at(-1) == SegmentLayout.HORIZONTAL_VERTICAL
+                    ? SegmentLayout.VERTICAL_HORIZONTAL
+                    : SegmentLayout.HORIZONTAL_VERTICAL
+            ).point;
         } else {
             endPoint = relation.end;
         }

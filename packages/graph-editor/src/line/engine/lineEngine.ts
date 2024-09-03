@@ -7,6 +7,8 @@ import { ArcSegmentEngine } from "./arcSegmentEngine";
 import { LineSegmentEngine } from "./lineSegmentEngine";
 import { NearestPointResult, SegmentEngine } from "./segmentEngine";
 import { Math2D } from "../math";
+import { SegmentLayout } from "../../gropiusModel";
+import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../../base/roundToPrecision";
 
 /**
  * Helper to get closest points to a line, and calculate the position of a point on the line
@@ -38,6 +40,39 @@ export class LineEngine {
         return this.projectPointInternal(point, line, (engine, localPoint, segment, startPosition) =>
             engine.projectPointOrthogonal(localPoint, segment, startPosition)
         );
+    }
+
+    projectPointOrthogonalWithPrecision(point: Point, line: Line, layout: SegmentLayout): ProjectionResult {
+        const roundedPoint = {
+            x: roundToPrecision(point.x),
+            y: roundToPrecision(point.y)
+        }
+        const result = this.projectPointOrthogonal(point, line);
+        if (result.priority) {
+            return result;
+        }
+        let altProjectionPoint1: Point;
+        let altProjectionPoint2: Point;
+        if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
+            altProjectionPoint1 = { x: floorToPrecision(result.point.x), y: roundedPoint.y };
+            altProjectionPoint2 = { x: ceilToPrecision(result.point.x), y: roundedPoint.y };
+        } else {
+            altProjectionPoint1 = { x: roundedPoint.x, y: floorToPrecision(result.point.y) };
+            altProjectionPoint2 = { x: roundedPoint.x, y: ceilToPrecision(result.point.y) };
+        }
+        let altResult: ProjectionResult;
+        const altResult1 = this.projectPointOrthogonal(altProjectionPoint1, line);
+        if (altResult1.priority) {
+            altResult = altResult1;
+        } else {
+            const altResult2 = this.projectPointOrthogonal(altProjectionPoint2, line);
+            if (altResult2.priority) {
+                altResult = altResult2;
+            } else {
+                throw new Error("Failed to project point with precision")
+            }
+        }
+        return altResult
     }
 
     /**
@@ -94,7 +129,8 @@ export class LineEngine {
             pos: lengthPerSegment * (segmentIndex + relativePosition),
             relativePos: relativePosition,
             segment: segmentIndex,
-            point: projectedPoint!
+            point: projectedPoint!,
+            priority: hasPriority
         };
     }
 
@@ -185,4 +221,8 @@ export interface ProjectionResult {
      * The projected point
      */
     point: Point;
+    /**
+     * If the projection result is a priority result
+     */
+    priority: boolean;
 }

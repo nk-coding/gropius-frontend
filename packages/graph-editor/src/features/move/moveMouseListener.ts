@@ -16,6 +16,7 @@ import { SInterface } from "../../smodel/sInterface";
 import { ElementMoveHandler } from "./elementMoveHandler";
 import { SRoot } from "../../smodel/sRoot";
 import { SContextMenu } from "../../smodel/sContextMenu";
+import { roundToPrecision } from "../../base/roundToPrecision";
 
 export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;
@@ -102,8 +103,8 @@ export class MoveMouseListener extends MouseListener {
         }
         const zoom = findViewportZoom(target);
         return {
-            x: (event.pageX - this.startPosition.x) / zoom,
-            y: (event.pageY - this.startPosition.y) / zoom
+            x: roundToPrecision((event.pageX - this.startPosition.x) / zoom),
+            y: roundToPrecision((event.pageY - this.startPosition.y) / zoom)
         };
     }
 

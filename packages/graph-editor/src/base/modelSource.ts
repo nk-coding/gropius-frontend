@@ -26,6 +26,7 @@ import { SSelectable } from "../smodel/sSelectable";
 import { CreateRelationAction } from "../features/connect/createRelationAction";
 import { ConnectAction } from "../features/connect/connectAction";
 import { CancelConnectAction } from "../features/connect/cancelConnectAction";
+import { roundToPrecision } from "./roundToPrecision";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -378,7 +379,7 @@ export abstract class GraphModelSource extends LocalModelSource {
     private extractComponentLayout(id: string, layout: GraphLayout) {
         const componentLayout = layout[id];
         if (componentLayout != undefined && "pos" in componentLayout) {
-            return componentLayout;
+            return { pos: { x: roundToPrecision(componentLayout.pos.x), y: roundToPrecision(componentLayout.pos.y) } };
         } else {
             return { pos: { x: 0, y: 0 } };
         }
@@ -387,7 +388,7 @@ export abstract class GraphModelSource extends LocalModelSource {
     private extractInterfaceLayout(id: string, layout: GraphLayout) {
         const interfaceLayout = layout[id];
         if (interfaceLayout != undefined && "pos" in interfaceLayout) {
-            return interfaceLayout;
+            return { pos: { x: roundToPrecision(interfaceLayout.pos.x), y: roundToPrecision(interfaceLayout.pos.y) } };
         } else {
             return { pos: { x: 0, y: 0 } };
         }
@@ -396,7 +397,13 @@ export abstract class GraphModelSource extends LocalModelSource {
     private extractRelationLayout(id: string, layout: GraphLayout) {
         const relationLayout = layout[id];
         if (relationLayout != undefined && "points" in relationLayout) {
-            return relationLayout;
+            return {
+                points: relationLayout.points.map((point) => ({
+                    x: roundToPrecision(point.x),
+                    y: roundToPrecision(point.y)
+                })),
+                segments: relationLayout.segments
+            };
         } else {
             return { points: [], segments: [SegmentLayout.HORIZONTAL_VERTICAL] };
         }

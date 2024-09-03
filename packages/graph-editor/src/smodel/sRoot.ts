@@ -181,6 +181,14 @@ export class SRoot extends ViewportRootElementImpl {
                 stroke: transparent;
                 stroke-width: calc(12px / var(--diagram-zoom));
             }
+
+            .sprotty .path-resize-x {
+                cursor: ns-resize;
+            }
+            
+            .sprotty .path-resize-y {
+                cursor: ew-resize;
+            }
         `;
     }
 }
