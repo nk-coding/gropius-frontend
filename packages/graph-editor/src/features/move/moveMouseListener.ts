@@ -20,6 +20,7 @@ import { roundToPrecision } from "../../base/roundToPrecision";
 import { SRelation } from "../../smodel/sRelation";
 import { RelationMoveHandler } from "./relationMoveHandler";
 import { SIssueAffected } from "../../smodel/sIssueAffected";
+import { Relation } from "../../model/relation";
 
 export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;
@@ -117,7 +118,18 @@ export class MoveMouseListener extends MouseListener {
                 return true;
             }
         });
-        return new ElementMoveHandler(toMove);
+        const toMoveIds = new Set(toMove.map((element) => element.id));
+        const fullyMovedRelations = [
+            ...target.root.index.all().filter((element) => {
+                return (
+                    element instanceof SRelation &&
+                    toMoveIds.has(element.start) &&
+                    typeof element.end == "string" &&
+                    toMoveIds.has(element.end)
+                );
+            })
+        ] as SRelation[];
+        return new ElementMoveHandler(toMove, fullyMovedRelations);
     }
 
     private calculateTranslation(target: SModelElementImpl, event: MouseEvent): Point {
