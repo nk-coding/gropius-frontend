@@ -82,7 +82,7 @@ const store = useAppStore();
 const client = useClient();
 
 const updateCounter = ref(0);
-const authClientToUpdate = ref<AuthClientInput & IdObject | undefined>();
+const authClientToUpdate = ref<(AuthClientInput & IdObject) | undefined>();
 const authClientToShowSecrets = ref<AuthClientWithSecrets>();
 const authClientIdToShow = ref<string>();
 

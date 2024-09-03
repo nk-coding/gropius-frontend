@@ -86,11 +86,19 @@ export type Marker =
     | "CIRCLE"
     | "FILLED_CIRCLE";
 
+export enum SegmentLayout {
+    VERTICAL_HORIZONTAL = "VERTICAL_HORIZONTAL",
+    HORIZONTAL_VERTICAL = "HORIZONTAL_VERTICAL"
+}
+
 export interface GraphLayout {
     [id: string]:
         | {
               pos: Point;
           }
-        | {}
+        | {
+              points: Point[];
+              segments: SegmentLayout[];
+          }
         | undefined;
 }

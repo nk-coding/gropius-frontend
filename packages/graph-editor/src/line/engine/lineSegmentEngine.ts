@@ -34,8 +34,57 @@ export class LineSegmentEngine extends SegmentEngine<LineSegment> {
         return {
             position,
             distance: Math2D.distance(closest, point),
-            point: closest
+            point: closest,
+            priority: false
         };
+    }
+
+    override projectPointOrthogonal(point: Point, segment: LineSegment, segmentStartPoint: Point): NearestPointResult {
+        let verticalMatch: NearestPointResult | undefined = undefined;
+        if (Math2D.isInRange(point.x, segmentStartPoint.x, segment.end.x)) {
+            const position = (point.x - segmentStartPoint.x) / (segment.end.x - segmentStartPoint.x);
+            const projection = {
+                x: point.x,
+                y: segmentStartPoint.y + position * (segment.end.y - segmentStartPoint.y)
+            };
+            verticalMatch = {
+                position: (point.x - segmentStartPoint.x) / (segment.end.x - segmentStartPoint.x),
+                distance: Math2D.distance(point, projection),
+                point: projection,
+                priority: true
+            };
+        }
+        let horizontalMatch: NearestPointResult | undefined = undefined;
+        if (Math2D.isInRange(point.y, segmentStartPoint.y, segment.end.y)) {
+            const position = (point.y - segmentStartPoint.y) / (segment.end.y - segmentStartPoint.y);
+            const projection = {
+                x: segmentStartPoint.x + position * (segment.end.x - segmentStartPoint.x),
+                y: point.y
+            };
+            horizontalMatch = {
+                position: (point.y - segmentStartPoint.y) / (segment.end.y - segmentStartPoint.y),
+                distance: Math2D.distance(point, projection),
+                point: projection,
+                priority: true
+            };
+        }
+        if (verticalMatch != undefined) {
+            if (horizontalMatch != undefined) {
+                if (verticalMatch.distance < horizontalMatch.distance) {
+                    return verticalMatch;
+                } else {
+                    return horizontalMatch;
+                }
+            } else {
+                return verticalMatch;
+            }
+        } else {
+            if (horizontalMatch != undefined) {
+                return horizontalMatch;
+            } else {
+                return this.projectPoint(point, segment, segmentStartPoint);
+            }
+        }
     }
 
     override getPoint(position: number, distance: number, segment: LineSegment, segmentStartPoint: Point): Point {

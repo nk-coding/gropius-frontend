@@ -85,7 +85,7 @@ const route = useRoute();
 const store = useAppStore();
 
 const updateCounter = ref(0);
-const strategyInstanceToUpdate = ref<StrategyInstanceDetails & IdObject | undefined>();
+const strategyInstanceToUpdate = ref<(StrategyInstanceDetails & IdObject) | undefined>();
 const callbackUrlToShow = ref<string>();
 
 const strategyInstances = computedAsync(async () => {

@@ -9,7 +9,6 @@ import { NearestPointResult, SegmentEngine } from "./segmentEngine";
  */
 export class ArcSegmentEngine extends SegmentEngine<ArcSegment> {
     override projectPoint(point: Point, segment: ArcSegment, segmentStartPoint: Point): NearestPointResult {
-        const { startAngle, deltaAngle } = this.getArcData(segmentStartPoint, segment);
         const possiblePoints = [segmentStartPoint, segment.end];
         possiblePoints.push(
             ...projectPointOnConic(
@@ -17,6 +16,43 @@ export class ArcSegmentEngine extends SegmentEngine<ArcSegment> {
                 point
             )
         );
+        return this.findBestPoint(possiblePoints, point, segment, segmentStartPoint, false)!;
+    }
+
+    override projectPointOrthogonal(point: Point, segment: ArcSegment, segmentStartPoint: Point): NearestPointResult {
+        const possiblePoints: Point[] = [];
+        const h = segment.center.x;
+        const k = segment.center.y;
+        const b = (point.y - k) ** 2 / segment.radiusY ** 2;
+        if (b <= 1) {
+            const deltaX = segment.radiusX * Math.sqrt(1 - b);
+            possiblePoints.push({ x: h - deltaX, y: point.y });
+            possiblePoints.push({ x: h + deltaX, y: point.y });
+        }
+
+        const a = (point.x - h) ** 2 / segment.radiusX ** 2;
+        if (a <= 1) {
+            const deltaY = segment.radiusY * Math.sqrt(1 - a);
+            possiblePoints.push({ x: point.x, y: k - deltaY });
+            possiblePoints.push({ x: point.x, y: k + deltaY });
+        }
+        return (
+            this.findBestPoint(possiblePoints, point, segment, segmentStartPoint, true) ??
+            this.projectPoint(point, segment, segmentStartPoint)
+        );
+    }
+
+    private findBestPoint(
+        possiblePoints: Point[],
+        point: Point,
+        segment: ArcSegment,
+        segmentStartPoint: Point,
+        priority: boolean
+    ): NearestPointResult | undefined {
+        if (possiblePoints.length == 0) {
+            return undefined;
+        }
+        const { startAngle, deltaAngle } = this.getArcData(segmentStartPoint, segment);
         let minDist = Number.POSITIVE_INFINITY;
         let minPos = 0;
         let minPoint = possiblePoints[0];
@@ -52,7 +88,8 @@ export class ArcSegmentEngine extends SegmentEngine<ArcSegment> {
         return {
             point: minPoint,
             distance: minDist,
-            position: minPos
+            position: minPos,
+            priority
         };
     }
 

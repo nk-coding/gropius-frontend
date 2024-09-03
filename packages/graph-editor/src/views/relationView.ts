@@ -6,6 +6,7 @@ import { Math2D } from "../line/math";
 import { StrokeStyle } from "../gropiusModel";
 import { MarkerGenerator } from "../marker/markerGenerator";
 import { SLabel } from "../smodel/sLabel";
+import { Point } from "sprotty-protocol";
 
 @injectable()
 export class RelationView implements IView {
@@ -14,8 +15,9 @@ export class RelationView implements IView {
         if (relationPath == null) {
             return undefined;
         }
-        const { start, end } = relationPath;
-        let endVector = Math2D.sub(start, end);
+        const { start, end, segments } = relationPath;
+        let lastSegment = segments.at(-1)!;
+        let endVector = Math2D.scale({ x: lastSegment.dx ?? 0, y: lastSegment.dy ?? 0 }, -1);
         if (Math2D.length(endVector) == 0) {
             endVector = { x: 1, y: 0 };
         }
@@ -39,8 +41,31 @@ export class RelationView implements IView {
             }
         });
         children.push(endMarker);
-        const lineEndPoint = Math2D.add(end, Math2D.scaleTo(endVector, markerInfo.startOffset - markerInfo.lineOffset));
-        const pathPath = `M ${start.x} ${start.y} L ${lineEndPoint.x} ${lineEndPoint.y}`;
+
+        const endOffset = markerInfo.startOffset - markerInfo.lineOffset;
+        const pathParts = [`M ${start.x} ${start.y}`];
+        const currentPoint = { x: start.x, y: start.y };
+        for (let i = 0; i < segments.length; i++) {
+            const segment = segments[i];
+            let offset = 0;
+            if (i == segments.length - 1) {
+                offset = endOffset;
+            }
+            if (segment.x != undefined) {
+                const x = segment.x + Math.sign(endVector.x) * offset;
+                pathParts.push(`H ${x}`);
+                //TODO add edit part
+                currentPoint.x = x;
+            } else {
+                const y = segment.y + Math.sign(endVector.y) * offset;
+                pathParts.push(`V ${y}`);
+                //TODO add edit part
+                currentPoint.y = y;
+            }
+            pathParts.push(`L ${currentPoint.x} ${currentPoint.y}`);
+        }
+
+        const pathPath = pathParts.join(" ");
         const pathAttributes: Record<string, string | number> = {
             d: pathPath,
             ...pathStyle,

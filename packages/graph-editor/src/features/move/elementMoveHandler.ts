@@ -1,4 +1,4 @@
-import { Action } from "sprotty-protocol";
+import { Action, Point } from "sprotty-protocol";
 import { Component } from "../../model/component";
 import { Interface } from "../../model/interface";
 import { MoveHandler } from "./moveHandler";
@@ -6,17 +6,15 @@ import { UpdateLayoutAction } from "./updateLayoutAction";
 import { GraphLayout } from "../../gropiusModel";
 
 export class ElementMoveHandler implements MoveHandler {
-    private readonly elementLayouts: GraphLayout;
+    private readonly elementLayouts: Record<string, Point> = {};
 
     constructor(elements: (Interface | Component)[]) {
-        const layout: GraphLayout = {};
         for (const element of elements) {
-            layout[element.id] = {
+            this.elementLayouts[element.id] = {
                 x: element.x,
                 y: element.y
             };
         }
-        this.elementLayouts = layout;
     }
 
     generateAction(dx: number, dy: number, commited: boolean, event: MouseEvent): UpdateLayoutAction {
@@ -31,12 +29,10 @@ export class ElementMoveHandler implements MoveHandler {
         }
         const partialLayout: GraphLayout = {};
         for (const [key, layout] of Object.entries(this.elementLayouts)) {
-            const typedLayout = layout as { x: number; y: number };
             partialLayout[key] = {
-                ...layout,
                 pos: {
-                    x: typedLayout.x + offsetX,
-                    y: typedLayout.y + offsetY
+                    x: layout.x + offsetX,
+                    y: layout.y + offsetY
                 }
             };
         }

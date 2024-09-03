@@ -1,13 +1,11 @@
 import { Point } from "sprotty-protocol";
 import { ArcSegment } from "../model/arcSegment";
-import { BezierSegment } from "../model/bezierSegment";
 import { Line } from "../model/line";
 import { LineSegment } from "../model/lineSegment";
 import { Segment } from "../model/segment";
 import { ArcSegmentEngine } from "./arcSegmentEngine";
-import { BezierSegmentEngine } from "./bezierSegmentEngine";
 import { LineSegmentEngine } from "./lineSegmentEngine";
-import { SegmentEngine } from "./segmentEngine";
+import { NearestPointResult, SegmentEngine } from "./segmentEngine";
 import { Math2D } from "../math";
 
 /**
@@ -26,44 +24,69 @@ export class LineEngine {
      */
     private engines = new Map<string, SegmentEngine<any>>([
         [LineSegment.TYPE, new LineSegmentEngine()],
-        [BezierSegment.TYPE, new BezierSegmentEngine()],
         [ArcSegment.TYPE, new ArcSegmentEngine()]
     ]);
 
     /**
      * Finds the nearest point on the provided line to point.
      *
+     * @param point the point to project
+     * @param line line with associated transform
+     * @returns the position of the closest point on the line
+     */
+    projectPointOrthogonal(point: Point, line: Line): ProjectionResult {
+        return this.projectPointInternal(point, line, (engine, localPoint, segment, startPosition) =>
+            engine.projectPointOrthogonal(localPoint, segment, startPosition)
+        );
+    }
+
+    /**
+     * Finds the nearest point on the provided line to point.
+     *
      * @param point the point to which the nearest point should be found
-     * @param transformedLine line with associated transform
+     * @param line the line
      * @returns the position of the closest point on the line
      */
     projectPoint(point: Point, line: Line): ProjectionResult {
+        return this.projectPointInternal(point, line, (engine, localPoint, segment, startPosition) =>
+            engine.projectPoint(localPoint, segment, startPosition)
+        );
+    }
+
+    projectPointInternal(
+        point: Point,
+        line: Line,
+        segmentLayoutCallback: <T extends Segment>(
+            engine: SegmentEngine<T>,
+            localPoint: Point,
+            segment: T,
+            startPosition: Point
+        ) => NearestPointResult
+    ): ProjectionResult {
         if (line.segments.length == 0) {
-            return {
-                pos: 0,
-                relativePos: 0,
-                segment: 0,
-                distance: 0
-            };
+            throw new Error("Line must have at least one segment");
         }
         const localPoint = point;
         const lengthPerSegment = 1 / line.segments.length;
         let minDistance = Number.POSITIVE_INFINITY;
         let relativePosition = 0;
         let segmentIndex = 0;
-        let distance = 0;
         let startPosition = line.start;
+        let projectedPoint: Point;
+        let hasPriority = false;
         for (let i = 0; i < line.segments.length; i++) {
             const segment = line.segments[i];
             const engine = this.getEngine(segment);
-            const candidate = engine.projectPoint(localPoint, segment, startPosition);
-            if (candidate.distance < minDistance) {
+            const candidate = segmentLayoutCallback(engine, localPoint, segment, startPosition);
+            if (
+                (candidate.distance < minDistance && hasPriority == candidate.priority) ||
+                (candidate.priority && !hasPriority)
+            ) {
                 minDistance = candidate.distance;
                 relativePosition = candidate.position;
                 segmentIndex = i;
-                const normal = engine.getNormalVector(candidate.position, segment, startPosition);
-                const d2 = normal.x ** 2 + normal.y ** 2;
-                distance = ((point.x - candidate.point.x) * normal.x + (point.y - candidate.point.y) * normal.y) / d2;
+                projectedPoint = candidate.point;
+                hasPriority = candidate.priority;
             }
             startPosition = segment.end;
         }
@@ -71,7 +94,7 @@ export class LineEngine {
             pos: lengthPerSegment * (segmentIndex + relativePosition),
             relativePos: relativePosition,
             segment: segmentIndex,
-            distance
+            point: projectedPoint!
         };
     }
 
@@ -159,9 +182,7 @@ export interface ProjectionResult {
      */
     segment: number;
     /**
-     * Distance for relative LinePoints.
-     * This is the distance to the line which results in the lowest distance to the point.
-     * This is not the distance to the provided point!
+     * The projected point
      */
-    distance: number;
+    point: Point;
 }

@@ -18,6 +18,17 @@ export abstract class SegmentEngine<T extends Segment> {
     abstract projectPoint(point: Point, segment: T, segmentStartPoint: Point): NearestPointResult;
 
     /**
+     * Projects a point orthogonally on a segment, meaning using either only a horizontal or vertical line to the segment.
+     * If such a projection is not possible, a regular projection is used.
+     *
+     * @param point the point to project
+     * @param segment the segment on which the point must be
+     * @param segmentStartPoint the start position of the segment
+     * @returns a definition of the projected point and its distance
+     */
+    abstract projectPointOrthogonal(point: Point, segment: T, segmentStartPoint: Point): NearestPointResult;
+
+    /**
      * Gets a point on a segment
      *
      * @param position the position of the point on the segment, a number between 0 and 1
@@ -39,6 +50,12 @@ export abstract class SegmentEngine<T extends Segment> {
      */
     abstract getNormalVector(position: number, segment: T, segmentStartPoint: Point): Point;
 
+    /**
+     * Converts the segment to a path string
+     *
+     * @param segment the segment to convert
+     * @returns the path string
+     */
     abstract toPathString(segment: T): string;
 }
 
@@ -58,4 +75,8 @@ export interface NearestPointResult {
      * The actual point on the line
      */
     point: Point;
+    /**
+     * If this result has priority
+     */
+    priority: boolean;
 }

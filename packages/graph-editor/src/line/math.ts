@@ -157,4 +157,17 @@ export namespace Math2D {
             y: vector.x * sin + vector.y * cos
         };
     }
+
+    /**
+     * Checks if a value is in a given range (start of the range is inclusive, end of the range is exclusive)
+     * It does not matter if start is greater than end or vice versa
+     *
+     * @param value the value to check
+     * @param start the start of the range
+     * @param end the end of the range
+     * @returns true if the value is in the range, false otherwise
+     */
+    export function isInRange(value: number, start: number, end: number): boolean {
+        return value >= Math.min(start, end) && value <= Math.max(start, end);
+    }
 }

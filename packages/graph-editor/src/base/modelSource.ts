@@ -7,7 +7,8 @@ import {
     Relation as GropiusRelation,
     IssueType as GropiusIssueType,
     IssueRelation as GropiusIssueRelation,
-    Selectable as GropiusSelectable
+    Selectable as GropiusSelectable,
+    SegmentLayout
 } from "../gropiusModel";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
@@ -119,6 +120,8 @@ export abstract class GraphModelSource extends LocalModelSource {
             type: "relation",
             id: `temp-relation-${start}`,
             start,
+            points: [],
+            segments: [SegmentLayout.HORIZONTAL_VERTICAL],
             style: {
                 marker: "ARROW"
             },
@@ -277,6 +280,7 @@ export abstract class GraphModelSource extends LocalModelSource {
     }
 
     private createRelation(relation: GropiusRelation, layout: GraphLayout): Relation {
+        const relationLayout = this.extractRelationLayout(relation.id, layout);
         const children: Element[] = [];
         children.push(this.createNameLabel(relation.name, relation.id));
         return {
@@ -285,6 +289,8 @@ export abstract class GraphModelSource extends LocalModelSource {
             style: relation.style,
             start: relation.start,
             end: relation.end,
+            points: relationLayout.points,
+            segments: relationLayout.segments,
             contextMenuData: relation.contextMenu,
             children
         };
@@ -384,6 +390,15 @@ export abstract class GraphModelSource extends LocalModelSource {
             return interfaceLayout;
         } else {
             return { pos: { x: 0, y: 0 } };
+        }
+    }
+
+    private extractRelationLayout(id: string, layout: GraphLayout) {
+        const relationLayout = layout[id];
+        if (relationLayout != undefined && "points" in relationLayout) {
+            return relationLayout;
+        } else {
+            return { points: [], segments: [SegmentLayout.HORIZONTAL_VERTICAL] };
         }
     }
 
