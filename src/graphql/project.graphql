@@ -46,6 +46,7 @@ query getProject($id: ID!) {
             manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
             manageIssues: hasPermission(permission: MANAGE_ISSUES)
             manageIMS: hasPermission(permission: MANAGE_IMS)
+            manageViews: hasPermission(permission: MANAGE_VIEWS)
             admin: hasPermission(permission: ADMIN)
         }
     }

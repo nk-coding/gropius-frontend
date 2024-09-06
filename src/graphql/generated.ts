@@ -838,6 +838,8 @@ export enum AllPermissionEntry {
      * Also allows to delete a Label, but only if it is allowed on all Trackable the Label is on.
      */
     ManageLabels = "MANAGE_LABELS",
+    /** Allows to manage the views of this Project. */
+    ManageViews = "MANAGE_VIEWS",
     /**
      * Allows to moderate Issues on this Trackable.
      * This allows everything `MANAGE_ISSUES` allows.
@@ -3998,6 +4000,28 @@ export type CreateRelationTemplatePayload = {
     __typename?: "CreateRelationTemplatePayload";
     /** The created RelationTemplate */
     relationTemplate: RelationTemplate;
+};
+
+/** Input for the createView mutation */
+export type CreateViewInput = {
+    /** The description of the NamedNode */
+    description: Scalars["String"]["input"];
+    /** The new filter of the view */
+    filterByTemplate?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+    /** The name of the NamedNode, must not be blank */
+    name: Scalars["String"]["input"];
+    /** The id of the project the view belongs to */
+    project: Scalars["ID"]["input"];
+    /** Defines the new layout of a set of Relations */
+    relationLayouts?: InputMaybe<Array<UpdateRelationLayoutInput>>;
+    /** Defines the new layout of a set of RelationPartners */
+    relationPartnerLayouts?: InputMaybe<Array<UpdateRelationPartnerLayoutInput>>;
+};
+
+export type CreateViewPayload = {
+    __typename?: "CreateViewPayload";
+    /** The created View */
+    view: View;
 };
 
 /** Filter which can be used to filter for Nodes with a specific DateTime field */
@@ -10408,6 +10432,8 @@ export type Mutation = {
     createRelation: CreateRelationPayload;
     /** Creates a new RelationTemplate, requires CAN_CREATE_TEMPLATES */
     createRelationTemplate: CreateRelationTemplatePayload;
+    /** Creates a new View, requires MANAGE_VIEWS on the project owning the view. */
+    createView: CreateViewPayload;
     /**
      * Deletes the Artefact, requires MANAGE_ARTEFACTS on the Trackable it is part of. Removes it from all Issues.
      *
@@ -10494,6 +10520,8 @@ export type Mutation = {
      *
      */
     deleteRelation: DeleteNodePayload;
+    /** Deletes the specified View, requires MANAGE_VIEWS on the project owning the view. */
+    deleteView: DeleteNodePayload;
     /**
      * Removes an AffectedByIssue from an Issue, requires MANAGE_ISSUES on any of the Trackables the Issue is on,
      *         or AFFECT_ENTITIES_WITH_ISSUES on the Trackable associated with the AffectedByIssue.
@@ -10668,6 +10696,8 @@ export type Mutation = {
     updateSyncPermissions: UpdateSyncPermissionsPayload;
     /** Updates the deprecation state of the template, requires CAN_CREATE_TEMPLATES */
     updateTemplateDeprecationStatus: UpdateTemplateDeprecationStatusPayload;
+    /** Updates the specified View, requires MANAGE_VIEWS on the project owning the view. */
+    updateView: UpdateViewPayload;
 };
 
 export type MutationAddAffectedEntityToIssueArgs = {
@@ -10842,6 +10872,10 @@ export type MutationCreateRelationTemplateArgs = {
     input: CreateRelationTemplateInput;
 };
 
+export type MutationCreateViewArgs = {
+    input: CreateViewInput;
+};
+
 export type MutationDeleteArtefactArgs = {
     input: DeleteNodeInput;
 };
@@ -10911,6 +10945,10 @@ export type MutationDeleteProjectPermissionArgs = {
 };
 
 export type MutationDeleteRelationArgs = {
+    input: DeleteNodeInput;
+};
+
+export type MutationDeleteViewArgs = {
     input: DeleteNodeInput;
 };
 
@@ -11044,6 +11082,10 @@ export type MutationUpdateSyncPermissionsArgs = {
 
 export type MutationUpdateTemplateDeprecationStatusArgs = {
     input: UpdateTemplateDeprecationStatusInput;
+};
+
+export type MutationUpdateViewArgs = {
+    input: UpdateViewInput;
 };
 
 /** Entity with a name and a description. */
@@ -11388,6 +11430,23 @@ export enum PermissionEntry {
     CanCreateTemplates = "CAN_CREATE_TEMPLATES"
 }
 
+/** A point in a 2D coordinate system */
+export type Point = {
+    __typename?: "Point";
+    /** The x coordinate of the point */
+    x: Scalars["Int"]["output"];
+    /** The y coordinate of the point */
+    y: Scalars["Int"]["output"];
+};
+
+/** A point in a 2D coordinate system */
+export type PointInput = {
+    /** The x coordinate of the point */
+    x: Scalars["Int"]["input"];
+    /** The y coordinate of the point */
+    y: Scalars["Int"]["input"];
+};
+
 /**
  * Event representing that the priority of an Issue changed.
  *     READ is granted if READ is granted on `issue`.
@@ -11450,6 +11509,8 @@ export type Project = AffectedByIssue &
         artefacts: ArtefactConnection;
         /** The ComponentVersions this consists of. */
         components: ComponentVersionConnection;
+        /** The default view for this project. */
+        defaultView?: Maybe<View>;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
@@ -11470,10 +11531,16 @@ export type Project = AffectedByIssue &
         permissions: ProjectPermissionConnection;
         /** Issues which are pinned to this trackable, subset of `issues`. */
         pinnedIssues: IssueConnection;
+        /** Layouts for relations */
+        relationLayouts: RelationLayoutConnection;
+        /** Layouts for relation partners */
+        relationPartnerLayouts: RelationPartnerLayoutConnection;
         /** If existing, the URL of the repository (e.g. a GitHub repository). */
         repositoryURL?: Maybe<Scalars["URL"]["output"]>;
         /** IMSProjects this Trackable is synced to and from. */
         syncsTo: ImsProjectConnection;
+        /** Views on the architecture graph of this project. */
+        views: ViewConnection;
     };
 
 /**
@@ -11622,6 +11689,42 @@ export type ProjectPinnedIssuesArgs = {
  *     READ is granted via an associated ProjectPermission.
  *
  */
+export type ProjectRelationLayoutsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<RelationLayoutFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<RelationLayoutOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * A project of the Gropius system.
+ *     Consists of a set of ComponentVersions, which form a graph with the Relations between them.
+ *     Can be affected by issues.
+ *     Can have issues, labels and artefacts as this is a Trackable.
+ *     READ is granted via an associated ProjectPermission.
+ *
+ */
+export type ProjectRelationPartnerLayoutsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<RelationPartnerLayoutFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<RelationPartnerLayoutOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * A project of the Gropius system.
+ *     Consists of a set of ComponentVersions, which form a graph with the Relations between them.
+ *     Can be affected by issues.
+ *     Can have issues, labels and artefacts as this is a Trackable.
+ *     READ is granted via an associated ProjectPermission.
+ *
+ */
 export type ProjectSyncsToArgs = {
     after?: InputMaybe<Scalars["String"]["input"]>;
     before?: InputMaybe<Scalars["String"]["input"]>;
@@ -11629,6 +11732,24 @@ export type ProjectSyncsToArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<Array<ImsProjectOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * A project of the Gropius system.
+ *     Consists of a set of ComponentVersions, which form a graph with the Relations between them.
+ *     Can be affected by issues.
+ *     Can have issues, labels and artefacts as this is a Trackable.
+ *     READ is granted via an associated ProjectPermission.
+ *
+ */
+export type ProjectViewsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<ViewFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<ViewOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -11664,6 +11785,8 @@ export type ProjectFilterInput = {
     artefacts?: InputMaybe<ArtefactListFilterInput>;
     /** Filter by components */
     components?: InputMaybe<ComponentVersionListFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    defaultView?: InputMaybe<ViewFilterInput>;
     /** Filter by description */
     description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
@@ -11684,10 +11807,16 @@ export type ProjectFilterInput = {
     pinnedIssues?: InputMaybe<IssueListFilterInput>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
+    /** Filter by relationLayouts */
+    relationLayouts?: InputMaybe<RelationLayoutListFilterInput>;
+    /** Filter by relationPartnerLayouts */
+    relationPartnerLayouts?: InputMaybe<RelationPartnerLayoutListFilterInput>;
     /** Filter by repositoryURL */
     repositoryURL?: InputMaybe<NullableStringFilterInput>;
     /** Filter by syncsTo */
     syncsTo?: InputMaybe<ImsProjectListFilterInput>;
+    /** Filter by views */
+    views?: InputMaybe<ViewListFilterInput>;
 };
 
 /** Used to filter by a connection-based property. Fields are joined by AND */
@@ -11845,6 +11974,8 @@ export enum ProjectPermissionEntry {
      * Also allows to delete a Label, but only if it is allowed on all Trackable the Label is on.
      */
     ManageLabels = "MANAGE_LABELS",
+    /** Allows to manage the views of this Project. */
+    ManageViews = "MANAGE_VIEWS",
     /**
      * Allows to moderate Issues on this Trackable.
      * This allows everything `MANAGE_ISSUES` allows.
@@ -12009,6 +12140,8 @@ export type Query = {
     searchTrackables: Array<Trackable>;
     /** Search for nodes of type User */
     searchUsers: Array<User>;
+    /** Search for nodes of type View */
+    searchViews: Array<View>;
     /** Query for nodes of type Trackable */
     trackables: TrackableConnection;
 };
@@ -12284,6 +12417,13 @@ export type QuerySearchTrackablesArgs = {
 
 export type QuerySearchUsersArgs = {
     filter?: InputMaybe<UserFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchViewsArgs = {
+    filter?: InputMaybe<ViewFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -12756,6 +12896,91 @@ export type RelationFilterInput = {
     templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
 };
 
+/** Layout for a Relation */
+export type RelationLayout = BaseNode &
+    Node & {
+        __typename?: "RelationLayout";
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        /** The intermediate points of the Relation in the layout. */
+        points: Array<Point>;
+        /** The Relation this layout is for. */
+        relation: Relation;
+    };
+
+/** Layout for a Relation */
+export type RelationLayoutHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
+
+/** The connection type for RelationLayout. */
+export type RelationLayoutConnection = {
+    __typename?: "RelationLayoutConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<RelationLayoutEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<RelationLayout>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type RelationLayoutEdge = {
+    __typename?: "RelationLayoutEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: RelationLayout;
+};
+
+/** Filter used to filter RelationLayout */
+export type RelationLayoutFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<RelationLayoutFilterInput>>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<RelationLayoutFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<RelationLayoutFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    relation?: InputMaybe<RelationFilterInput>;
+};
+
+/** Input which defines the layout of a Relation */
+export type RelationLayoutInput = {
+    /** List of intermediate points of the relation */
+    points: Array<PointInput>;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type RelationLayoutListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<RelationLayoutFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<RelationLayoutFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<RelationLayoutFilterInput>;
+};
+
+/** Defines the order of a RelationLayout list */
+export type RelationLayoutOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<RelationLayoutOrderField>;
+};
+
+/** Fields a list of RelationLayout can be sorted by */
+export enum RelationLayoutOrderField {
+    /** Order by id */
+    Id = "ID"
+}
+
 /** Used to filter by a connection-based property. Fields are joined by AND */
 export type RelationListFilterInput = {
     /** Filters for nodes where all of the related nodes match this filter */
@@ -12910,6 +13135,91 @@ export type RelationPartnerFilterInput = {
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
     templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
 };
+
+/** Layout for a RelationPartner (ComponentVersion or Interface) */
+export type RelationPartnerLayout = BaseNode &
+    Node & {
+        __typename?: "RelationPartnerLayout";
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        /** The position of the RelationPartner in the layout. */
+        pos: Point;
+        /** The RelationPartner this layout is for. */
+        relationPartner: RelationPartner;
+    };
+
+/** Layout for a RelationPartner (ComponentVersion or Interface) */
+export type RelationPartnerLayoutHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
+
+/** The connection type for RelationPartnerLayout. */
+export type RelationPartnerLayoutConnection = {
+    __typename?: "RelationPartnerLayoutConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<RelationPartnerLayoutEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<RelationPartnerLayout>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type RelationPartnerLayoutEdge = {
+    __typename?: "RelationPartnerLayoutEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: RelationPartnerLayout;
+};
+
+/** Filter used to filter RelationPartnerLayout */
+export type RelationPartnerLayoutFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<RelationPartnerLayoutFilterInput>>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<RelationPartnerLayoutFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<RelationPartnerLayoutFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    relationPartner?: InputMaybe<RelationPartnerFilterInput>;
+};
+
+/** Input which defines the layout of a RelationPartner */
+export type RelationPartnerLayoutInput = {
+    /** The position of the RelationPartner */
+    pos: PointInput;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type RelationPartnerLayoutListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<RelationPartnerLayoutFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<RelationPartnerLayoutFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<RelationPartnerLayoutFilterInput>;
+};
+
+/** Defines the order of a RelationPartnerLayout list */
+export type RelationPartnerLayoutOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<RelationPartnerLayoutOrderField>;
+};
+
+/** Fields a list of RelationPartnerLayout can be sorted by */
+export enum RelationPartnerLayoutOrderField {
+    /** Order by id */
+    Id = "ID"
+}
 
 /** Template for RelationPartners. */
 export type RelationPartnerTemplate = {
@@ -15194,12 +15504,18 @@ export type UpdateLabelPayload = {
 export type UpdateProjectInput = {
     /** Ids of permissions to add, must be disjoint with removedPermissions. */
     addedPermissions?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+    /** The default view for the project */
+    defaultView?: InputMaybe<Scalars["ID"]["input"]>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
     name?: InputMaybe<Scalars["String"]["input"]>;
+    /** Defines the new layout of a set of Relations */
+    relationLayouts?: InputMaybe<Array<UpdateRelationLayoutInput>>;
+    /** Defines the new layout of a set of RelationPartners */
+    relationPartnerLayouts?: InputMaybe<Array<UpdateRelationPartnerLayoutInput>>;
     /**
      * Ids of permissions to remove, must be disjoint with addedPermissions.
      *         There must always be at least one permissions granting ADMIN to some GropiusUser left.
@@ -15266,6 +15582,22 @@ export type UpdateRelationInput = {
     templatedFields?: InputMaybe<Array<JsonFieldInput>>;
 };
 
+/** Input to update the layout of a Relation */
+export type UpdateRelationLayoutInput = {
+    /** The new layout of the Relation, or null if the layout should be reset */
+    layout?: InputMaybe<RelationLayoutInput>;
+    /** The id of the Relation of which to update the layout */
+    relation: Scalars["ID"]["input"];
+};
+
+/** Input to update the layout of a RelationPartner */
+export type UpdateRelationPartnerLayoutInput = {
+    /** The new layout of the RelationPartner, or null if the layout should be reset */
+    layout?: InputMaybe<RelationPartnerLayoutInput>;
+    /** The id of the RelationPartner of which to update the layout */
+    relationPartner: Scalars["ID"]["input"];
+};
+
 export type UpdateRelationPayload = {
     __typename?: "UpdateRelationPayload";
     /** The updated Relation */
@@ -15300,6 +15632,28 @@ export type UpdateTemplateDeprecationStatusPayload = {
     __typename?: "UpdateTemplateDeprecationStatusPayload";
     /** The updated Template */
     template: Template;
+};
+
+/** Input for the updateView mutation */
+export type UpdateViewInput = {
+    /** The description of the NamedNode */
+    description?: InputMaybe<Scalars["String"]["input"]>;
+    /** The new filter of the view */
+    filterByTemplate?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+    /** The id of the node to update */
+    id: Scalars["ID"]["input"];
+    /** The new name of the NamedNode, must not be empty */
+    name?: InputMaybe<Scalars["String"]["input"]>;
+    /** Defines the new layout of a set of Relations */
+    relationLayouts?: InputMaybe<Array<UpdateRelationLayoutInput>>;
+    /** Defines the new layout of a set of RelationPartners */
+    relationPartnerLayouts?: InputMaybe<Array<UpdateRelationPartnerLayoutInput>>;
+};
+
+export type UpdateViewPayload = {
+    __typename?: "UpdateViewPayload";
+    /** The updated View */
+    view: View;
 };
 
 /**
@@ -15477,6 +15831,140 @@ export type Versioned = {
     /** The version of this entity */
     version: Scalars["String"]["output"];
 };
+
+/** A view on the architecture graph of a project */
+export type View = BaseNode &
+    Named &
+    NamedNode &
+    Node & {
+        __typename?: "View";
+        /** The description of this entity. */
+        description: Scalars["String"]["output"];
+        /** Filter which ComponentVersions are shown in this view */
+        filterByTemplate: ComponentTemplateConnection;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        /** The name of this entity. */
+        name: Scalars["String"]["output"];
+        /** The project this view is for */
+        project: Project;
+        /** Layouts for relations */
+        relationLayouts: RelationLayoutConnection;
+        /** Layouts for relation partners */
+        relationPartnerLayouts: RelationPartnerLayoutConnection;
+    };
+
+/** A view on the architecture graph of a project */
+export type ViewFilterByTemplateArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<ComponentTemplateFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<ComponentTemplateOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** A view on the architecture graph of a project */
+export type ViewHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
+
+/** A view on the architecture graph of a project */
+export type ViewRelationLayoutsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<RelationLayoutFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<RelationLayoutOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** A view on the architecture graph of a project */
+export type ViewRelationPartnerLayoutsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<RelationPartnerLayoutFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<RelationPartnerLayoutOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** The connection type for View. */
+export type ViewConnection = {
+    __typename?: "ViewConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<ViewEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<View>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type ViewEdge = {
+    __typename?: "ViewEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: View;
+};
+
+/** Filter used to filter View */
+export type ViewFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<ViewFilterInput>>;
+    /** Filter by description */
+    description?: InputMaybe<StringFilterInput>;
+    /** Filter by filterByTemplate */
+    filterByTemplate?: InputMaybe<ComponentTemplateListFilterInput>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Filter by name */
+    name?: InputMaybe<StringFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<ViewFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<ViewFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    project?: InputMaybe<ProjectFilterInput>;
+    /** Filter by relationLayouts */
+    relationLayouts?: InputMaybe<RelationLayoutListFilterInput>;
+    /** Filter by relationPartnerLayouts */
+    relationPartnerLayouts?: InputMaybe<RelationPartnerLayoutListFilterInput>;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type ViewListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<ViewFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<ViewFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<ViewFilterInput>;
+};
+
+/** Defines the order of a View list */
+export type ViewOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<ViewOrderField>;
+};
+
+/** Fields a list of View can be sorted by */
+export enum ViewOrderField {
+    /** Order by id */
+    Id = "ID",
+    /** Order by name */
+    Name = "NAME"
+}
 
 export type SearchAffectedByIssuesQueryVariables = Exact<{
     query: Scalars["String"]["input"];
@@ -15783,6 +16271,8 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -15799,6 +16289,7 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -15964,6 +16455,8 @@ export type GetComponentQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -15980,6 +16473,7 @@ export type GetComponentQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -16189,6 +16683,8 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -16205,6 +16701,7 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -16287,6 +16784,8 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -16303,6 +16802,7 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -16439,6 +16939,8 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -16455,6 +16957,7 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -16588,6 +17091,8 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -16604,6 +17109,7 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -16771,6 +17277,8 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -16787,6 +17295,7 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -16873,6 +17382,8 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -16889,6 +17400,108 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetProjectComponentTemplatesQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetProjectComponentTemplatesQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              components: {
+                  __typename?: "ComponentVersionConnection";
+                  nodes: Array<{
+                      __typename?: "ComponentVersion";
+                      component: {
+                          __typename?: "Component";
+                          template: { __typename?: "ComponentTemplate"; name: string; id: string };
+                      };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -16973,6 +17586,8 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -16989,6 +17604,7 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -17076,6 +17692,8 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -17092,6 +17710,7 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -17216,6 +17835,8 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -17232,6 +17853,7 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -17574,6 +18196,8 @@ export type GetProjectGraphQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -17590,6 +18214,7 @@ export type GetProjectGraphQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -18176,6 +18801,8 @@ export type GetImsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -18192,6 +18819,7 @@ export type GetImsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -18273,6 +18901,8 @@ export type GetImsGeneralDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -18289,6 +18919,7 @@ export type GetImsGeneralDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -18425,6 +19056,8 @@ export type GetImsPermissionListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -18441,6 +19074,7 @@ export type GetImsPermissionListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -18574,6 +19208,8 @@ export type FirstImsPermissionsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -18590,6 +19226,7 @@ export type FirstImsPermissionsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -18726,6 +19363,8 @@ export type GetImsProjectListFromImsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -18742,6 +19381,7 @@ export type GetImsProjectListFromImsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -18845,6 +19485,8 @@ export type GetImsProjectListFromTrackableQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -18861,6 +19503,7 @@ export type GetImsProjectListFromTrackableQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -18964,6 +19607,8 @@ export type GetImsProjectGeneralDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -18980,6 +19625,7 @@ export type GetImsProjectGeneralDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -19133,6 +19779,8 @@ export type GetImsTemplateQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -19149,6 +19797,7 @@ export type GetImsTemplateQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -19235,6 +19884,8 @@ export type GetImsProjectTemplateQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -19251,6 +19902,7 @@ export type GetImsProjectTemplateQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -19465,6 +20117,8 @@ export type GetIssueListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -19481,6 +20135,7 @@ export type GetIssueListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -19625,6 +20280,8 @@ export type GetIssueListOnAggregatedIssueQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -19641,6 +20298,7 @@ export type GetIssueListOnAggregatedIssueQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -21170,6 +21828,8 @@ export type GetIssueQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -21186,6 +21846,7 @@ export type GetIssueQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -21575,6 +22236,8 @@ export type FirstIssuesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -21591,6 +22254,7 @@ export type FirstIssuesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -21699,6 +22363,8 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -21715,6 +22381,7 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -21952,6 +22619,8 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -21968,6 +22637,7 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22144,6 +22814,8 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22160,6 +22832,7 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22300,6 +22973,8 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22316,6 +22991,7 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22424,6 +23100,8 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22440,6 +23118,7 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22549,6 +23228,8 @@ export type GetLabelListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22565,6 +23246,7 @@ export type GetLabelListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22699,6 +23381,8 @@ export type FirstLabelsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22715,6 +23399,7 @@ export type FirstLabelsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -22809,6 +23494,8 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -22825,6 +23512,7 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -23036,6 +23724,8 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -23052,6 +23742,7 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -23205,6 +23896,7 @@ export type GetProjectQuery = {
               manageComponents: boolean;
               manageIssues: boolean;
               manageIMS: boolean;
+              manageViews: boolean;
               admin: boolean;
               openIssues: { __typename?: "IssueConnection"; totalCount: number };
           }
@@ -23212,6 +23904,8 @@ export type GetProjectQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -23228,6 +23922,7 @@ export type GetProjectQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -23305,6 +24000,8 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "RelatedByIssueEvent"; id: string }
         | { __typename?: "Relation"; id: string }
         | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
         | { __typename?: "RelationTemplate"; id: string }
         | { __typename?: "RemovedAffectedEntityEvent"; id: string }
         | { __typename?: "RemovedArtefactEvent"; id: string }
@@ -23321,6 +24018,7 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
         | null;
 };
 
@@ -23433,6 +24131,8 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -23449,6 +24149,7 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -23582,6 +24283,8 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -23598,6 +24301,7 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -23776,6 +24480,8 @@ export type GetSyncPermissionTargetQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -23792,6 +24498,7 @@ export type GetSyncPermissionTargetQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -25777,6 +26484,8 @@ export type GetUserQuery = {
         | { __typename?: "RelatedByIssueEvent" }
         | { __typename?: "Relation" }
         | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
         | { __typename?: "RelationTemplate" }
         | { __typename?: "RemovedAffectedEntityEvent" }
         | { __typename?: "RemovedArtefactEvent" }
@@ -25793,6 +26502,7 @@ export type GetUserQuery = {
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
         | null;
 };
 
@@ -25830,6 +26540,169 @@ export type SearchGropiusUsersQuery = {
         avatar: any;
     }>;
 };
+
+export type GetViewListQueryVariables = Exact<{
+    orderBy: Array<ViewOrder> | ViewOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetViewListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              views: {
+                  __typename?: "ViewConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "View";
+                      id: string;
+                      name: string;
+                      description: string;
+                      filterByTemplate: {
+                          __typename?: "ComponentTemplateConnection";
+                          nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+                      };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetFilteredViewListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredViewListQuery = {
+    __typename?: "Query";
+    searchViews: Array<{
+        __typename?: "View";
+        id: string;
+        name: string;
+        description: string;
+        filterByTemplate: {
+            __typename?: "ComponentTemplateConnection";
+            nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+        };
+    }>;
+};
+
+export type DefaultViewInfoFragment = {
+    __typename?: "View";
+    id: string;
+    name: string;
+    description: string;
+    filterByTemplate: {
+        __typename?: "ComponentTemplateConnection";
+        nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+    };
+};
+
+export type CreateViewMutationVariables = Exact<{
+    input: CreateViewInput;
+}>;
+
+export type CreateViewMutation = {
+    __typename?: "Mutation";
+    createView: { __typename?: "CreateViewPayload"; view: { __typename?: "View"; id: string } };
+};
+
+export type UpdateViewMutationVariables = Exact<{
+    input: UpdateViewInput;
+}>;
+
+export type UpdateViewMutation = {
+    __typename?: "Mutation";
+    updateView: { __typename?: "UpdateViewPayload"; view: { __typename?: "View"; id: string } };
+};
+
+export type DeleteViewMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteViewMutation = { __typename?: "Mutation"; deleteView: { __typename: "DeleteNodePayload" } };
 
 export const DefaultComponentPermissionInfoFragmentDoc = gql`
     fragment DefaultComponentPermissionInfo on ComponentPermission {
@@ -26827,6 +27700,19 @@ export const OpenIssueCountFragmentDoc = gql`
         }
     }
 `;
+export const DefaultViewInfoFragmentDoc = gql`
+    fragment DefaultViewInfo on View {
+        id
+        name
+        description
+        filterByTemplate {
+            nodes {
+                id
+                name
+            }
+        }
+    }
+`;
 export const SearchAffectedByIssuesDocument = gql`
     query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
         searchAffectedByIssues(query: $query, first: $count, filter: { relatedTo: $trackable }) {
@@ -27168,6 +28054,24 @@ export const GetComponentVersionTemplateDocument = gql`
         }
     }
     ${DefaultComponentVersionTemplateInfoFragmentDoc}
+`;
+export const GetProjectComponentTemplatesDocument = gql`
+    query getProjectComponentTemplates($project: ID!) {
+        node(id: $project) {
+            ... on Project {
+                components {
+                    nodes {
+                        component {
+                            template {
+                                name
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 `;
 export const GetComponentVersionsDocument = gql`
     query getComponentVersions($id: ID!, $count: Int!) {
@@ -28315,6 +29219,7 @@ export const GetProjectDocument = gql`
                 manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
                 manageIssues: hasPermission(permission: MANAGE_ISSUES)
                 manageIMS: hasPermission(permission: MANAGE_IMS)
+                manageViews: hasPermission(permission: MANAGE_VIEWS)
                 admin: hasPermission(permission: ADMIN)
             }
         }
@@ -28548,6 +29453,54 @@ export const SearchGropiusUsersDocument = gql`
         }
     }
     ${DefaultUserInfoFragmentDoc}
+`;
+export const GetViewListDocument = gql`
+    query getViewList($orderBy: [ViewOrder!]!, $count: Int!, $skip: Int!, $project: ID!) {
+        node(id: $project) {
+            ... on Project {
+                views(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...DefaultViewInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${DefaultViewInfoFragmentDoc}
+`;
+export const GetFilteredViewListDocument = gql`
+    query getFilteredViewList($query: String!, $count: Int!, $project: ID!) {
+        searchViews(query: $query, first: $count, filter: { project: { id: { eq: $project } } }) {
+            ...DefaultViewInfo
+        }
+    }
+    ${DefaultViewInfoFragmentDoc}
+`;
+export const CreateViewDocument = gql`
+    mutation createView($input: CreateViewInput!) {
+        createView(input: $input) {
+            view {
+                id
+            }
+        }
+    }
+`;
+export const UpdateViewDocument = gql`
+    mutation updateView($input: UpdateViewInput!) {
+        updateView(input: $input) {
+            view {
+                id
+            }
+        }
+    }
+`;
+export const DeleteViewDocument = gql`
+    mutation deleteView($id: ID!) {
+        deleteView(input: { id: $id }) {
+            __typename
+        }
+    }
 `;
 
 export type SdkFunctionWrapper = <T>(
@@ -29011,6 +29964,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionTemplate",
+                "query",
+                variables
+            );
+        },
+        getProjectComponentTemplates(
+            variables: GetProjectComponentTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetProjectComponentTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetProjectComponentTemplatesQuery>(GetProjectComponentTemplatesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getProjectComponentTemplates",
                 "query",
                 variables
             );
@@ -30818,6 +31786,81 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "searchGropiusUsers",
                 "query",
+                variables
+            );
+        },
+        getViewList(
+            variables: GetViewListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetViewListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetViewListQuery>(GetViewListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getViewList",
+                "query",
+                variables
+            );
+        },
+        getFilteredViewList(
+            variables: GetFilteredViewListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredViewListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredViewListQuery>(GetFilteredViewListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredViewList",
+                "query",
+                variables
+            );
+        },
+        createView(
+            variables: CreateViewMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateViewMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateViewMutation>(CreateViewDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createView",
+                "mutation",
+                variables
+            );
+        },
+        updateView(
+            variables: UpdateViewMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateViewMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateViewMutation>(UpdateViewDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateView",
+                "mutation",
+                variables
+            );
+        },
+        deleteView(
+            variables: DeleteViewMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteViewMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteViewMutation>(DeleteViewDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteView",
+                "mutation",
                 variables
             );
         }

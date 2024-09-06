@@ -78,6 +78,12 @@ const leftSidebarItems = computed(() => {
                     to: projectPath("project-details-general")
                 },
                 {
+                    icon: "mdi-animation",
+                    name: "Views",
+                    color: "secondary",
+                    to: projectPath("project-details-views")
+                },
+                {
                     icon: "mdi-label",
                     name: "Labels",
                     color: "secondary",
@@ -155,6 +161,20 @@ const rightSidebarItems = computed(() => {
                     color: "secondary",
                     onClick: () => {
                         eventBus?.emit("layout-component-graph", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "project-details-views") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create view`,
+                    color: "secondary",
+                    disabled: !(project?.value?.manageViews ?? false),
+                    onClick: () => {
+                        eventBus?.emit("create-view", undefined);
                     }
                 }
             ]

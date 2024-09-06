@@ -18,6 +18,7 @@ export type Events = {
     "title-segment-changed": undefined;
     "create-strategy-instance": undefined;
     "create-auth-client": undefined;
+    "create-view": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {

@@ -34,7 +34,7 @@ query firstComponentTemplates($count: Int!) {
 
 query getComponentTemplate($id: ID!) {
     node(id: $id) {
-        ...on ComponentTemplate {
+        ... on ComponentTemplate {
             ...DefaultComponentTemplateInfo
         }
     }
@@ -42,10 +42,27 @@ query getComponentTemplate($id: ID!) {
 
 query getComponentVersionTemplate($component: ID!) {
     node(id: $component) {
-        ...on Component {
+        ... on Component {
             template {
                 componentVersionTemplate {
                     ...DefaultComponentVersionTemplateInfo
+                }
+            }
+        }
+    }
+}
+
+query getProjectComponentTemplates($project: ID!) {
+    node(id: $project) {
+        ... on Project {
+            components {
+                nodes {
+                    component {
+                        template {
+                            name
+                            id
+                        }
+                    }
                 }
             }
         }

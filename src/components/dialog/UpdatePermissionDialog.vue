@@ -41,7 +41,7 @@ import { UpdatePermissionFunction } from "../PermissionList.vue";
 import PermissionEntryCheckboxGrid from "../input/PermissionEntryCheckboxGrid.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 
-interface Permission {
+export interface Permission {
     name: string;
     description: string;
     entries: string[];

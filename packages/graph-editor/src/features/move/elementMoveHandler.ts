@@ -43,7 +43,7 @@ export class ElementMoveHandler implements MoveHandler {
         }
         for (const [key, points] of Object.entries(this.fullyMovedRelationLayouts)) {
             partialLayout[key] = {
-                points: points.map(point => ({
+                points: points.map((point) => ({
                     x: point.x + offsetX,
                     y: point.y + offsetY
                 }))
