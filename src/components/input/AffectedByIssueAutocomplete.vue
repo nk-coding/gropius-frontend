@@ -54,8 +54,8 @@ async function searchAffected(
             const res = await client.searchAffectedByIssues({ query, count, trackable: context!.id });
             return res.searchAffectedByIssues;
         } else if (context!.__typename == "Component") {
-            const res = (await client.getComponentVersions({ id: context!.id, count: count - 1 }))
-                .node as NodeReturnType<"getComponentVersions", "Component">;
+            const res = (await client.firstComponentVersions({ component: context!.id, count: count - 1 }))
+                .node as NodeReturnType<"firstComponentVersions", "Component">;
             return [context!, ...res.versions.nodes];
         } else {
             return [context!];

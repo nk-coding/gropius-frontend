@@ -124,7 +124,6 @@ export abstract class GraphModelSource extends LocalModelSource {
             id: `temp-relation-${start}`,
             start,
             points: [],
-            segments: [SegmentLayout.HORIZONTAL_VERTICAL],
             style: {
                 marker: "ARROW"
             },
@@ -293,7 +292,6 @@ export abstract class GraphModelSource extends LocalModelSource {
             start: relation.start,
             end: relation.end,
             points: relationLayout.points,
-            segments: relationLayout.segments,
             contextMenuData: relation.contextMenu,
             children
         };
@@ -403,8 +401,7 @@ export abstract class GraphModelSource extends LocalModelSource {
                 points: relationLayout.points.map((point) => ({
                     x: roundToPrecision(point.x),
                     y: roundToPrecision(point.y)
-                })),
-                segments: relationLayout.segments
+                }))
             };
         } else {
             return { points: [], segments: [SegmentLayout.HORIZONTAL_VERTICAL] };
@@ -432,7 +429,6 @@ export abstract class GraphModelSource extends LocalModelSource {
                 const relation = element as Relation;
                 const typedLayout = layout as RelationLayout;
                 relation.points = typedLayout.points;
-                relation.segments = typedLayout.segments;
             }
         }
         if (children != undefined) {

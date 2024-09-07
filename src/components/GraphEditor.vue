@@ -49,7 +49,7 @@
                 </template>
             </div>
         </Teleport>
-        <div class="position-absolute top-0 right-0 h-100 pa-3 pointer-events-none">
+        <div class="position-absolute top-0 right-0 h-100 w-100 pa-3 pointer-events-none">
             <slot />
         </div>
     </div>

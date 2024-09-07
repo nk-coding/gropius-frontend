@@ -61,8 +61,8 @@ async function searchComponentVersions(
             const res = await client.searchComponentVersions({ query, count, component: context!.id });
             return res.searchComponentVersions;
         } else {
-            const res = (await client.getComponentVersions({ id: context!.id, count: count - 1 }))
-                .node as NodeReturnType<"getComponentVersions", "Component">;
+            const res = (await client.firstComponentVersions({ component: context!.id, count: count - 1 }))
+                .node as NodeReturnType<"firstComponentVersions", "Component">;
             return res.versions.nodes;
         }
     }, "Error searching component versions");

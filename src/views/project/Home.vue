@@ -8,24 +8,35 @@
         @create-relation="beginCreateRelation"
         @delete-relation="deleteRelation"
     >
-        <div class="d-flex flex-column h-100">
-            <div class="d-flex">
-                <v-spacer />
-                <FilterChip
-                    v-model="showOpenIssues"
-                    label="Open Issues"
-                    icon="$issue"
-                    class="mr-2 open-issue-chip pointer-events-all"
+        <div class="w-100 h-100 d-flex">
+            <div class="flex-grow-1">
+                <ViewAutocomplete
+                    v-model="view"
+                    :project="trackableId"
+                    clearable
+                    class="pointer-events-all view-autocomplete"
                 />
-                <FilterChip
-                    v-model="showClosedIssues"
-                    label="Closed Issues"
-                    icon="$issue"
-                    class="mr-2 closed-issue-chip pointer-events-all"
-                />
-                <FilterChip v-model="showIssueRelations" label="Issue Relations" class="pointer-events-all" />
             </div>
-            <ProjectSidebar v-model="selectedElement" :original-graph="originalGraph ?? undefined" />
+            <v-spacer />
+            <div class="d-flex flex-column h-100">
+                <div class="d-flex">
+                    <v-spacer />
+                    <FilterChip
+                        v-model="showOpenIssues"
+                        label="Open Issues"
+                        icon="$issue"
+                        class="mr-2 open-issue-chip pointer-events-all"
+                    />
+                    <FilterChip
+                        v-model="showClosedIssues"
+                        label="Closed Issues"
+                        icon="$issue"
+                        class="mr-2 closed-issue-chip pointer-events-all"
+                    />
+                    <FilterChip v-model="showIssueRelations" label="Issue Relations" class="pointer-events-all" />
+                </div>
+                <ProjectSidebar v-model="selectedElement" :original-graph="originalGraph ?? undefined" />
+            </div>
         </div>
     </GraphEditor>
     <v-dialog v-model="showAddComponentVersionDialog" :scrim="false" width="auto" class="autocomplete-dialog">
@@ -85,7 +96,7 @@ import {
     SelectedElement
 } from "@gropius/graph-editor";
 import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { onEvent } from "@/util/eventBus";
 import FilterChip from "@/components/input/FilterChip.vue";
 import ComponentVersionAutocomplete from "@/components/input/ComponentVersionAutocomplete.vue";
@@ -94,6 +105,7 @@ import { eventBusKey } from "@/util/keys";
 import RelationTemplateAutocomplete from "@/components/input/RelationTemplateAutocomplete.vue";
 import { IdObject } from "@/util/types";
 import ProjectSidebar from "@/components/ProjectSidebar.vue";
+import ViewAutocomplete from "@/components/input/ViewAutocomplete.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 
@@ -103,6 +115,8 @@ const eventBus = inject(eventBusKey);
 
 const trackableId = computed(() => route.params.trackable as string);
 const graphVersionCounter = ref(0);
+
+const view = ref<string | undefined>(undefined);
 
 const evaluating = ref(false);
 const originalGraph = computedAsync(
@@ -471,5 +485,12 @@ async function deleteRelation(relation: string) {
 }
 .closed-issue-chip :deep(.v-icon:not(.mdi-check)) {
     color: rgb(var(--v-theme-issue-closed));
+}
+
+.view-autocomplete {
+    max-width: 300px;
+    :not(:focus-within):deep(input::placeholder) {
+        opacity: 1 !important;
+    }
 }
 </style>

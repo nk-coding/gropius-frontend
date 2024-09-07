@@ -4007,7 +4007,7 @@ export type CreateViewInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
     /** The new filter of the view */
-    filterByTemplate?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+    filterByTemplate: Array<Scalars["ID"]["input"]>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The id of the project the view belongs to */
@@ -17505,12 +17505,12 @@ export type GetProjectComponentTemplatesQuery = {
         | null;
 };
 
-export type GetComponentVersionsQueryVariables = Exact<{
-    id: Scalars["ID"]["input"];
+export type FirstComponentVersionsQueryVariables = Exact<{
+    component: Scalars["ID"]["input"];
     count: Scalars["Int"]["input"];
 }>;
 
-export type GetComponentVersionsQuery = {
+export type FirstComponentVersionsQuery = {
     __typename?: "Query";
     node?:
         | { __typename?: "AddedAffectedEntityEvent"; id: string }
@@ -18036,6 +18036,52 @@ export type GetProjectGraphQuery = {
         | {
               __typename?: "Project";
               manageComponents: boolean;
+              relationLayouts: {
+                  __typename?: "RelationLayoutConnection";
+                  nodes: Array<{
+                      __typename?: "RelationLayout";
+                      relation: { __typename?: "Relation"; id: string };
+                      points: Array<{ __typename?: "Point"; x: number; y: number }>;
+                  }>;
+              };
+              relationPartnerLayouts: {
+                  __typename?: "RelationPartnerLayoutConnection";
+                  nodes: Array<{
+                      __typename?: "RelationPartnerLayout";
+                      relationPartner:
+                          | { __typename?: "ComponentVersion"; id: string }
+                          | { __typename?: "Interface"; id: string };
+                      pos: { __typename?: "Point"; x: number; y: number };
+                  }>;
+              };
+              defaultView?: {
+                  __typename?: "View";
+                  id: string;
+                  name: string;
+                  description: string;
+                  relationLayouts: {
+                      __typename?: "RelationLayoutConnection";
+                      nodes: Array<{
+                          __typename?: "RelationLayout";
+                          relation: { __typename?: "Relation"; id: string };
+                          points: Array<{ __typename?: "Point"; x: number; y: number }>;
+                      }>;
+                  };
+                  relationPartnerLayouts: {
+                      __typename?: "RelationPartnerLayoutConnection";
+                      nodes: Array<{
+                          __typename?: "RelationPartnerLayout";
+                          relationPartner:
+                              | { __typename?: "ComponentVersion"; id: string }
+                              | { __typename?: "Interface"; id: string };
+                          pos: { __typename?: "Point"; x: number; y: number };
+                      }>;
+                  };
+                  filterByTemplate: {
+                      __typename?: "ComponentTemplateConnection";
+                      nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+                  };
+              } | null;
               components: {
                   __typename?: "ComponentVersionConnection";
                   nodes: Array<{
@@ -26680,6 +26726,158 @@ export type DefaultViewInfoFragment = {
     };
 };
 
+export type ViewGraphInfoFragment = {
+    __typename?: "View";
+    id: string;
+    name: string;
+    description: string;
+    relationLayouts: {
+        __typename?: "RelationLayoutConnection";
+        nodes: Array<{
+            __typename?: "RelationLayout";
+            relation: { __typename?: "Relation"; id: string };
+            points: Array<{ __typename?: "Point"; x: number; y: number }>;
+        }>;
+    };
+    relationPartnerLayouts: {
+        __typename?: "RelationPartnerLayoutConnection";
+        nodes: Array<{
+            __typename?: "RelationPartnerLayout";
+            relationPartner: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string };
+            pos: { __typename?: "Point"; x: number; y: number };
+        }>;
+    };
+    filterByTemplate: {
+        __typename?: "ComponentTemplateConnection";
+        nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+    };
+};
+
+export type SearchViewsQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchViewsQuery = {
+    __typename?: "Query";
+    searchViews: Array<{
+        __typename?: "View";
+        id: string;
+        name: string;
+        description: string;
+        filterByTemplate: {
+            __typename?: "ComponentTemplateConnection";
+            nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+        };
+    }>;
+};
+
+export type FirstViewsQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstViewsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              views: {
+                  __typename?: "ViewConnection";
+                  nodes: Array<{
+                      __typename?: "View";
+                      id: string;
+                      name: string;
+                      description: string;
+                      filterByTemplate: {
+                          __typename?: "ComponentTemplateConnection";
+                          nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+                      };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
 export type CreateViewMutationVariables = Exact<{
     input: CreateViewInput;
 }>;
@@ -27713,6 +27911,34 @@ export const DefaultViewInfoFragmentDoc = gql`
         }
     }
 `;
+export const ViewGraphInfoFragmentDoc = gql`
+    fragment ViewGraphInfo on View {
+        ...DefaultViewInfo
+        relationLayouts {
+            nodes {
+                relation {
+                    id
+                }
+                points {
+                    x
+                    y
+                }
+            }
+        }
+        relationPartnerLayouts {
+            nodes {
+                relationPartner {
+                    id
+                }
+                pos {
+                    x
+                    y
+                }
+            }
+        }
+    }
+    ${DefaultViewInfoFragmentDoc}
+`;
 export const SearchAffectedByIssuesDocument = gql`
     query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
         searchAffectedByIssues(query: $query, first: $count, filter: { relatedTo: $trackable }) {
@@ -28073,9 +28299,9 @@ export const GetProjectComponentTemplatesDocument = gql`
         }
     }
 `;
-export const GetComponentVersionsDocument = gql`
-    query getComponentVersions($id: ID!, $count: Int!) {
-        node(id: $id) {
+export const FirstComponentVersionsDocument = gql`
+    query firstComponentVersions($component: ID!, $count: Int!) {
+        node(id: $component) {
             id
             ... on Component {
                 versions(first: $count) {
@@ -28223,10 +28449,36 @@ export const GetProjectGraphDocument = gql`
         node(id: $project) {
             ... on Project {
                 ...GraphInfo
+                relationLayouts {
+                    nodes {
+                        relation {
+                            id
+                        }
+                        points {
+                            x
+                            y
+                        }
+                    }
+                }
+                relationPartnerLayouts {
+                    nodes {
+                        relationPartner {
+                            id
+                        }
+                        pos {
+                            x
+                            y
+                        }
+                    }
+                }
+                defaultView {
+                    ...ViewGraphInfo
+                }
             }
         }
     }
     ${GraphInfoFragmentDoc}
+    ${ViewGraphInfoFragmentDoc}
 `;
 export const AddComponentVersionToProjectDocument = gql`
     mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
@@ -29477,6 +29729,28 @@ export const GetFilteredViewListDocument = gql`
     }
     ${DefaultViewInfoFragmentDoc}
 `;
+export const SearchViewsDocument = gql`
+    query searchViews($project: ID!, $query: String!, $count: Int!) {
+        searchViews(query: $query, first: $count, filter: { project: { id: { eq: $project } } }) {
+            ...DefaultViewInfo
+        }
+    }
+    ${DefaultViewInfoFragmentDoc}
+`;
+export const FirstViewsDocument = gql`
+    query firstViews($project: ID!, $count: Int!) {
+        node(id: $project) {
+            ... on Project {
+                views(first: $count, orderBy: [{ field: NAME }]) {
+                    nodes {
+                        ...DefaultViewInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultViewInfoFragmentDoc}
+`;
 export const CreateViewDocument = gql`
     mutation createView($input: CreateViewInput!) {
         createView(input: $input) {
@@ -29983,17 +30257,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
-        getComponentVersions(
-            variables: GetComponentVersionsQueryVariables,
+        firstComponentVersions(
+            variables: FirstComponentVersionsQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
-        ): Promise<GetComponentVersionsQuery> {
+        ): Promise<FirstComponentVersionsQuery> {
             return withWrapper(
                 (wrappedRequestHeaders) =>
-                    client.request<GetComponentVersionsQuery>(GetComponentVersionsDocument, variables, {
+                    client.request<FirstComponentVersionsQuery>(FirstComponentVersionsDocument, variables, {
                         ...requestHeaders,
                         ...wrappedRequestHeaders
                     }),
-                "getComponentVersions",
+                "firstComponentVersions",
                 "query",
                 variables
             );
@@ -31815,6 +32089,36 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredViewList",
+                "query",
+                variables
+            );
+        },
+        searchViews(
+            variables: SearchViewsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchViewsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchViewsQuery>(SearchViewsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchViews",
+                "query",
+                variables
+            );
+        },
+        firstViews(
+            variables: FirstViewsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstViewsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstViewsQuery>(FirstViewsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstViews",
                 "query",
                 variables
             );

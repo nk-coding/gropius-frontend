@@ -2,6 +2,31 @@ query getProjectGraph($project: ID!) {
     node(id: $project) {
         ... on Project {
             ...GraphInfo
+            relationLayouts {
+                nodes {
+                    relation {
+                        id
+                    }
+                    points {
+                        x
+                        y
+                    }
+                }
+            }
+            relationPartnerLayouts {
+                nodes {
+                    relationPartner {
+                        id
+                    }
+                    pos {
+                        x
+                        y
+                    }
+                }
+            }
+            defaultView {
+                ...ViewGraphInfo
+            }
         }
     }
 }

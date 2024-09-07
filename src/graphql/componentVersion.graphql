@@ -1,5 +1,5 @@
-query getComponentVersions($id: ID!, $count: Int!) {
-    node(id: $id) {
+query firstComponentVersions($component: ID!, $count: Int!) {
+    node(id: $component) {
         id
         ... on Component {
             versions(first: $count) {

@@ -29,6 +29,50 @@ fragment DefaultViewInfo on View {
     }
 }
 
+fragment ViewGraphInfo on View {
+    ...DefaultViewInfo
+    relationLayouts {
+        nodes {
+            relation {
+                id
+            }
+            points {
+                x
+                y
+            }
+        }
+    }
+    relationPartnerLayouts {
+        nodes {
+            relationPartner {
+                id
+            }
+            pos {
+                x
+                y
+            }
+        }
+    }
+}
+
+query searchViews($project: ID!, $query: String!, $count: Int!) {
+    searchViews(query: $query, first: $count, filter: { project: { id: { eq: $project } } }) {
+        ...DefaultViewInfo
+    }
+}
+
+query firstViews($project: ID!, $count: Int!) {
+    node(id: $project) {
+        ... on Project {
+            views(first: $count, orderBy: [{ field: NAME }]) {
+                nodes {
+                    ...DefaultViewInfo
+                }
+            }
+        }
+    }
+}
+
 mutation createView($input: CreateViewInput!) {
     createView(input: $input) {
         view {
