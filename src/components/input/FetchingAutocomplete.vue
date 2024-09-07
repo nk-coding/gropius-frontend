@@ -220,6 +220,7 @@ function selectedElement(value: any) {
     if (reopenMenu) {
         nextTick(() => {
             setTimeout(() => {
+                updateSearch("");
                 menu.value = true;
             }, 10);
         });
