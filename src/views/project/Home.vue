@@ -22,7 +22,7 @@
                         clearable
                         class="pointer-events-all view-autocomplete bg-surface"
                     />
-                    <template v-if="hasLayoutChanges">
+                    <template v-if="hasLayoutChanges || hasFilterChanges">
                         <IconButton class="pointer-events-all ml-2" @click="updateLayoutOrView">
                             <v-icon icon="mdi-content-save" />
                             <v-tooltip activator="parent" location="bottom">{{
@@ -35,17 +35,27 @@
                         </IconButton>
                     </template>
                 </div>
-                <div class="d-flex ga-2 mt-2 bg-surface align-self-start">
-                    <v-chip v-for="template in componentTemplateFilter" :key="template" color="primary">{{
-                        componentTemplateLookup.get(template)?.name
-                    }}</v-chip>
+                <div class="d-flex flex-wrap ga-2 mt-2 bg-surface align-self-start">
+                    <FilterChip
+                        v-for="template in componentTemplates"
+                        :key="template.id"
+                        :model-value="componentTemplateFilter.has(template.id)"
+                        @update:model-value="
+                            $event
+                                ? componentTemplateFilter.add(template.id)
+                                : componentTemplateFilter.delete(template.id)
+                        "
+                        :label="template.name"
+                        icon="mdi-filter-off"
+                        class="pointer-events-all"
+                    />
                 </div>
             </div>
             <v-spacer />
             <div class="d-flex flex-column h-100">
                 <div class="d-flex">
                     <v-spacer />
-                    <div class="bg-surface pointer-events-all">
+                    <div class="pointer-events-all">
                         <FilterChip
                             v-model="showOpenIssues"
                             label="Open Issues"
@@ -173,17 +183,12 @@ const originalGraph = computedAsync(
     { shallow: false, evaluating }
 );
 
-const componentTemplateLookup = computed(() => {
+const componentTemplates = computed(() => {
     const templateLookup = new Map<string, { id: string; name: string }>();
     for (const componentVersion of originalGraph.value?.components?.nodes ?? []) {
         const template = componentVersion.component.template;
         templateLookup.set(template.id, { id: template.id, name: template.name });
     }
-    return templateLookup;
-});
-
-const componentTemplates = computed(() => {
-    const templateLookup = componentTemplateLookup.value;
     const templates = [...templateLookup.values()];
     templates.sort((a, b) => a.name.localeCompare(b.name));
     return templates;
@@ -236,16 +241,34 @@ watch(originalGraph, async (value) => {
 });
 
 watch(currentView, async (value) => {
-    if (value != undefined) {
+    if (value != undefined && value.filterByTemplate.nodes.length > 0) {
         componentTemplateFilter.value = new Set(value.filterByTemplate.nodes.map((template) => template.id));
         await layoutGraph(value);
     } else {
-        componentTemplateFilter.value = new Set();
+        componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
         await layoutGraph(originalGraph.value!);
     }
 });
 
 const componentTemplateFilter = ref<Set<string>>(new Set());
+
+const hasFilterChanges = computed(() => {
+    const view = currentView.value;
+    const allTemplates = componentTemplateFilter.value.size == componentTemplates.value.length;
+    if (view != undefined) {
+        const viewFilter = view.filterByTemplate.nodes;
+        if (viewFilter.length == 0) {
+            return !allTemplates;
+        } else {
+            return (
+                viewFilter.length != componentTemplateFilter.value.size ||
+                !viewFilter.every((template) => componentTemplateFilter.value.has(template.id))
+            );
+        }
+    } else {
+        return !allTemplates;
+    }
+});
 
 interface RelationPartnerLookupEntry {
     template: string;
@@ -358,6 +381,7 @@ const layout = ref<GraphLayout>();
 
 onEvent("layout-component-graph", async () => {
     if (graph.value != undefined) {
+        hasLayoutChanges.value = true;
         layout.value = await autolayout(graph.value);
     }
 });
