@@ -5,21 +5,7 @@
             <div class="pa-4">
                 <v-text-field v-model="name" v-bind="nameProps" label="Name" class="mb-1" />
                 <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
-                <v-btn-toggle class="segmented-button" mandatory v-model="filterEnabled">
-                    <v-btn :prepend-icon="filterEnabled == 0 ? 'mdi-check' : 'mdi-filter-off'"> All components </v-btn>
-                    <v-btn :prepend-icon="filterEnabled == 1 ? 'mdi-check' : 'mdi-filter'">
-                        Filter by component template
-                    </v-btn>
-                </v-btn-toggle>
-                <div v-if="filterEnabled == 1" class="d-grid filter-container mt-4">
-                    <v-checkbox
-                        v-for="entry in templates"
-                        v-model="filterEntries[entry.id]"
-                        :key="entry.id"
-                        :label="entry.name"
-                        hide-details
-                    />
-                </div>
+                <ViewTemplateFilter :templates="templates" v-model="filterEntries" />
             </div>
             <v-card-actions>
                 <v-spacer />
@@ -49,6 +35,7 @@ import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { PropType, ref } from "vue";
 import { watch } from "vue";
 import { computed } from "vue";
+import ViewTemplateFilter from "../input/ViewTemplateFilter.vue";
 
 export interface View {
     name: string;
@@ -98,31 +85,13 @@ const props = defineProps({
     }
 });
 
-const filterEnabled = computed({
-    get: () => (Object.values(filterEntries.value).some((value) => value) ? 1 : 0),
-    set: (value) => {
-        console.log(value);
-        for (const key in filterEntries.value) {
-            filterEntries.value[key] = value == 1;
-        }
-    }
-});
-
-const filterEntries = ref(
-    Object.fromEntries(
-        props.templates.map((entry) => [entry.id, props.initialValue.filterByTemplate.includes(entry.id)])
-    )
-);
-
 watch(
     () => props.initialValue,
     (value) => {
         resetForm({
             values: value
         });
-        filterEntries.value = Object.fromEntries(
-            props.templates.map((entry) => [entry.id, value.filterByTemplate.includes(entry.id)])
-        );
+        filterEntries.value = new Set(value.filterByTemplate);
     }
 );
 
@@ -141,13 +110,13 @@ const { defineField, handleSubmit, meta, isFieldValid, resetForm } = useForm({
 const [name, nameProps] = defineField("name", fieldConfig);
 const [description, descriptionProps] = defineField("description", fieldConfig);
 
+const filterEntries = ref<Set<string>>(new Set(props.initialValue.filterByTemplate));
+
 const submitChanges = handleSubmit(async (state) => {
     emit("submit", {
         ...state,
         description: state.description ?? "",
-        filterByTemplate: Object.entries(filterEntries.value)
-            .filter(([, value]) => value)
-            .map(([key]) => key)
+        filterByTemplate: [...filterEntries.value]
     });
 });
 </script>

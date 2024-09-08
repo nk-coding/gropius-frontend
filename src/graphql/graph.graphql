@@ -24,9 +24,6 @@ query getProjectGraph($project: ID!) {
                     }
                 }
             }
-            defaultView {
-                ...ViewGraphInfo
-            }
         }
     }
 }
@@ -68,6 +65,9 @@ fragment GraphInfo on Project {
         }
     }
     manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
+    defaultView {
+        id
+    }
 }
 
 fragment GraphComponentVersionInfo on ComponentVersion {
@@ -156,6 +156,7 @@ fragment StrokeStyleInfo on StrokeStyle {
 
 fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
     id
+    name
     fill {
         ...FillStyleInfo
     }

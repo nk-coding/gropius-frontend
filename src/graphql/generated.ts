@@ -18054,34 +18054,6 @@ export type GetProjectGraphQuery = {
                       pos: { __typename?: "Point"; x: number; y: number };
                   }>;
               };
-              defaultView?: {
-                  __typename?: "View";
-                  id: string;
-                  name: string;
-                  description: string;
-                  relationLayouts: {
-                      __typename?: "RelationLayoutConnection";
-                      nodes: Array<{
-                          __typename?: "RelationLayout";
-                          relation: { __typename?: "Relation"; id: string };
-                          points: Array<{ __typename?: "Point"; x: number; y: number }>;
-                      }>;
-                  };
-                  relationPartnerLayouts: {
-                      __typename?: "RelationPartnerLayoutConnection";
-                      nodes: Array<{
-                          __typename?: "RelationPartnerLayout";
-                          relationPartner:
-                              | { __typename?: "ComponentVersion"; id: string }
-                              | { __typename?: "Interface"; id: string };
-                          pos: { __typename?: "Point"; x: number; y: number };
-                      }>;
-                  };
-                  filterByTemplate: {
-                      __typename?: "ComponentTemplateConnection";
-                      nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
-                  };
-              } | null;
               components: {
                   __typename?: "ComponentVersionConnection";
                   nodes: Array<{
@@ -18161,6 +18133,7 @@ export type GetProjectGraphQuery = {
                                       template: {
                                           __typename?: "InterfaceSpecificationTemplate";
                                           id: string;
+                                          name: string;
                                           shapeType: ShapeType;
                                           shapeRadius?: number | null;
                                           fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18180,6 +18153,7 @@ export type GetProjectGraphQuery = {
                           template: {
                               __typename?: "ComponentTemplate";
                               id: string;
+                              name: string;
                               shapeType: ShapeType;
                               shapeRadius?: number | null;
                               fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18237,6 +18211,7 @@ export type GetProjectGraphQuery = {
                       };
                   }>;
               };
+              defaultView?: { __typename?: "View"; id: string } | null;
           }
         | { __typename?: "ProjectPermission" }
         | { __typename?: "RelatedByIssueEvent" }
@@ -18383,6 +18358,7 @@ export type GraphInfoFragment = {
                             template: {
                                 __typename?: "InterfaceSpecificationTemplate";
                                 id: string;
+                                name: string;
                                 shapeType: ShapeType;
                                 shapeRadius?: number | null;
                                 fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18402,6 +18378,7 @@ export type GraphInfoFragment = {
                 template: {
                     __typename?: "ComponentTemplate";
                     id: string;
+                    name: string;
                     shapeType: ShapeType;
                     shapeRadius?: number | null;
                     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18455,6 +18432,7 @@ export type GraphInfoFragment = {
             };
         }>;
     };
+    defaultView?: { __typename?: "View"; id: string } | null;
 };
 
 export type GraphComponentVersionInfoFragment = {
@@ -18525,6 +18503,7 @@ export type GraphComponentVersionInfoFragment = {
                     template: {
                         __typename?: "InterfaceSpecificationTemplate";
                         id: string;
+                        name: string;
                         shapeType: ShapeType;
                         shapeRadius?: number | null;
                         fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18544,6 +18523,7 @@ export type GraphComponentVersionInfoFragment = {
         template: {
             __typename?: "ComponentTemplate";
             id: string;
+            name: string;
             shapeType: ShapeType;
             shapeRadius?: number | null;
             fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18713,6 +18693,7 @@ export type StrokeStyleInfoFragment = {
 type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
     __typename?: "ComponentTemplate";
     id: string;
+    name: string;
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18722,6 +18703,7 @@ type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
 type GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment = {
     __typename?: "InterfaceSpecificationTemplate";
     id: string;
+    name: string;
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -24041,6 +24023,7 @@ export type GetProjectGeneralDetailsQuery = {
               repositoryURL?: any | null;
               id: string;
               admin: boolean;
+              defaultView?: { __typename?: "View"; id: string } | null;
           }
         | { __typename?: "ProjectPermission"; id: string }
         | { __typename?: "RelatedByIssueEvent"; id: string }
@@ -26753,6 +26736,122 @@ export type ViewGraphInfoFragment = {
     };
 };
 
+export type GetViewQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetViewQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | {
+              __typename?: "View";
+              id: string;
+              name: string;
+              description: string;
+              relationLayouts: {
+                  __typename?: "RelationLayoutConnection";
+                  nodes: Array<{
+                      __typename?: "RelationLayout";
+                      relation: { __typename?: "Relation"; id: string };
+                      points: Array<{ __typename?: "Point"; x: number; y: number }>;
+                  }>;
+              };
+              relationPartnerLayouts: {
+                  __typename?: "RelationPartnerLayoutConnection";
+                  nodes: Array<{
+                      __typename?: "RelationPartnerLayout";
+                      relationPartner:
+                          | { __typename?: "ComponentVersion"; id: string }
+                          | { __typename?: "Interface"; id: string };
+                      pos: { __typename?: "Point"; x: number; y: number };
+                  }>;
+              };
+              filterByTemplate: {
+                  __typename?: "ComponentTemplateConnection";
+                  nodes: Array<{ __typename?: "ComponentTemplate"; id: string; name: string }>;
+              };
+          }
+        | null;
+};
+
 export type SearchViewsQueryVariables = Exact<{
     project: Scalars["ID"]["input"];
     query: Scalars["String"]["input"];
@@ -27031,6 +27130,7 @@ export const FillStyleInfoFragmentDoc = gql`
 export const GraphRelationPartnerTemplateInfoFragmentDoc = gql`
     fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
         id
+        name
         fill {
             ...FillStyleInfo
         }
@@ -27083,6 +27183,9 @@ export const GraphInfoFragmentDoc = gql`
             }
         }
         manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
+        defaultView {
+            id
+        }
     }
     ${GraphComponentVersionInfoFragmentDoc}
 `;
@@ -28471,14 +28574,10 @@ export const GetProjectGraphDocument = gql`
                         }
                     }
                 }
-                defaultView {
-                    ...ViewGraphInfo
-                }
             }
         }
     }
     ${GraphInfoFragmentDoc}
-    ${ViewGraphInfoFragmentDoc}
 `;
 export const AddComponentVersionToProjectDocument = gql`
     mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
@@ -29486,6 +29585,9 @@ export const GetProjectGeneralDetailsDocument = gql`
                 name
                 description
                 repositoryURL
+                defaultView {
+                    id
+                }
                 admin: hasPermission(permission: ADMIN)
             }
         }
@@ -29728,6 +29830,16 @@ export const GetFilteredViewListDocument = gql`
         }
     }
     ${DefaultViewInfoFragmentDoc}
+`;
+export const GetViewDocument = gql`
+    query getView($id: ID!) {
+        node(id: $id) {
+            ... on View {
+                ...ViewGraphInfo
+            }
+        }
+    }
+    ${ViewGraphInfoFragmentDoc}
 `;
 export const SearchViewsDocument = gql`
     query searchViews($project: ID!, $query: String!, $count: Int!) {
@@ -32089,6 +32201,18 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredViewList",
+                "query",
+                variables
+            );
+        },
+        getView(variables: GetViewQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetViewQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetViewQuery>(GetViewDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getView",
                 "query",
                 variables
             );

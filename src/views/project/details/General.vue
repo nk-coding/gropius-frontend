@@ -25,12 +25,28 @@
             >
                 <v-text-field v-model="modelValue.value" label="Repository URL" :readonly="!project.admin" />
             </InputWrapper>
+            <InputWrapper
+                v-model="defaultView"
+                v-slot="{ modelValue }"
+                @save="save({ defaultView: $event })"
+                :readonly="!project.admin"
+            >
+                <ViewAutocomplete
+                    v-model="modelValue.value"
+                    :project="project.id"
+                    label="Default View"
+                    :readonly="!project.admin"
+                    clearable
+                    persistent-clear
+                />
+            </InputWrapper>
         </DetailCompartment>
     </div>
 </template>
 <script lang="ts" setup>
 import DetailCompartment from "@/components/DetailCompartment.vue";
 import InputWrapper from "@/components/input/InputWrapper.vue";
+import ViewAutocomplete from "@/components/input/ViewAutocomplete.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { UpdateProjectInput } from "@/graphql/generated";
 import { eventBusKey } from "@/util/keys";
@@ -59,6 +75,20 @@ const project = computedAsync(
     null,
     { shallow: false }
 );
+
+const defaultView = computed({
+    get: () => project.value?.defaultView?.id,
+    set: (value: string | undefined) => {
+        const projectValue = project.value;
+        if (projectValue != undefined) {
+            if (value == undefined) {
+                projectValue.defaultView = null;
+            } else {
+                projectValue.defaultView = { id: value };
+            }
+        }
+    }
+});
 
 async function save(input: Omit<UpdateProjectInput, "id">) {
     await withErrorMessage(

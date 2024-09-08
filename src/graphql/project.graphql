@@ -59,6 +59,9 @@ query getProjectGeneralDetails($id: ID!) {
             name
             description
             repositoryURL
+            defaultView {
+                id
+            }
             admin: hasPermission(permission: ADMIN)
         }
     }

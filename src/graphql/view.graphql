@@ -55,6 +55,14 @@ fragment ViewGraphInfo on View {
     }
 }
 
+query getView($id: ID!) {
+    node(id: $id) {
+        ... on View {
+            ...ViewGraphInfo
+        }
+    }
+}
+
 query searchViews($project: ID!, $query: String!, $count: Int!) {
     searchViews(query: $query, first: $count, filter: { project: { id: { eq: $project } } }) {
         ...DefaultViewInfo

@@ -68,11 +68,6 @@ import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
-export interface GraphLayoutWrapper {
-    layout: GraphLayout;
-    resetViewport: boolean;
-}
-
 export type ContextMenuData =
     | {
           type: "component";
@@ -94,10 +89,12 @@ const props = defineProps({
         required: true
     },
     layout: {
-        type: Object as PropType<GraphLayoutWrapper>,
+        type: Object as PropType<GraphLayout>,
         required: true
     }
 });
+
+const localLayout = ref<GraphLayout>(props.layout);
 
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
@@ -113,7 +110,8 @@ class ModelSource extends GraphModelSource {
     }
 
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
-        // TODO
+        localLayout.value = resultingLayout;
+        emit("update:layout", resultingLayout);
     }
 
     protected handleSelectionChanged(selectedElements: SelectedElement<any>[]): void {
@@ -141,7 +139,8 @@ onMounted(async () => {
     container.bind(ModelSource).toSelf().inSingletonScope();
     container.bind(TYPES.ModelSource).toService(ModelSource);
     modelSource.value = container.get(ModelSource);
-    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout.layout, fitToBounds: true });
+    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout, fitToBounds: false });
+    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout, fitToBounds: true });
 });
 
 watch(
@@ -153,7 +152,9 @@ watch(
 watch(
     () => props.layout,
     () => {
-        modelSource.value!.updateGraph({ layout: props.layout.layout, fitToBounds: props.layout.resetViewport });
+        if (props.layout != localLayout.value) {
+            modelSource.value!.updateGraph({ layout: props.layout, fitToBounds: true });
+        }
     }
 );
 </script>

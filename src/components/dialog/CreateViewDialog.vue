@@ -16,10 +16,11 @@
 <script lang="ts" setup>
 import { onEvent } from "@/util/eventBus";
 import { useClient } from "@/graphql/client";
-import { PropType, ref } from "vue";
+import { computed, PropType, ref } from "vue";
 import { useBlockingWithErrorMessage } from "@/util/withErrorMessage";
 import ViewDialogContent, { View } from "./ViewDialogContent.vue";
 import { IdObject } from "@/util/types";
+import { CreateViewInput } from "@/graphql/generated";
 
 const createViewDialog = ref(false);
 const client = useClient();
@@ -42,14 +43,24 @@ const props = defineProps({
             }[]
         >,
         required: true
+    },
+    initialTemplates: {
+        type: Array as PropType<string[]>,
+        default: () => [],
+        required: false
+    },
+    layouts: {
+        type: Object as PropType<Pick<CreateViewInput, "relationLayouts" | "relationPartnerLayouts">>,
+        default: () => ({}),
+        required: false
     }
 });
 
-const initialValue = ref<View>({
+const initialValue = computed<View>(() => ({
     name: "",
     description: "",
-    filterByTemplate: []
-});
+    filterByTemplate: props.initialTemplates
+}));
 
 onEvent("create-view", () => {
     createViewDialog.value = true;
@@ -60,7 +71,8 @@ async function createView(state: View) {
         const res = await client.createView({
             input: {
                 ...state,
-                project: props.project
+                project: props.project,
+                ...props.layouts
             }
         });
         return res.createView.view;

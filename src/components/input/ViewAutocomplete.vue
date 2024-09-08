@@ -1,12 +1,5 @@
 <template>
-    <FetchingAutocomplete
-        mode="model"
-        :fetch="searchViews"
-        :label="label"
-        placeholder="No view selected"
-        persistent-placeholder
-        item-title="name"
-    >
+    <FetchingAutocomplete mode="model" :fetch="searchViews" :label="label" item-title="name">
         <template #item="{ props, item }">
             <v-list-item v-bind="props" :title="item.raw.name" :subtitle="item.raw.description" />
         </template>

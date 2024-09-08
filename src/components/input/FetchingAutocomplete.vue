@@ -120,6 +120,14 @@ watch(
         }
     }
 );
+watch(
+    () => props.initialItems,
+    (initialItems) => {
+        if (!contextMode.value) {
+            items.value.push(...initialItems);
+        }
+    }
+);
 
 const hasSelection = computed(() => {
     return props.mode == "model" && proxiedModel.value != undefined;

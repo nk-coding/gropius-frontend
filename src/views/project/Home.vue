@@ -1,39 +1,65 @@
 <template>
     <GraphEditor
-        v-if="graph != undefined"
+        v-if="graph != undefined && layout != undefined"
         v-model:layout="layout"
         :graph="graph"
         @update:selected="selectedElement = $event"
+        @update:layout="hasLayoutChanges = true"
         @remove-component="removeComponentVersion"
         @create-relation="beginCreateRelation"
         @delete-relation="deleteRelation"
     >
         <div class="w-100 h-100 d-flex">
-            <div class="flex-grow-1">
-                <ViewAutocomplete
-                    v-model="view"
-                    :project="trackableId"
-                    clearable
-                    class="pointer-events-all view-autocomplete"
-                />
+            <div class="flex-grow-1 d-flex flex-column">
+                <div class="d-flex align-center">
+                    <ViewAutocomplete
+                        v-model="view"
+                        placeholder="No view selected"
+                        persistent-placeholder
+                        hide-details
+                        :project="trackableId"
+                        :initial-items="currentView != undefined ? [currentView] : []"
+                        clearable
+                        class="pointer-events-all view-autocomplete bg-surface"
+                    />
+                    <template v-if="hasLayoutChanges">
+                        <IconButton class="pointer-events-all ml-2" @click="updateLayoutOrView">
+                            <v-icon icon="mdi-content-save" />
+                            <v-tooltip activator="parent" location="bottom">{{
+                                view == undefined ? "Save layout" : "Update view"
+                            }}</v-tooltip>
+                        </IconButton>
+                        <IconButton class="pointer-events-all ml-1" @click="createView">
+                            <v-icon icon="mdi-content-save-plus" />
+                            <v-tooltip activator="parent" location="bottom">Save as view</v-tooltip>
+                        </IconButton>
+                    </template>
+                </div>
+                <div class="d-flex ga-2 mt-2 bg-surface align-self-start">
+                    <v-chip v-for="template in componentTemplateFilter" :key="template" color="primary">{{
+                        componentTemplateLookup.get(template)?.name
+                    }}</v-chip>
+                </div>
             </div>
             <v-spacer />
             <div class="d-flex flex-column h-100">
                 <div class="d-flex">
                     <v-spacer />
-                    <FilterChip
-                        v-model="showOpenIssues"
-                        label="Open Issues"
-                        icon="$issue"
-                        class="mr-2 open-issue-chip pointer-events-all"
-                    />
-                    <FilterChip
-                        v-model="showClosedIssues"
-                        label="Closed Issues"
-                        icon="$issue"
-                        class="mr-2 closed-issue-chip pointer-events-all"
-                    />
-                    <FilterChip v-model="showIssueRelations" label="Issue Relations" class="pointer-events-all" />
+                    <div class="bg-surface pointer-events-all">
+                        <FilterChip
+                            v-model="showOpenIssues"
+                            label="Open Issues"
+                            icon="$issue"
+                            class="mr-2 open-issue-chip"
+                        />
+                        <FilterChip
+                            v-model="showClosedIssues"
+                            label="Closed Issues"
+                            icon="$issue"
+                            class="mr-2 closed-issue-chip"
+                        />
+                        <FilterChip v-model="showIssueRelations" label="Issue Relations" />
+                    </div>
                 </div>
                 <ProjectSidebar v-model="selectedElement" :original-graph="originalGraph ?? undefined" />
             </div>
@@ -66,6 +92,13 @@
             />
         </v-sheet>
     </v-dialog>
+    <CreateViewDialog
+        :project="trackableId"
+        :templates="componentTemplates"
+        :initial-templates="[...componentTemplateFilter]"
+        :layouts="cachedNewLayout"
+        @created-view="view = $event.id"
+    />
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -74,11 +107,13 @@ import {
     GraphRelationPartnerInfoFragment,
     GraphComponentVersionInfoFragment,
     GraphRelationTemplateInfoFragment,
-    RelationTemplateFilterInput
+    RelationTemplateFilterInput,
+    Point,
+    UpdateViewInput
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
-import GraphEditor, { ContextMenuData, GraphLayoutWrapper } from "@/components/GraphEditor.vue";
+import GraphEditor, { ContextMenuData } from "@/components/GraphEditor.vue";
 import {
     Graph,
     ShapeStyle,
@@ -106,8 +141,10 @@ import RelationTemplateAutocomplete from "@/components/input/RelationTemplateAut
 import { IdObject } from "@/util/types";
 import ProjectSidebar from "@/components/ProjectSidebar.vue";
 import ViewAutocomplete from "@/components/input/ViewAutocomplete.vue";
+import CreateViewDialog from "@/components/dialog/CreateViewDialog.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
+type GraphLayoutSource = Pick<ProjectGraph, "relationLayouts" | "relationPartnerLayouts">;
 
 const client = useClient();
 const route = useRoute();
@@ -116,7 +153,8 @@ const eventBus = inject(eventBusKey);
 const trackableId = computed(() => route.params.trackable as string);
 const graphVersionCounter = ref(0);
 
-const view = ref<string | undefined>(undefined);
+const view = ref<string | null>();
+const hasLayoutChanges = ref(false);
 
 const evaluating = ref(false);
 const originalGraph = computedAsync(
@@ -125,15 +163,89 @@ const originalGraph = computedAsync(
         if (!trackableId.value) {
             return null;
         }
-        const res = await withErrorMessage(
-            () => client.getProjectGraph({ project: trackableId.value }),
+        const graph = await withErrorMessage(
+            async () => (await client.getProjectGraph({ project: trackableId.value })).node as ProjectGraph,
             "Error loading project graph"
         );
-        return res.node as ProjectGraph;
+        return graph;
     },
     null,
     { shallow: false, evaluating }
 );
+
+const componentTemplateLookup = computed(() => {
+    const templateLookup = new Map<string, { id: string; name: string }>();
+    for (const componentVersion of originalGraph.value?.components?.nodes ?? []) {
+        const template = componentVersion.component.template;
+        templateLookup.set(template.id, { id: template.id, name: template.name });
+    }
+    return templateLookup;
+});
+
+const componentTemplates = computed(() => {
+    const templateLookup = componentTemplateLookup.value;
+    const templates = [...templateLookup.values()];
+    templates.sort((a, b) => a.name.localeCompare(b.name));
+    return templates;
+});
+
+const currentView = computedAsync(
+    async () => {
+        const viewId = view.value;
+        if (viewId == undefined) {
+            return null;
+        }
+        const currentView = await withErrorMessage(
+            async () => (await client.getView({ id: viewId })).node as NodeReturnType<"getView", "View">,
+            "Error loading view"
+        );
+        return currentView;
+    },
+    null,
+    { shallow: false }
+);
+
+async function layoutGraph(graphLayout: GraphLayoutSource) {
+    if (graphLayout.relationLayouts.nodes.length > 0 || graphLayout.relationPartnerLayouts.nodes.length > 0) {
+        const resultingLayout: GraphLayout = {};
+        for (const relationLayout of graphLayout.relationLayouts.nodes) {
+            resultingLayout[relationLayout.relation.id] = {
+                points: relationLayout.points
+            };
+        }
+        for (const relationPartnerLayout of graphLayout.relationPartnerLayouts.nodes) {
+            resultingLayout[relationPartnerLayout.relationPartner.id] = {
+                pos: relationPartnerLayout.pos
+            };
+        }
+        layout.value = resultingLayout;
+    } else {
+        layout.value = await autolayout(graph.value!);
+    }
+}
+
+watch(originalGraph, async (value) => {
+    if (view.value === undefined) {
+        view.value = value?.defaultView?.id ?? null;
+    }
+    if (layout.value == undefined) {
+        if (value?.defaultView == undefined) {
+            await layoutGraph(value!);
+        }
+    }
+});
+
+watch(currentView, async (value) => {
+    if (value != undefined) {
+        componentTemplateFilter.value = new Set(value.filterByTemplate.nodes.map((template) => template.id));
+        await layoutGraph(value);
+    } else {
+        componentTemplateFilter.value = new Set();
+        await layoutGraph(originalGraph.value!);
+    }
+});
+
+const componentTemplateFilter = ref<Set<string>>(new Set());
 
 interface RelationPartnerLookupEntry {
     template: string;
@@ -201,16 +313,25 @@ const graph = computed<Graph | null>(() => {
     if (!originalGraph.value) {
         return null;
     }
+    const filter = componentTemplateFilter.value;
     const components = originalGraph.value.components.nodes;
-    const mappedComponents = components.map<ComponentVersion>((component) =>
-        extractComponent(component, originalGraph.value?.manageComponents ?? false)
+    const mappedComponents = components.flatMap<ComponentVersion>((component) => {
+        if (filter.size > 0 && !filter.has(component.component.template.id)) {
+            return [];
+        }
+        return [extractComponent(component, originalGraph.value?.manageComponents ?? false)];
+    });
+    const relationTargetIds = new Set(
+        mappedComponents.flatMap((component) => {
+            return [component.id, ...component.interfaces.map((inter) => inter.id)];
+        })
     );
     const mappedRelations = components.flatMap((component) => {
         const deleteRelation = component.relateFromComponent;
-        const res = [...extractRelations(component, deleteRelation)];
+        const res = [...extractRelations(component, deleteRelation, relationTargetIds)];
         for (const definition of component.interfaceDefinitions.nodes) {
             if (definition.visibleInterface != undefined) {
-                res.push(...extractRelations(definition.visibleInterface, deleteRelation));
+                res.push(...extractRelations(definition.visibleInterface, deleteRelation, relationTargetIds));
             }
         }
         return res;
@@ -233,26 +354,11 @@ const graph = computed<Graph | null>(() => {
     };
 });
 
-const layout = ref<GraphLayoutWrapper>({
-    layout: {},
-    resetViewport: true
-});
-
-watch(evaluating, async (newValue, oldValue) => {
-    if (!newValue && oldValue) {
-        layout.value = {
-            layout: await autolayout(graph.value!),
-            resetViewport: true
-        };
-    }
-});
+const layout = ref<GraphLayout>();
 
 onEvent("layout-component-graph", async () => {
     if (graph.value != undefined) {
-        layout.value = {
-            layout: await autolayout(graph.value),
-            resetViewport: true
-        };
+        layout.value = await autolayout(graph.value);
     }
 });
 
@@ -266,20 +372,26 @@ async function autolayout(graph: Graph): Promise<GraphLayout> {
     return resultingLayout;
 }
 
-function extractRelations(relationPartner: GraphRelationPartnerInfoFragment, deleteRelation: boolean): Relation[] {
-    return relationPartner.outgoingRelations.nodes.map((relation) => {
-        return {
-            id: relation.id,
-            name: relation.template.name,
-            start: relationPartner.id,
-            end: relation.end!.id,
-            style: extractRelationStyle(relation.template),
-            contextMenu: {
-                type: "relation",
-                delete: deleteRelation
-            } satisfies ContextMenuData
-        };
-    });
+function extractRelations(
+    relationPartner: GraphRelationPartnerInfoFragment,
+    deleteRelation: boolean,
+    validRelationEnds: Set<string>
+): Relation[] {
+    return relationPartner.outgoingRelations.nodes
+        .filter((relation) => validRelationEnds.has(relation.end?.id ?? ""))
+        .map((relation) => {
+            return {
+                id: relation.id,
+                name: relation.template.name,
+                start: relationPartner.id,
+                end: relation.end!.id,
+                style: extractRelationStyle(relation.template),
+                contextMenu: {
+                    type: "relation",
+                    delete: deleteRelation
+                } satisfies ContextMenuData
+            };
+        });
 }
 
 function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment): IssueRelation[] {
@@ -465,6 +577,120 @@ async function deleteRelation(relation: string) {
     }, "Error deleting relation");
     graphVersionCounter.value++;
 }
+
+interface LayoutUpdate {
+    relationLayouts: NonNullable<UpdateViewInput["relationLayouts"]>;
+    relationPartnerLayouts: NonNullable<UpdateViewInput["relationPartnerLayouts"]>;
+}
+
+function pointsEqual(a: Point[], b: Point[]): boolean {
+    if (a.length != b.length) {
+        return false;
+    }
+    for (let i = 0; i < a.length; i++) {
+        if (a[i].x != b[i].x || a[i].y != b[i].y) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function roundPoint(point: Point): Point {
+    return { x: Math.round(point.x), y: Math.round(point.y) };
+}
+
+function computeLayoutDiff(target: GraphLayoutSource): LayoutUpdate {
+    const layoutUpdate: LayoutUpdate = {
+        relationLayouts: [],
+        relationPartnerLayouts: []
+    };
+    const newLayout = layout.value;
+    const currentRelationLayout = new Map(
+        target.relationLayouts.nodes.map((relationLayout) => [relationLayout.relation.id, relationLayout.points])
+    );
+    const currentRelationPartnerLayout = new Map(
+        target.relationPartnerLayouts.nodes.map((relationPartnerLayout) => [
+            relationPartnerLayout.relationPartner.id,
+            relationPartnerLayout.pos
+        ])
+    );
+    for (const [id, layout] of Object.entries(newLayout!)) {
+        if (layout == undefined) {
+            continue;
+        }
+        if ("pos" in layout) {
+            const pos = layout.pos;
+            const current = currentRelationPartnerLayout.get(id);
+            if (current == undefined || "points" in current || current.x != pos.x || current.y != pos.y) {
+                layoutUpdate.relationPartnerLayouts.push({
+                    relationPartner: id,
+                    layout: { pos: roundPoint(layout.pos) }
+                });
+            }
+        }
+        if ("points" in layout) {
+            const points = layout.points;
+            const current = currentRelationLayout.get(id);
+            if (current == undefined || "pos" in current || !pointsEqual(current, points)) {
+                layoutUpdate.relationLayouts.push({
+                    relation: id,
+                    layout: { points: layout.points.map(roundPoint) }
+                });
+            }
+        }
+    }
+    for (const id in currentRelationLayout.keys()) {
+        if (newLayout![id] == undefined) {
+            layoutUpdate.relationLayouts.push({
+                relation: id,
+                layout: null
+            });
+        }
+    }
+    for (const id in currentRelationPartnerLayout.keys()) {
+        if (newLayout![id] == undefined) {
+            layoutUpdate.relationPartnerLayouts.push({
+                relationPartner: id,
+                layout: null
+            });
+        }
+    }
+    return layoutUpdate;
+}
+
+async function updateLayoutOrView() {
+    const layoutDiff = computeLayoutDiff(currentView.value ?? originalGraph.value!);
+    if (view.value != undefined) {
+        await withErrorMessage(async () => {
+            await client.updateView({
+                input: {
+                    id: view.value!,
+                    ...layoutDiff
+                }
+            });
+        }, "Error updating view");
+    } else {
+        await withErrorMessage(async () => {
+            await client.updateProject({
+                input: {
+                    id: trackableId.value,
+                    ...layoutDiff
+                }
+            });
+        }, "Error updating project layout");
+    }
+    hasLayoutChanges.value = false;
+}
+
+const cachedNewLayout = ref<Partial<LayoutUpdate>>();
+
+function createView() {
+    cachedNewLayout.value = computeLayoutDiff({
+        relationLayouts: { nodes: [] },
+        relationPartnerLayouts: { nodes: [] }
+    });
+    eventBus?.emit("create-view");
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
@@ -492,5 +718,9 @@ async function deleteRelation(relation: string) {
     :not(:focus-within):deep(input::placeholder) {
         opacity: 1 !important;
     }
+}
+
+.bg-surface {
+    background: rgb(var(--v-theme-surface));
 }
 </style>
