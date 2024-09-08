@@ -35,7 +35,7 @@
                         </IconButton>
                     </template>
                 </div>
-                <div class="d-flex flex-wrap ga-2 mt-2 bg-surface align-self-start">
+                <div class="d-flex flex-wrap ga-2 mt-2 align-self-start">
                     <FilterChip
                         v-for="template in componentTemplates"
                         :key="template.id"
@@ -339,7 +339,7 @@ const graph = computed<Graph | null>(() => {
     const filter = componentTemplateFilter.value;
     const components = originalGraph.value.components.nodes;
     const mappedComponents = components.flatMap<ComponentVersion>((component) => {
-        if (filter.size > 0 && !filter.has(component.component.template.id)) {
+        if (!filter.has(component.component.template.id)) {
             return [];
         }
         return [extractComponent(component, originalGraph.value?.manageComponents ?? false)];

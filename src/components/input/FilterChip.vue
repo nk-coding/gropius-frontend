@@ -36,4 +36,8 @@ const prependIcon = computed(() => (model.value ? "mdi-check" : props.icon));
 .filter-chip {
     user-select: none;
 }
+
+:deep(.v-chip--variant-tonal) {
+    border: thin solid transparent;
+}
 </style>
