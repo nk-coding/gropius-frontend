@@ -233,6 +233,9 @@ watch(originalGraph, async (value) => {
     if (view.value === undefined) {
         view.value = value?.defaultView?.id ?? null;
     }
+    if (value != undefined && value.defaultView == undefined && componentTemplateFilter.value.size == 0) {
+        componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
+    }
     if (layout.value == undefined) {
         if (value?.defaultView == undefined) {
             await layoutGraph(value!);
