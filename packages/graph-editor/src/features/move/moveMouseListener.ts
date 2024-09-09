@@ -118,14 +118,25 @@ export class MoveMouseListener extends MouseListener {
                 return true;
             }
         });
-        const toMoveIds = new Set(toMove.map((element) => element.id));
+        const allMovedIds = new Set(
+            toMove.flatMap((element) => {
+                if (element instanceof SComponent) {
+                    return [
+                        element.id,
+                        ...element.children.filter((child) => child instanceof SInterface).map((child) => child.id)
+                    ];
+                } else {
+                    return [element.id];
+                }
+            })
+        );
         const fullyMovedRelations = [
             ...target.root.index.all().filter((element) => {
                 return (
                     element instanceof SRelation &&
-                    toMoveIds.has(element.start) &&
+                    allMovedIds.has(element.start) &&
                     typeof element.end == "string" &&
-                    toMoveIds.has(element.end)
+                    allMovedIds.has(element.end)
                 );
             })
         ] as SRelation[];
