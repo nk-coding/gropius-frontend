@@ -150,6 +150,7 @@ async function deleteView(viewId: string) {
     withErrorMessage(async () => {
         await client.deleteView({ id: viewId });
     }, "Error deleting view");
+    modifiedViews.value.push(viewId);
 }
 </script>
 <style scoped lang="scss">
