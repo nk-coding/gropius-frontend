@@ -6,6 +6,7 @@ import { RelationLayout, SegmentLayout } from "../../gropiusModel";
 import { Line } from "../../line/model/line";
 import { UpdateLayoutAction } from "./updateLayoutAction";
 import { Math2D } from "../../line/math";
+import { roundToPrecision } from "../../base/roundToPrecision";
 
 type BaseSegment =
     | {
@@ -131,31 +132,32 @@ export class RelationMoveHandler implements MoveHandler {
     }
 
     private projectPointOnElement(point: Point, start: boolean, layout: SegmentLayout): [BaseSegment[], Point] {
+        const roundedPoint = { x: roundToPrecision(point.x), y: roundToPrecision(point.y) };
         const projection = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
-            point,
+            roundedPoint,
             start ? this.startLine : this.endLine,
             layout
         );
         const projectedPoint = projection.point;
         const result: BaseSegment[] = [];
-        if (projectedPoint.x == point.x) {
+        if (projectedPoint.x == roundedPoint.x) {
             if (start) {
-                result.push({ y: point.y });
+                result.push({ y: roundedPoint.y });
             } else {
                 result.push({ y: projectedPoint.y });
             }
-        } else if (projectedPoint.y == point.y) {
+        } else if (projectedPoint.y == roundedPoint.y) {
             if (start) {
-                result.push({ x: point.x });
+                result.push({ x: roundedPoint.x });
             } else {
                 result.push({ x: projectedPoint.x });
             }
         } else {
             if (start) {
                 if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
-                    result.push({ x: point.x }, { y: point.y });
+                    result.push({ x: roundedPoint.x }, { y: roundedPoint.y });
                 } else {
-                    result.push({ y: point.y }, { x: point.x });
+                    result.push({ y: roundedPoint.y }, { x: roundedPoint.x });
                 }
             } else {
                 if (layout == SegmentLayout.VERTICAL_HORIZONTAL) {

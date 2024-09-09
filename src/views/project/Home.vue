@@ -340,12 +340,11 @@ const graph = computed<Graph | null>(() => {
         return null;
     }
     const filter = componentTemplateFilter.value;
-    const components = originalGraph.value.components.nodes;
-    const mappedComponents = components.flatMap<ComponentVersion>((component) => {
-        if (!filter.has(component.component.template.id)) {
-            return [];
-        }
-        return [extractComponent(component, originalGraph.value?.manageComponents ?? false)];
+    const components = originalGraph.value.components.nodes.filter((component) =>
+        filter.has(component.component.template.id)
+    );
+    const mappedComponents = components.map<ComponentVersion>((component) => {
+        return extractComponent(component, originalGraph.value?.manageComponents ?? false);
     });
     const relationTargetIds = new Set(
         mappedComponents.flatMap((component) => {

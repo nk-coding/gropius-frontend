@@ -28,7 +28,7 @@
             <InputWrapper
                 v-model="defaultView"
                 v-slot="{ modelValue }"
-                @save="save({ defaultView: $event })"
+                @save="save({ defaultView: $event ?? null })"
                 :readonly="!project.admin"
             >
                 <ViewAutocomplete
