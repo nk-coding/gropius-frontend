@@ -1,5 +1,6 @@
 import { Action, Point } from "sprotty-protocol";
-import { RelationLayout, SegmentLayout } from "../../gropiusModel";
+import { RelationLayout } from "../../gropiusModel";
+import { SegmentLayout } from "../../line/model/segmentLayout";
 import { roundToPrecision } from "../../base/roundToPrecision";
 import { LineEngine } from "../../line/engine/lineEngine";
 import { Line } from "../../line/model/line";

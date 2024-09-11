@@ -1,7 +1,8 @@
 import { Action, Point } from "sprotty-protocol";
 import { RelationPath, RelationPathSegment } from "../../smodel/relationPath";
 import { BaseSegment, MoveHandler } from "./moveHandler";
-import { RelationLayout, SegmentLayout } from "../../gropiusModel";
+import { RelationLayout } from "../../gropiusModel";
+import { SegmentLayout } from "../../line/model/segmentLayout";
 import { Line } from "../../line/model/line";
 import { UpdateLayoutAction } from "./updateLayoutAction";
 import { Math2D } from "../../line/math";

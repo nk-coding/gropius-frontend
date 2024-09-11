@@ -1,5 +1,5 @@
 import { Point, Bounds } from "sprotty-protocol";
-import { SegmentLayout } from "../gropiusModel";
+import { SegmentLayout } from "../line/model/segmentLayout";
 import { LineEngine } from "../line/engine/lineEngine";
 import { SIssueAffected } from "./sIssueAffected";
 import { SRelation } from "./sRelation";

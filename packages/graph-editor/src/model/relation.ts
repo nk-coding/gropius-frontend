@@ -1,5 +1,6 @@
 import { Point } from "sprotty-protocol";
-import { RelationStyle, SegmentLayout } from "../gropiusModel";
+import { RelationStyle } from "../gropiusModel";
+import { SegmentLayout } from "../line/model/segmentLayout";
 import { Element } from "./element";
 import { Selectable } from "./selectable";
 

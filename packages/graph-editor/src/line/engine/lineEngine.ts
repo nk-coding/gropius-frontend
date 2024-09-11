@@ -7,7 +7,7 @@ import { ArcSegmentEngine } from "./arcSegmentEngine";
 import { LineSegmentEngine } from "./lineSegmentEngine";
 import { NearestPointResult, SegmentEngine } from "./segmentEngine";
 import { Math2D } from "../math";
-import { SegmentLayout } from "../../gropiusModel";
+import { SegmentLayout } from "../model/segmentLayout";
 import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../../base/roundToPrecision";
 
 /**

@@ -8,10 +8,10 @@ import {
     IssueType as GropiusIssueType,
     IssueRelation as GropiusIssueRelation,
     Selectable as GropiusSelectable,
-    SegmentLayout,
     ElementLayout,
     RelationLayout
 } from "../gropiusModel";
+import { SegmentLayout } from "../line/model/segmentLayout";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
 import { Interface } from "../model/interface";
