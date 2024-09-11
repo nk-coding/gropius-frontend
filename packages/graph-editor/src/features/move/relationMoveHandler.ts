@@ -1,31 +1,21 @@
 import { Action, Point } from "sprotty-protocol";
 import { RelationPath, RelationPathSegment } from "../../smodel/relationPath";
-import { MoveHandler } from "./moveHandler";
-import { LineEngine } from "../../line/engine/lineEngine";
+import { BaseSegment, MoveHandler } from "./moveHandler";
 import { RelationLayout, SegmentLayout } from "../../gropiusModel";
 import { Line } from "../../line/model/line";
 import { UpdateLayoutAction } from "./updateLayoutAction";
 import { Math2D } from "../../line/math";
-import { roundToPrecision } from "../../base/roundToPrecision";
 
-type BaseSegment =
-    | {
-          x: number;
-          y?: undefined;
-      }
-    | {
-          y: number;
-          x?: undefined;
-      };
-
-export class RelationMoveHandler implements MoveHandler {
+export class RelationMoveHandler extends MoveHandler {
     constructor(
         readonly relation: string,
         readonly path: RelationPath,
         readonly segment: number,
         readonly startLine: Line,
         readonly endLine: Line
-    ) {}
+    ) {
+        super();
+    }
 
     generateAction(dx: number, dy: number, commited: boolean, event: MouseEvent): Action {
         let replacedStartSegments = 0;
@@ -48,7 +38,8 @@ export class RelationMoveHandler implements MoveHandler {
             const [segments, projectedPoint] = this.projectPointOnElement(
                 Math2D.add(RelationPath.segmentEnd(movedSegment), moveVector),
                 true,
-                vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL
+                vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL,
+                this.startLine
             );
             startSegments.push(...segments);
             newStartPoint = projectedPoint;
@@ -59,7 +50,8 @@ export class RelationMoveHandler implements MoveHandler {
                 ...this.projectPointOnElement(
                     Math2D.add(movedSegment.start, moveVector),
                     false,
-                    vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL
+                    vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL,
+                    this.endLine
                 )[0]
             );
         }
@@ -103,70 +95,4 @@ export class RelationMoveHandler implements MoveHandler {
         return action;
     }
 
-    private layoutFromPath(start: Point, path: BaseSegment[]): RelationLayout {
-        const simplified = RelationPath.simplifyPath(start, path);
-        if (simplified.length > 1) {
-            const points: Point[] = [];
-            let current = { x: start.x, y: start.y };
-            for (let i = 0; i < simplified.length - 1; i++) {
-                const segment = simplified[i];
-                if (segment.x != undefined) {
-                    current = { x: segment.x, y: current.y };
-                } else {
-                    current = { x: current.x, y: segment.y };
-                }
-                points.push(current);
-            }
-            return { points };
-        } else {
-            const res = {
-                points: [
-                    {
-                        x: (start.x + (simplified[0].x ?? start.x)) / 2,
-                        y: (start.y + (simplified[0].y ?? start.y)) / 2
-                    }
-                ]
-            };
-            return res;
-        }
-    }
-
-    private projectPointOnElement(point: Point, start: boolean, layout: SegmentLayout): [BaseSegment[], Point] {
-        const roundedPoint = { x: roundToPrecision(point.x), y: roundToPrecision(point.y) };
-        const projection = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(
-            roundedPoint,
-            start ? this.startLine : this.endLine,
-            layout
-        );
-        const projectedPoint = projection.point;
-        const result: BaseSegment[] = [];
-        if (projectedPoint.x == roundedPoint.x) {
-            if (start) {
-                result.push({ y: roundedPoint.y });
-            } else {
-                result.push({ y: projectedPoint.y });
-            }
-        } else if (projectedPoint.y == roundedPoint.y) {
-            if (start) {
-                result.push({ x: roundedPoint.x });
-            } else {
-                result.push({ x: projectedPoint.x });
-            }
-        } else {
-            if (start) {
-                if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
-                    result.push({ x: roundedPoint.x }, { y: roundedPoint.y });
-                } else {
-                    result.push({ y: roundedPoint.y }, { x: roundedPoint.x });
-                }
-            } else {
-                if (layout == SegmentLayout.VERTICAL_HORIZONTAL) {
-                    result.push({ x: projectedPoint.x }, { y: projectedPoint.y });
-                } else {
-                    result.push({ y: projectedPoint.y }, { x: projectedPoint.x });
-                }
-            }
-        }
-        return [result, projectedPoint];
-    }
 }

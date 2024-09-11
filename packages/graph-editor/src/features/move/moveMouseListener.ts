@@ -140,7 +140,52 @@ export class MoveMouseListener extends MouseListener {
                 );
             })
         ] as SRelation[];
-        return new ElementMoveHandler(toMove, fullyMovedRelations);
+        const startMovedRelations = Object.fromEntries(
+            target.root.index
+                .all()
+                .filter((element) => {
+                    return (
+                        element instanceof SRelation &&
+                        allMovedIds.has(element.start) &&
+                        typeof element.end == "string" &&
+                        !allMovedIds.has(element.end)
+                    );
+                })
+                .map((element) => {
+                    const relation = element as SRelation;
+                    return [
+                        element.id,
+                        {
+                            elementLine: (target.root.index.getById(relation.start) as SIssueAffected).shape.outline,
+                            path: relation.path!
+                        }
+                    ];
+                })
+        );
+        const endMovedRelations = Object.fromEntries(
+            target.root.index
+                .all()
+                .filter((element) => {
+                    return (
+                        element instanceof SRelation &&
+                        !allMovedIds.has(element.start) &&
+                        typeof element.end == "string" &&
+                        allMovedIds.has(element.end)
+                    );
+                })
+                .map((element) => {
+                    const relation = element as SRelation;
+                    return [
+                        element.id,
+                        {
+                            elementLine: (target.root.index.getById(relation.end as string) as SIssueAffected).shape
+                                .outline,
+                            path: relation.path!
+                        }
+                    ];
+                })
+        );
+        return new ElementMoveHandler(toMove, fullyMovedRelations, startMovedRelations, endMovedRelations);
     }
 
     private calculateTranslation(target: SModelElementImpl, event: MouseEvent): Point {

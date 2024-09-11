@@ -36,7 +36,7 @@ export class LineEngine {
      * @param line line with associated transform
      * @returns the position of the closest point on the line
      */
-    projectPointOrthogonal(point: Point, line: Line): ProjectionResult {
+    private projectPointOrthogonal(point: Point, line: Line): ProjectionResult {
         return this.projectPointInternal(point, line, (engine, localPoint, segment, startPosition) =>
             engine.projectPointOrthogonal(localPoint, segment, startPosition)
         );
