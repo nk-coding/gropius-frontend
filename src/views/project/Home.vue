@@ -52,7 +52,7 @@
                 </div>
             </div>
             <v-spacer />
-            <div class="d-flex flex-column h-100">
+            <div class="d-flex flex-column h-100 flex-shrink-0">
                 <div class="d-flex">
                     <v-spacer />
                     <div class="pointer-events-all">
