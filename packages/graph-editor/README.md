@@ -1,12 +1,14 @@
 # @gropius/graph-editor
 
-The `@gropius/graph-editor` is a powerful and customizable graph editor built on top of the [Sprotty](https://github.com/eclipse/sprotty) framework. It enables users to view and modify Gropius architecture graphs composed of `ComponentVersions`, `Interfaces`, and `Relations`.
+The `@gropius/graph-editor` is a powerful and customizable graph editor built on top of the [Sprotty](https://github.com/eclipse/sprotty) framework.
+It enables users to view and modify Gropius architecture graphs composed of `ComponentVersions`, `Interfaces`, and `Relations`.
+Further, the editor displays information about issues on `ComponentVersions` and `Interfaces`, and semantic relations between them.
 
 This package is framework-agnostic and can be integrated into various environments.
 
 ## Key Features
 
-- **Graph visualization**: View and interact with a graph of `ComponentVersions`, `Interfaces`, and `Relations`.
+- **Graph visualization**: View and interact with a graph of `ComponentVersions`, `Interfaces`, and `Relations`. In addition to the architecture, the graph shows issues and their issue relations.
 - **Automatic layouting**: This package provides an API to automatically layout the graph.
 - **Highly customizable**: The editor provides hooks for various lifecycle events like selection changes, layout updates, and relation creation.
 
