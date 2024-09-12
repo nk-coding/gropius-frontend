@@ -9,8 +9,8 @@ import {
 import {
     CancelState,
     CancelableCommandExecutionContext
-} from "../features/animation/cancelableCommandExecutionContext";
-import { UpdateModelCommand } from "../features/update/updateModel";
+} from "../features/animation/cancelableCommandExecutionContext.js";
+import { UpdateModelCommand } from "../features/update/updateModel.js";
 
 /**
  * CommandStack with support for CancelableAnimations.

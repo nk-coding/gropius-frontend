@@ -1,10 +1,10 @@
 import { Point, Bounds } from "sprotty-protocol";
-import { SegmentLayout } from "../line/model/segmentLayout";
-import { LineEngine } from "../line/engine/lineEngine";
-import { SIssueAffected } from "./sIssueAffected";
-import { SRelation } from "./sRelation";
-import { Math2D } from "../line/math";
-import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../base/roundToPrecision";
+import { SegmentLayout } from "../line/model/segmentLayout.js";
+import { LineEngine } from "../line/engine/lineEngine.js";
+import { SIssueAffected } from "./sIssueAffected.js";
+import { SRelation } from "./sRelation.js";
+import { Math2D } from "../line/math.js";
+import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../base/roundToPrecision.js";
 
 export type RelationPathSegment =
     | {

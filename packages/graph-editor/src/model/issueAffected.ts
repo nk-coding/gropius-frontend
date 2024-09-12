@@ -1,5 +1,5 @@
-import { ShapeStyle } from "../gropiusModel";
-import { Selectable } from "./selectable";
+import { ShapeStyle } from "../gropiusModel.js";
+import { Selectable } from "./selectable.js";
 
 export interface IssueAffected extends Selectable {
     style: ShapeStyle;

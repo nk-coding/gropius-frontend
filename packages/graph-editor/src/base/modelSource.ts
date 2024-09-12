@@ -10,25 +10,25 @@ import {
     Selectable as GropiusSelectable,
     ElementLayout,
     RelationLayout
-} from "../gropiusModel";
-import { SegmentLayout } from "../line/model/segmentLayout";
-import { Root } from "../model/root";
-import { Component } from "../model/component";
-import { Interface } from "../model/interface";
-import { Label } from "../model/label";
-import { Relation } from "../model/relation";
-import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
+} from "../gropiusModel.js";
+import { SegmentLayout } from "../line/model/segmentLayout.js";
+import { Root } from "../model/root.js";
+import { Component } from "../model/component.js";
+import { Interface } from "../model/interface.js";
+import { Label } from "../model/label.js";
+import { Relation } from "../model/relation.js";
+import { UpdateLayoutAction } from "../features/move/updateLayoutAction.js";
 import { Action, Bounds, SModelElement, SelectAction, SelectAllAction } from "sprotty-protocol";
-import { Element } from "../model/element";
-import { Chip } from "../model/chip";
-import { IssueType } from "../model/issueType";
-import { IssueRelation } from "../model/issueRelation";
-import { ContextMenu } from "../model/contextMenu";
-import { SSelectable } from "../smodel/sSelectable";
-import { CreateRelationAction } from "../features/connect/createRelationAction";
-import { ConnectAction } from "../features/connect/connectAction";
-import { CancelConnectAction } from "../features/connect/cancelConnectAction";
-import { roundToPrecision } from "./roundToPrecision";
+import { Element } from "../model/element.js";
+import { Chip } from "../model/chip.js";
+import { IssueType } from "../model/issueType.js";
+import { IssueRelation } from "../model/issueRelation.js";
+import { ContextMenu } from "../model/contextMenu.js";
+import { SSelectable } from "../smodel/sSelectable.js";
+import { CreateRelationAction } from "../features/connect/createRelationAction.js";
+import { ConnectAction } from "../features/connect/connectAction.js";
+import { CancelConnectAction } from "../features/connect/cancelConnectAction.js";
+import { roundToPrecision } from "./roundToPrecision.js";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;

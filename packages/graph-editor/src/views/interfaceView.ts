@@ -1,14 +1,14 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, IViewArgs, RenderingContext, svg } from "sprotty";
-import { SInterface } from "../smodel/sInterface";
-import { SLabel } from "../smodel/sLabel";
-import { LineEngine } from "../line/engine/lineEngine";
-import { wrapForeignElement } from "./util";
-import { SComponent } from "../smodel/sComponent";
+import { SInterface } from "../smodel/sInterface.js";
+import { SLabel } from "../smodel/sLabel.js";
+import { LineEngine } from "../line/engine/lineEngine.js";
+import { wrapForeignElement } from "./util.js";
+import { SComponent } from "../smodel/sComponent.js";
 import { Bounds } from "sprotty-protocol";
-import { Math2D } from "../line/math";
-import { SChip } from "../smodel/sChip";
+import { Math2D } from "../line/math.js";
+import { SChip } from "../smodel/sChip.js";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 

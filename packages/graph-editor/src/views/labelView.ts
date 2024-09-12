@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, html } from "sprotty";
-import { SLabel } from "../smodel/sLabel";
+import { SLabel } from "../smodel/sLabel.js";
 
 @injectable()
 export class LabelView implements IView {

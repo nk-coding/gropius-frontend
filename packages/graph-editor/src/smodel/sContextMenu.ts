@@ -1,7 +1,7 @@
-import { SElement } from "./sElement";
-import { ContextMenu } from "../model/contextMenu";
+import { SElement } from "./sElement.js";
+import { ContextMenu } from "../model/contextMenu.js";
 import { Point } from "sprotty-protocol";
-import { SSelectable } from "./sSelectable";
+import { SSelectable } from "./sSelectable.js";
 
 export class SContextMenu extends SElement implements ContextMenu {
     declare type: typeof ContextMenu.TYPE;

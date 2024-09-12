@@ -1,5 +1,5 @@
 import { Point } from "sprotty-protocol";
-import { Segment } from "../model/segment";
+import { Segment } from "../model/segment.js";
 
 /**
  * Base class for all segment engines.

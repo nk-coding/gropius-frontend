@@ -1,12 +1,12 @@
 import { Bounds, Point } from "sprotty-protocol";
-import { ShapeStyle, Shape as GropiusShape, StrokeStyle } from "../../gropiusModel";
-import { Shape } from "../shape";
-import { ShapeEngine } from "./shapeEngine";
-import { Line } from "../../line/model/line";
-import { LineSegment } from "../../line/model/lineSegment";
-import { Math2D } from "../../line/math";
-import { Segment } from "../../line/model/segment";
-import { ArcSegment } from "../../line/model/arcSegment";
+import { ShapeStyle, Shape as GropiusShape, StrokeStyle } from "../../gropiusModel.js";
+import { Shape } from "../shape.js";
+import { ShapeEngine } from "./shapeEngine.js";
+import { Line } from "../../line/model/line.js";
+import { LineSegment } from "../../line/model/lineSegment.js";
+import { Math2D } from "../../line/math.js";
+import { Segment } from "../../line/model/segment.js";
+import { ArcSegment } from "../../line/model/arcSegment.js";
 
 export abstract class PolygonEngine extends ShapeEngine {
     generateShape(points: Point[], style: ShapeStyle): Shape {

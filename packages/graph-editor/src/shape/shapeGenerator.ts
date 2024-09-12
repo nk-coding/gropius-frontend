@@ -1,12 +1,12 @@
-import { ShapeEngine } from "./engines/shapeEngine";
-import { Shape as GropiusShape, ShapeStyle } from "../gropiusModel";
+import { ShapeEngine } from "./engines/shapeEngine.js";
+import { Shape as GropiusShape, ShapeStyle } from "../gropiusModel.js";
 import { Bounds } from "sprotty-protocol";
-import { Shape } from "./shape";
-import { EllipseEngine } from "./engines/ellipseEngine";
-import { CircleEngine } from "./engines/circleEngine";
-import { RectEngine } from "./engines/rectEngine";
-import { RhombusEngine } from "./engines/rhombusEngine";
-import { HexagonEngine } from "./engines/hexagonEngine";
+import { Shape } from "./shape.js";
+import { EllipseEngine } from "./engines/ellipseEngine.js";
+import { CircleEngine } from "./engines/circleEngine.js";
+import { RectEngine } from "./engines/rectEngine.js";
+import { RhombusEngine } from "./engines/rhombusEngine.js";
+import { HexagonEngine } from "./engines/hexagonEngine.js";
 
 export class ShapeGenerator {
     static DEFAULT = new ShapeGenerator();

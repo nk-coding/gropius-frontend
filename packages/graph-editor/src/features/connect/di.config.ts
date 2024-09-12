@@ -1,8 +1,8 @@
 import { ContainerModule } from "inversify";
-import { ConnectMouseListener } from "./connectMouseListener";
+import { ConnectMouseListener } from "./connectMouseListener.js";
 import { TYPES, configureActionHandler, configureCommand } from "sprotty";
-import { ConnectAction } from "./connectAction";
-import { UpdateRelationEndCommand } from "./updateRelationEndCommand";
+import { ConnectAction } from "./connectAction.js";
+import { UpdateRelationEndCommand } from "./updateRelationEndCommand.js";
 
 export const connectModule = new ContainerModule((bind, _unbind, isBound, rebind) => {
     bind(ConnectMouseListener).toSelf().inSingletonScope();

@@ -1,5 +1,5 @@
 import { Bounds, BoundsAware, Dimension, Point } from "sprotty-protocol";
-import { SElement } from "./sElement";
+import { SElement } from "./sElement.js";
 
 export class SHtmlElement extends SElement implements BoundsAware {
     position: Point = Point.ORIGIN;

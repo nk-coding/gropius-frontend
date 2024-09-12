@@ -1,4 +1,4 @@
-import { MarkerEngine } from "./markerEngine";
+import { MarkerEngine } from "./markerEngine.js";
 
 export class ArrowEngine extends MarkerEngine {
     constructor() {

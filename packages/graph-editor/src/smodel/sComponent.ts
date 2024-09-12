@@ -1,9 +1,9 @@
 import { Point } from "sprotty-protocol";
-import { LinearAnimatable } from "../features/animation/model";
-import { Component } from "../model/component";
-import { Shape } from "../shape/shape";
-import { ShapeGenerator } from "../shape/shapeGenerator";
-import { SIssueAffected } from "./sIssueAffected";
+import { LinearAnimatable } from "../features/animation/model.js";
+import { Component } from "../model/component.js";
+import { Shape } from "../shape/shape.js";
+import { ShapeGenerator } from "../shape/shapeGenerator.js";
+import { SIssueAffected } from "./sIssueAffected.js";
 
 const componentAnimatedFields = new Set(SIssueAffected.defaultAnimatedFields);
 

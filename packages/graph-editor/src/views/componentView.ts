@@ -1,11 +1,11 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, svg } from "sprotty";
-import { SComponent } from "../smodel/sComponent";
-import { SLabel } from "../smodel/sLabel";
-import { wrapForeignElement } from "./util";
-import { SChip } from "../smodel/sChip";
-import { SInterface } from "../smodel/sInterface";
+import { SComponent } from "../smodel/sComponent.js";
+import { SLabel } from "../smodel/sLabel.js";
+import { wrapForeignElement } from "./util.js";
+import { SChip } from "../smodel/sChip.js";
+import { SInterface } from "../smodel/sInterface.js";
 
 @injectable()
 export class ComponentView implements IView {

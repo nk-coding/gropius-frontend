@@ -1,8 +1,8 @@
 import { injectable, inject } from "inversify";
 import { CommandExecutionContext, CommandReturn, SChildElementImpl, SystemCommand, TYPES } from "sprotty";
-import { UpdateRelationEndAction } from "./updateRelationEndAction";
-import { SRelation } from "../../smodel/sRelation";
-import { SRoot } from "../../smodel/sRoot";
+import { UpdateRelationEndAction } from "./updateRelationEndAction.js";
+import { SRelation } from "../../smodel/sRelation.js";
+import { SRoot } from "../../smodel/sRoot.js";
 
 @injectable()
 export class UpdateRelationEndCommand extends SystemCommand {

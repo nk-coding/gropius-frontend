@@ -1,4 +1,4 @@
-import { MarkerEngine } from "./markerEngine";
+import { MarkerEngine } from "./markerEngine.js";
 
 export class DiamondEngine extends MarkerEngine {
     constructor(filled: boolean) {

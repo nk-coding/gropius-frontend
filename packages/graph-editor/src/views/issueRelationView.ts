@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, svg } from "sprotty";
-import { SIssueRelation } from "../smodel/sIssueRelation";
-import { SIssueAffected } from "../smodel/sIssueAffected";
-import { Math2D } from "../line/math";
+import { SIssueRelation } from "../smodel/sIssueRelation.js";
+import { SIssueAffected } from "../smodel/sIssueAffected.js";
+import { Math2D } from "../line/math.js";
 
 @injectable()
 export class IssueRelationView implements IView {

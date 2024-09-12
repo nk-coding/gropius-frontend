@@ -1,11 +1,11 @@
 import { Point } from "sprotty-protocol";
-import { LinearAnimatable } from "../features/animation/model";
-import { Interface } from "../model/interface";
-import { Shape } from "../shape/shape";
-import { ShapeGenerator } from "../shape/shapeGenerator";
-import { SIssueAffected } from "./sIssueAffected";
-import { SComponent } from "./sComponent";
-import { SLabel } from "./sLabel";
+import { LinearAnimatable } from "../features/animation/model.js";
+import { Interface } from "../model/interface.js";
+import { Shape } from "../shape/shape.js";
+import { ShapeGenerator } from "../shape/shapeGenerator.js";
+import { SIssueAffected } from "./sIssueAffected.js";
+import { SComponent } from "./sComponent.js";
+import { SLabel } from "./sLabel.js";
 
 const interfaceAnimatedFields = new Set(SIssueAffected.defaultAnimatedFields);
 const INTERFACE_SHAPE_SIZE = 40;

@@ -1,11 +1,11 @@
 import { injectable } from "inversify";
 import { IActionHandler, ICommand, MouseListener, SModelElementImpl, findParentByFeature, isViewport } from "sprotty";
 import { Action, Point } from "sprotty-protocol";
-import { ConnectAction } from "./connectAction";
-import { CancelConnectAction } from "./cancelConnectAction";
-import { isConnectable } from "./connectFeature";
-import { CreateRelationAction } from "./createRelationAction";
-import { UpdateRelationEndAction } from "./updateRelationEndAction";
+import { ConnectAction } from "./connectAction.js";
+import { CancelConnectAction } from "./cancelConnectAction.js";
+import { isConnectable } from "./connectFeature.js";
+import { CreateRelationAction } from "./createRelationAction.js";
+import { UpdateRelationEndAction } from "./updateRelationEndAction.js";
 
 @injectable()
 export class ConnectMouseListener extends MouseListener implements IActionHandler {

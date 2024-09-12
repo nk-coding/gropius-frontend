@@ -1,5 +1,5 @@
 import { Action } from "sprotty-protocol";
-import { GraphLayout } from "../../gropiusModel";
+import { GraphLayout } from "../../gropiusModel.js";
 
 export interface UpdateLayoutAction extends Action {
     kind: typeof UpdateLayoutAction.KIND;

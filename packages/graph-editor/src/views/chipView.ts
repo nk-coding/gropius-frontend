@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, html } from "sprotty";
-import { SChip } from "../smodel/sChip";
+import { SChip } from "../smodel/sChip.js";
 
 @injectable()
 export class ChipView implements IView {

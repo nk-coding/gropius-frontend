@@ -1,6 +1,6 @@
 import { Bounds } from "sprotty-protocol";
-import { Shape } from "../shape";
-import { ShapeStyle } from "../../gropiusModel";
+import { Shape } from "../shape.js";
+import { ShapeStyle } from "../../gropiusModel.js";
 
 export abstract class ShapeEngine {
     static readonly DEFAULT_MARGIN = 5;

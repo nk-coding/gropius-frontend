@@ -1,7 +1,7 @@
-import { SElement } from "./sElement";
-import { SLabel } from "./sLabel";
+import { SElement } from "./sElement.js";
+import { SLabel } from "./sLabel.js";
 import { Point } from "sprotty-protocol";
-import { Selectable } from "../model/selectable";
+import { Selectable } from "../model/selectable.js";
 
 export abstract class SSelectable extends SElement implements Selectable {
     nameLabel!: SLabel;

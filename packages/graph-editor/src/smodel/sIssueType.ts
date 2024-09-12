@@ -1,7 +1,7 @@
 import { Selectable } from "sprotty-protocol";
-import { IssueRelationHighlightable } from "../features/issueRelationHighlight/IssueRelationHighlightable";
-import { IssueType } from "../model/issueType";
-import { SElement } from "./sElement";
+import { IssueRelationHighlightable } from "../features/issueRelationHighlight/IssueRelationHighlightable.js";
+import { IssueType } from "../model/issueType.js";
+import { SElement } from "./sElement.js";
 
 export class SIssueType extends SElement implements IssueType, IssueRelationHighlightable, Selectable {
     declare type: typeof IssueType.TYPE;

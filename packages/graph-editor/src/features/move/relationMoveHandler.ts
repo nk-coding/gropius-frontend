@@ -1,11 +1,11 @@
 import { Action, Point } from "sprotty-protocol";
-import { RelationPath, RelationPathSegment } from "../../smodel/relationPath";
-import { BaseSegment, MoveHandler } from "./moveHandler";
-import { RelationLayout } from "../../gropiusModel";
-import { SegmentLayout } from "../../line/model/segmentLayout";
-import { Line } from "../../line/model/line";
-import { UpdateLayoutAction } from "./updateLayoutAction";
-import { Math2D } from "../../line/math";
+import { RelationPath, RelationPathSegment } from "../../smodel/relationPath.js";
+import { BaseSegment, MoveHandler } from "./moveHandler.js";
+import { RelationLayout } from "../../gropiusModel.js";
+import { SegmentLayout } from "../../line/model/segmentLayout.js";
+import { Line } from "../../line/model/line.js";
+import { UpdateLayoutAction } from "./updateLayoutAction.js";
+import { Math2D } from "../../line/math.js";
 
 export class RelationMoveHandler extends MoveHandler {
     constructor(

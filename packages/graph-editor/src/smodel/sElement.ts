@@ -1,6 +1,6 @@
 import { SChildElementImpl } from "sprotty";
-import { Element } from "../model/element";
-import { SRoot } from "./sRoot";
+import { Element } from "../model/element.js";
+import { SRoot } from "./sRoot.js";
 
 /**
  * Base class for all elements

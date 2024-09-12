@@ -1,5 +1,5 @@
-import { Element } from "./element";
-import { IssueAffected } from "./issueAffected";
+import { Element } from "./element.js";
+import { IssueAffected } from "./issueAffected.js";
 
 export interface Interface extends IssueAffected {
     type: typeof Interface.TYPE;

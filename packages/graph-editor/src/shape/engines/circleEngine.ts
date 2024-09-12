@@ -1,8 +1,8 @@
 import { Bounds } from "sprotty-protocol";
-import { ShapeStyle, StrokeStyle } from "../../gropiusModel";
-import { Shape } from "../shape";
-import { EllipseEngine } from "./ellipseEngine";
-import { ShapeEngine } from "./shapeEngine";
+import { ShapeStyle, StrokeStyle } from "../../gropiusModel.js";
+import { Shape } from "../shape.js";
+import { EllipseEngine } from "./ellipseEngine.js";
+import { ShapeEngine } from "./shapeEngine.js";
 
 export class CircleEngine extends EllipseEngine {
     override generateForBounds(bounds: Bounds, style: ShapeStyle): Shape {

@@ -1,5 +1,5 @@
 import { SModelElementImpl } from "sprotty";
-import { IssueRelationHighlightable } from "./IssueRelationHighlightable";
+import { IssueRelationHighlightable } from "./IssueRelationHighlightable.js";
 
 export const issueHighlightableFeature = Symbol("issueHighlightableFeature");
 

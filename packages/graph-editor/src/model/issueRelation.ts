@@ -1,4 +1,4 @@
-import { Element } from "./element";
+import { Element } from "./element.js";
 
 export interface IssueRelation extends Element {
     type: typeof IssueRelation.TYPE;

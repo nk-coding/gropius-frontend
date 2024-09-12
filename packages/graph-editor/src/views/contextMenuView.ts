@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, html, svg } from "sprotty";
-import { SContextMenu } from "../smodel/sContextMenu";
+import { SContextMenu } from "../smodel/sContextMenu.js";
 
 @injectable()
 export class ContextMenuView implements IView {

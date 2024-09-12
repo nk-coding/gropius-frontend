@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, svg } from "sprotty";
-import { SIssueType } from "../smodel/sIssueType";
-import { wrapForeignElement } from "./util";
-import { SChip } from "../smodel/sChip";
+import { SIssueType } from "../smodel/sIssueType.js";
+import { wrapForeignElement } from "./util.js";
+import { SChip } from "../smodel/sChip.js";
 
 const issueTypeFolderPath =
     "M 37 5 H 21 L 17 1 H 5 C 2.78 1 1 2.78 1 5 V 29 A 4 4 90 0 0 5 33 H 37 A 4 4 90 0 0 41 29 V 9 C 41 6.78 39.2 5 37 5 Z M 21 5 H 1 H 9";

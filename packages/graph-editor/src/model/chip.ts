@@ -1,4 +1,4 @@
-import { Element } from "./element";
+import { Element } from "./element.js";
 
 export interface Chip extends Element {
     type: typeof Chip.TYPE;

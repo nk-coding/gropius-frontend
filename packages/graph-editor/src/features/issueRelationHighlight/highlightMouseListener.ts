@@ -1,8 +1,8 @@
 import { MouseListener, SModelElementImpl, findParentByFeature } from "sprotty";
 import { Action } from "sprotty-protocol";
-import { HoverHighlightAction } from "./hoverHighlightAction";
-import { SRoot } from "../../smodel/sRoot";
-import { isIssueRelationHighlightable } from "./issueHighlightableFeature";
+import { HoverHighlightAction } from "./hoverHighlightAction.js";
+import { SRoot } from "../../smodel/sRoot.js";
+import { isIssueRelationHighlightable } from "./issueHighlightableFeature.js";
 
 export class HighlightMouseListener extends MouseListener {
     lastHighlighted?: string;

@@ -1,4 +1,4 @@
-import { Element } from "../../model/element";
+import { Element } from "../../model/element.js";
 
 export interface IssueRelationHighlightable extends Element {
     highlighted: boolean;

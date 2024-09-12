@@ -1,5 +1,5 @@
 import { name } from "sprotty";
-import { Element } from "./element";
+import { Element } from "./element.js";
 
 export interface IssueType extends Element {
     type: typeof IssueType.TYPE;

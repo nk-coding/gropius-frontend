@@ -1,4 +1,4 @@
-import { Element } from "./element";
+import { Element } from "./element.js";
 
 export interface Label extends Element {
     type: typeof Label.TYPE;

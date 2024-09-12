@@ -1,11 +1,11 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
 import { IView, RenderingContext, svg } from "sprotty";
-import { SRelation } from "../smodel/sRelation";
-import { Math2D } from "../line/math";
-import { StrokeStyle } from "../gropiusModel";
-import { MarkerGenerator } from "../marker/markerGenerator";
-import { SLabel } from "../smodel/sLabel";
+import { SRelation } from "../smodel/sRelation.js";
+import { Math2D } from "../line/math.js";
+import { StrokeStyle } from "../gropiusModel.js";
+import { MarkerGenerator } from "../marker/markerGenerator.js";
+import { SLabel } from "../smodel/sLabel.js";
 import { Point } from "sprotty-protocol";
 
 @injectable()

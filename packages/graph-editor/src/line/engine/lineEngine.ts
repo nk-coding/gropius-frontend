@@ -1,14 +1,14 @@
 import { Point } from "sprotty-protocol";
-import { ArcSegment } from "../model/arcSegment";
-import { Line } from "../model/line";
-import { LineSegment } from "../model/lineSegment";
-import { Segment } from "../model/segment";
-import { ArcSegmentEngine } from "./arcSegmentEngine";
-import { LineSegmentEngine } from "./lineSegmentEngine";
-import { NearestPointResult, SegmentEngine } from "./segmentEngine";
-import { Math2D } from "../math";
-import { SegmentLayout } from "../model/segmentLayout";
-import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../../base/roundToPrecision";
+import { ArcSegment } from "../model/arcSegment.js";
+import { Line } from "../model/line.js";
+import { LineSegment } from "../model/lineSegment.js";
+import { Segment } from "../model/segment.js";
+import { ArcSegmentEngine } from "./arcSegmentEngine.js";
+import { LineSegmentEngine } from "./lineSegmentEngine.js";
+import { NearestPointResult, SegmentEngine } from "./segmentEngine.js";
+import { Math2D } from "../math.js";
+import { SegmentLayout } from "../model/segmentLayout.js";
+import { ceilToPrecision, floorToPrecision, roundToPrecision } from "../../base/roundToPrecision.js";
 
 /**
  * Helper to get closest points to a line, and calculate the position of a point on the line

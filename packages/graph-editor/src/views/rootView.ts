@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { IView, IViewArgs, RenderingContext, svg } from "sprotty";
-import { SRoot } from "../smodel/sRoot";
+import { SRoot } from "../smodel/sRoot.js";
 import { VNode } from "snabbdom";
 
 @injectable()

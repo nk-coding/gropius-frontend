@@ -1,7 +1,7 @@
 import { Bounds, Point } from "sprotty-protocol";
-import { ShapeStyle, StrokeStyle } from "../../gropiusModel";
-import { Shape } from "../shape";
-import { PolygonEngine } from "./polygonEngine";
+import { ShapeStyle, StrokeStyle } from "../../gropiusModel.js";
+import { Shape } from "../shape.js";
+import { PolygonEngine } from "./polygonEngine.js";
 
 export class RectEngine extends PolygonEngine {
     override generateForBounds(bounds: Bounds, style: ShapeStyle): Shape {

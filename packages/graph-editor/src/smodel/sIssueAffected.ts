@@ -1,16 +1,16 @@
 import { RenderingContext, svg } from "sprotty";
 import { VNode } from "snabbdom";
-import { ShapeStyle, StrokeStyle } from "../gropiusModel";
-import { IssueAffected } from "../model/issueAffected";
-import { SSelectable } from "./sSelectable";
+import { ShapeStyle, StrokeStyle } from "../gropiusModel.js";
+import { IssueAffected } from "../model/issueAffected.js";
+import { SSelectable } from "./sSelectable.js";
 import { Locateable, Point, Selectable } from "sprotty-protocol";
-import { Shape } from "../shape/shape";
-import { wrapForeignElement } from "../views/util";
-import { LineEngine } from "../line/engine/lineEngine";
-import { SChip } from "./sChip";
-import { Math2D } from "../line/math";
-import { IssueType } from "../model/issueType";
-import { SIssueType } from "./sIssueType";
+import { Shape } from "../shape/shape.js";
+import { wrapForeignElement } from "../views/util.js";
+import { LineEngine } from "../line/engine/lineEngine.js";
+import { SChip } from "./sChip.js";
+import { Math2D } from "../line/math.js";
+import { IssueType } from "../model/issueType.js";
+import { SIssueType } from "./sIssueType.js";
 
 export abstract class SIssueAffected extends SSelectable implements IssueAffected, Selectable, Locateable {
     style!: ShapeStyle;

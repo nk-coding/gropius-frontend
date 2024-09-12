@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Command, CommandExecutionContext, CommandReturn, SystemCommand, TYPES } from "sprotty";
-import { HoverHighlightAction } from "./hoverHighlightAction";
-import { IssueRelationHighlightable } from "./IssueRelationHighlightable";
+import { HoverHighlightAction } from "./hoverHighlightAction.js";
+import { IssueRelationHighlightable } from "./IssueRelationHighlightable.js";
 
 @injectable()
 export class HoverHighlightCommand extends SystemCommand {

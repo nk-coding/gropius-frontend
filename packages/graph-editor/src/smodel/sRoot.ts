@@ -1,9 +1,9 @@
 import { ViewportRootElementImpl } from "sprotty";
-import { Root } from "../model/root";
+import { Root } from "../model/root.js";
 import { Bounds } from "sprotty-protocol";
-import { Math2D } from "../line/math";
-import { SIssueRelation } from "./sIssueRelation";
-import { SIssueType } from "./sIssueType";
+import { Math2D } from "../line/math.js";
+import { SIssueRelation } from "./sIssueRelation.js";
+import { SIssueType } from "./sIssueType.js";
 
 export class SRoot extends ViewportRootElementImpl {
     override type: typeof Root.TYPE = Root.TYPE;

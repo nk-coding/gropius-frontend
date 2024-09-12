@@ -1,8 +1,8 @@
-import { RelationStyle } from "../gropiusModel";
-import { Relation } from "../model/relation";
-import { SSelectable } from "./sSelectable";
+import { RelationStyle } from "../gropiusModel.js";
+import { Relation } from "../model/relation.js";
+import { SSelectable } from "./sSelectable.js";
 import { Point } from "sprotty-protocol";
-import { RelationPath } from "./relationPath";
+import { RelationPath } from "./relationPath.js";
 
 export class SRelation extends SSelectable implements Relation {
     declare type: typeof Relation.TYPE;

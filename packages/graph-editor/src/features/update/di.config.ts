@@ -1,6 +1,6 @@
 import { ContainerModule } from "inversify";
 import { configureCommand } from "sprotty";
-import { UpdateModelCommand } from "./updateModel";
+import { UpdateModelCommand } from "./updateModel.js";
 
 /**
  * Module which configers the UpdateModelCommand

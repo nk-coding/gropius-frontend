@@ -1,5 +1,5 @@
 import { Point } from "sprotty-protocol";
-import { Segment } from "./segment";
+import { Segment } from "./segment.js";
 
 /**
  * A line beginning at a start point, and consisting of a set of segments.

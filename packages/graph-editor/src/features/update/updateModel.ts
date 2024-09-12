@@ -15,9 +15,9 @@ import {
 import {
     ElmentLinearInterpolationAnimation,
     LinearInterpolationAnimation
-} from "../animation/linearInterpolationAnimation";
-import { computeCommonAnimatableFields, isLinearAnimatable } from "../animation/model";
-import { SRoot } from "../../smodel/sRoot";
+} from "../animation/linearInterpolationAnimation.js";
+import { computeCommonAnimatableFields, isLinearAnimatable } from "../animation/model.js";
+import { SRoot } from "../../smodel/sRoot.js";
 
 /**
  * Custom UpdateModelCommand which handles linear interpolation animations

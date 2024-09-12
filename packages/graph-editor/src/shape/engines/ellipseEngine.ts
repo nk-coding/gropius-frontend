@@ -1,10 +1,10 @@
 import { Bounds, Dimension, Point } from "sprotty-protocol";
-import { ShapeStyle, StrokeStyle } from "../../gropiusModel";
-import { Shape } from "../shape";
-import { ShapeEngine } from "./shapeEngine";
-import { ArcSegment } from "../../line/model/arcSegment";
-import { Line } from "../../line/model/line";
-import { Math2D } from "../../line/math";
+import { ShapeStyle, StrokeStyle } from "../../gropiusModel.js";
+import { Shape } from "../shape.js";
+import { ShapeEngine } from "./shapeEngine.js";
+import { ArcSegment } from "../../line/model/arcSegment.js";
+import { Line } from "../../line/model/line.js";
+import { Math2D } from "../../line/math.js";
 
 export class EllipseEngine extends ShapeEngine {
     override generateForBounds(bounds: Bounds, style: ShapeStyle): Shape {

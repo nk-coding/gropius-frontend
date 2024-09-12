@@ -8,19 +8,19 @@ import {
     moveFeature
 } from "sprotty";
 import { Action, Point } from "sprotty-protocol";
-import { MoveHandler } from "./moveHandler";
-import { Component } from "../../model/component";
-import { Interface } from "../../model/interface";
-import { SComponent } from "../../smodel/sComponent";
-import { SInterface } from "../../smodel/sInterface";
-import { ElementMoveHandler } from "./elementMoveHandler";
-import { SRoot } from "../../smodel/sRoot";
-import { SContextMenu } from "../../smodel/sContextMenu";
-import { roundToPrecision } from "../../base/roundToPrecision";
-import { SRelation } from "../../smodel/sRelation";
-import { RelationMoveHandler } from "./relationMoveHandler";
-import { SIssueAffected } from "../../smodel/sIssueAffected";
-import { Relation } from "../../model/relation";
+import { MoveHandler } from "./moveHandler.js";
+import { Component } from "../../model/component.js";
+import { Interface } from "../../model/interface.js";
+import { SComponent } from "../../smodel/sComponent.js";
+import { SInterface } from "../../smodel/sInterface.js";
+import { ElementMoveHandler } from "./elementMoveHandler.js";
+import { SRoot } from "../../smodel/sRoot.js";
+import { SContextMenu } from "../../smodel/sContextMenu.js";
+import { roundToPrecision } from "../../base/roundToPrecision.js";
+import { SRelation } from "../../smodel/sRelation.js";
+import { RelationMoveHandler } from "./relationMoveHandler.js";
+import { SIssueAffected } from "../../smodel/sIssueAffected.js";
+import { Relation } from "../../model/relation.js";
 
 export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;

@@ -1,6 +1,6 @@
-import { IssueRelationHighlightable } from "../features/issueRelationHighlight/IssueRelationHighlightable";
-import { IssueRelation } from "../model/issueRelation";
-import { SElement } from "./sElement";
+import { IssueRelationHighlightable } from "../features/issueRelationHighlight/IssueRelationHighlightable.js";
+import { IssueRelation } from "../model/issueRelation.js";
+import { SElement } from "./sElement.js";
 
 export class SIssueRelation extends SElement implements IssueRelation, IssueRelationHighlightable {
     declare type: typeof IssueRelation.TYPE;
