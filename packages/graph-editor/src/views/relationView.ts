@@ -15,7 +15,7 @@ export class RelationView implements IView {
             return undefined;
         }
         const { start, end, segments } = relationPath;
-        let lastSegment = segments.at(-1)!;
+        const lastSegment = segments.at(-1)!;
         let endVector = Math2D.sub(lastSegment.start, {
             x: lastSegment.x ?? lastSegment.start.x,
             y: lastSegment.y ?? lastSegment.start.y

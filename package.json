@@ -6,14 +6,13 @@
         "dev": "vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
-        "lint": "eslint . --fix --ignore-path .gitignore",
         "codegen": "graphql-codegen --config codegen.yaml",
         "format": "prettier --write \"**/*.{ts,json,js,tsx,jsx,vue}\""
     },
     "dependencies": {
         "@bytemd/plugin-gfm": "^1.21.0",
         "@bytemd/vue-next": "^1.21.0",
-        "@fontsource/roboto": "^5.0.14",
+        "@fontsource/roboto": "^5.1.0",
         "@github/relative-time-element": "^4.4.3",
         "@github/task-lists-element": "^2.0.5",
         "@graphiql/plugin-explorer": "^3.2.2",
@@ -21,7 +20,7 @@
         "@material/material-color-utilities": "^0.3.0",
         "@mdi/font": "7.4.47",
         "@vee-validate/yup": "^4.13.2",
-        "@vueuse/core": "^11.0.3",
+        "@vueuse/core": "^11.1.0",
         "async-mutex": "^0.5.0",
         "axios": "^1.7.7",
         "codemirror": "^5.65.16",
@@ -42,9 +41,9 @@
         "strip-markdown": "^6.0.0",
         "uuid": "^10.0.0",
         "vee-validate": "^4.13.2",
-        "vue": "3.4.38",
-        "vue-router": "^4.4.3",
-        "vuetify": "^3.7.1",
+        "vue": "3.5.8",
+        "vue-router": "^4.4.5",
+        "vuetify": "^3.7.2",
         "webfontloader": "^1.6.28",
         "yup": "^1.4.0"
     },
@@ -55,24 +54,19 @@
         "@graphql-codegen/typescript-document-nodes": "^4.0.9",
         "@graphql-codegen/typescript-graphql-request": "^6.2.0",
         "@graphql-codegen/typescript-operations": "^4.2.3",
-        "@types/node": "^22.5.2",
-        "@types/react": "^18.3.5",
+        "@types/node": "^22.5.5",
+        "@types/react": "^18.3.8",
         "@types/react-dom": "^18.3.0",
         "@types/uuid": "^10.0.0",
         "@types/webfontloader": "^1.6.38",
-        "@vitejs/plugin-vue": "^5.1.3",
-        "@vue/eslint-config-typescript": "^13.0.0",
-        "eslint": "^8.57.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-prettier": "^5.2.1",
-        "eslint-plugin-vue": "^9.27.0",
+        "@vitejs/plugin-vue": "^5.1.4",
         "prettier": "^3.3.3",
-        "sass": "^1.77.8",
-        "typescript": "^5.5.4",
+        "sass": "^1.79.3",
+        "typescript": "^5.6.2",
         "unplugin-fonts": "^1.1.1",
-        "vite": "^5.4.2",
+        "vite": "^5.4.7",
         "vite-plugin-vuetify": "^2.0.4",
-        "vue-tsc": "^2.1.4"
+        "vue-tsc": "^2.1.6"
     },
     "workspaces": [
         "packages/*"
@@ -81,29 +75,5 @@
         "tabWidth": 4,
         "trailingComma": "none",
         "printWidth": 120
-    },
-    "eslintConfig": {
-        "env": {
-            "node": true
-        },
-        "root": true,
-        "parser": "vue-eslint-parser",
-        "parserOptions": {
-            "parser": "@typescript-eslint/parser"
-        },
-        "extends": [
-            "plugin:vue/vue3-recommended",
-            "prettier",
-            "eslint:recommended",
-            "@vue/typescript/recommended"
-        ],
-        "plugins": [
-            "@typescript-eslint",
-            "prettier"
-        ],
-        "rules": {
-            "prettier/prettier": "error",
-            "vue/no-mutating-props": "warn"
-        }
     }
 }
