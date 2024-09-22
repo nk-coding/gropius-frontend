@@ -1,0 +1,8 @@
+query getNamedNode($id: ID!) {
+    node(id: $id) {
+        ... on NamedNode {
+            id
+            name
+        }
+    }
+}

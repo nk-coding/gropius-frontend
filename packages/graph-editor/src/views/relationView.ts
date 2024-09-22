@@ -6,7 +6,6 @@ import { Math2D } from "../line/math.js";
 import { StrokeStyle } from "../gropiusModel.js";
 import { MarkerGenerator } from "../marker/markerGenerator.js";
 import { SLabel } from "../smodel/sLabel.js";
-import { Point } from "sprotty-protocol";
 
 @injectable()
 export class RelationView implements IView {

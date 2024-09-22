@@ -29,6 +29,9 @@ export namespace RelationPath {
         if (relation.start == undefined || relation.end == undefined) {
             return null;
         }
+        if (relation.start == relation.end) {
+            return null;
+        }
         const segments: RelationPathSegment[] = [];
         let startProjectionPoint: Point;
         const start = relation.root.index.getById(relation.start) as SIssueAffected;

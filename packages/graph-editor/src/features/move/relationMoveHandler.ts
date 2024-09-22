@@ -95,5 +95,4 @@ export class RelationMoveHandler extends MoveHandler {
         };
         return action;
     }
-
 }

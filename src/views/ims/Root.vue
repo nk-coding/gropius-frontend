@@ -27,6 +27,7 @@ type Component = NodeReturnType<"getComponent", "Component">;
 const client = useClient();
 const route = useRoute();
 const imsId = computed(() => route.params.ims as string);
+const imsProjectId = computed(() => route.params.project as string | undefined);
 const eventBus = inject(eventBusKey);
 
 const titleSegmentDependency = ref(0);
@@ -47,6 +48,22 @@ const ims = computedAsync(
     { shallow: false }
 );
 
+const project = computedAsync(
+    async () => {
+        if (!imsProjectId.value) {
+            return null;
+        }
+        titleSegmentDependency.value;
+        const res = await withErrorMessage(
+            () => client.getNamedNode({ id: imsProjectId.value! }),
+            "Error loading ims project"
+        );
+        return res.node as { id: string; name: string };
+    },
+    null,
+    { shallow: false }
+);
+
 function imsPath(name: string): RouteLocationRaw {
     return {
         name,
@@ -54,15 +71,34 @@ function imsPath(name: string): RouteLocationRaw {
     };
 }
 
-const titleSegments = computed(() => [
-    { icon: "$ims", path: "/imss" },
-    { name: ims.value?.name ?? "", path: imsPath("") }
-]);
+function imsProjectPath(name: string): RouteLocationRaw {
+    return {
+        name,
+        params: { ims: imsId.value, project: imsProjectId.value }
+    };
+}
 
-const tabs = computed(() => [
-    { name: "Projects", path: imsPath("ims") },
-    { name: "Details", path: imsPath("ims-details-general"), exact: false }
-]);
+const titleSegments = computed(() => {
+    const segments = [
+        { icon: "$ims", path: "/imss" },
+        { name: ims.value?.name ?? "", path: imsPath("ims") }
+    ];
+    const projectValue = project.value;
+    if (projectValue != undefined && imsProjectId.value != undefined) {
+        segments.push({ name: projectValue.name, path: imsProjectPath("ims-project-general") });
+    }
+    return segments;
+});
+
+const tabs = computed(() => {
+    if (imsProjectId.value != undefined) {
+        return [];
+    }
+    return [
+        { name: "Projects", path: imsPath("ims") },
+        { name: "Details", path: imsPath("ims-details-general"), exact: false }
+    ];
+});
 
 const leftSidebarItems = computed(() => {
     if (route.path.includes("/details")) {

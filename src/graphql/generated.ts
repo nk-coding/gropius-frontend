@@ -12906,8 +12906,12 @@ export type RelationLayout = BaseNode &
         id: Scalars["ID"]["output"];
         /** The intermediate points of the Relation in the layout. */
         points: Array<Point>;
+        /** The project this layout is for, mutually exclusive with view. */
+        project?: Maybe<Project>;
         /** The Relation this layout is for. */
         relation: Relation;
+        /** The view this layout is for, mutually exclusive with project. */
+        view?: Maybe<View>;
     };
 
 /** Layout for a Relation */
@@ -12948,7 +12952,11 @@ export type RelationLayoutFilterInput = {
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<RelationLayoutFilterInput>>;
     /** Filters for nodes where the related node match this filter */
+    project?: InputMaybe<ProjectFilterInput>;
+    /** Filters for nodes where the related node match this filter */
     relation?: InputMaybe<RelationFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    view?: InputMaybe<ViewFilterInput>;
 };
 
 /** Input which defines the layout of a Relation */
@@ -13146,8 +13154,12 @@ export type RelationPartnerLayout = BaseNode &
         id: Scalars["ID"]["output"];
         /** The position of the RelationPartner in the layout. */
         pos: Point;
+        /** The project this layout is for, mutually exclusive with view. */
+        project?: Maybe<Project>;
         /** The RelationPartner this layout is for. */
         relationPartner: RelationPartner;
+        /** The view this layout is for, mutually exclusive with project. */
+        view?: Maybe<View>;
     };
 
 /** Layout for a RelationPartner (ComponentVersion or Interface) */
@@ -13188,7 +13200,11 @@ export type RelationPartnerLayoutFilterInput = {
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<RelationPartnerLayoutFilterInput>>;
     /** Filters for nodes where the related node match this filter */
+    project?: InputMaybe<ProjectFilterInput>;
+    /** Filters for nodes where the related node match this filter */
     relationPartner?: InputMaybe<RelationPartnerFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    view?: InputMaybe<ViewFilterInput>;
 };
 
 /** Input which defines the layout of a RelationPartner */
@@ -23630,6 +23646,95 @@ export type AddLabelToTrackableMutation = {
     addLabelToTrackable: { __typename: "AddLabelToTrackablePayload" };
 };
 
+export type GetNamedNodeQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetNamedNodeQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate"; id: string; name: string }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType"; id: string; name: string }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component"; id: string; name: string }
+        | { __typename?: "ComponentPermission"; id: string; name: string }
+        | { __typename?: "ComponentTemplate"; id: string; name: string }
+        | { __typename?: "ComponentVersion"; id: string; name: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string; name: string }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission"; id: string; name: string }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS"; id: string; name: string }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate"; id: string; name: string }
+        | { __typename?: "IMSPermission"; id: string; name: string }
+        | { __typename?: "IMSProject"; id: string; name: string }
+        | { __typename?: "IMSProjectTemplate"; id: string; name: string }
+        | { __typename?: "IMSTemplate"; id: string; name: string }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate"; id: string; name: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface"; id: string; name: string }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string; name: string }
+        | { __typename?: "InterfacePart"; id: string; name: string }
+        | { __typename?: "InterfacePartTemplate"; id: string; name: string }
+        | { __typename?: "InterfaceSpecification"; id: string; name: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string; name: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string; name: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string; name: string }
+        | { __typename?: "InterfaceTemplate"; id: string; name: string }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string; name: string }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority"; id: string; name: string }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType"; id: string; name: string }
+        | { __typename?: "IssueState"; id: string; name: string }
+        | { __typename?: "IssueTemplate"; id: string; name: string }
+        | { __typename?: "IssueType"; id: string; name: string }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project"; id: string; name: string }
+        | { __typename?: "ProjectPermission"; id: string; name: string }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate"; id: string; name: string }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View"; id: string; name: string }
+        | null;
+};
+
 export type GetPermissionUserListQueryVariables = Exact<{
     orderBy: Array<GropiusUserOrder> | GropiusUserOrder;
     count: Scalars["Int"]["input"];
@@ -29486,6 +29591,16 @@ export const AddLabelToTrackableDocument = gql`
         }
     }
 `;
+export const GetNamedNodeDocument = gql`
+    query getNamedNode($id: ID!) {
+        node(id: $id) {
+            ... on NamedNode {
+                id
+                name
+            }
+        }
+    }
+`;
 export const GetPermissionUserListDocument = gql`
     query getPermissionUserList($orderBy: [GropiusUserOrder!]!, $count: Int!, $skip: Int!, $permission: ID!) {
         node(id: $permission) {
@@ -31721,6 +31836,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "addLabelToTrackable",
                 "mutation",
+                variables
+            );
+        },
+        getNamedNode(
+            variables: GetNamedNodeQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetNamedNodeQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetNamedNodeQuery>(GetNamedNodeDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getNamedNode",
+                "query",
                 variables
             );
         },

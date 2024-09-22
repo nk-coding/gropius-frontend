@@ -28,6 +28,7 @@ type Component = NodeReturnType<"getComponent", "Component">;
 const client = useClient();
 const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
+const componentVersionId = computed(() => route.params.version as string | undefined);
 const eventBus = inject(eventBusKey);
 
 const titleSegmentDependency = ref(0);
@@ -51,6 +52,22 @@ const component = computedAsync(
     { shallow: false }
 );
 
+const version = computedAsync(
+    async () => {
+        if (!componentVersionId.value) {
+            return null;
+        }
+        titleSegmentDependency.value;
+        const res = await withErrorMessage(
+            () => client.getNamedNode({ id: componentVersionId.value! }),
+            "Error loading project version"
+        );
+        return res.node as { id: string; name: string };
+    },
+    null,
+    { shallow: false }
+);
+
 provide(trackableKey, component);
 
 function componentPath(name: string): RouteLocationRaw {
@@ -60,17 +77,37 @@ function componentPath(name: string): RouteLocationRaw {
     };
 }
 
-const titleSegments = computed(() => [
-    { icon: "$component", path: "/components" },
-    { name: component.value?.name ?? "", path: componentPath("") }
-]);
+function componentVersionPath(name: string): RouteLocationRaw {
+    return {
+        name,
+        params: { trackable: componentId.value, version: componentVersionId.value }
+    };
+}
 
-const tabs = computed(() => [
-    { name: "Home", path: componentPath("component") },
-    { name: "Details", path: componentPath("component-details-general"), exact: false },
-    { name: "Versions", path: componentPath("component-versions"), exact: false },
-    { name: "Issues", path: componentPath("component-issues"), exact: false }
-]);
+const titleSegments = computed(() => {
+    const segments = [
+        { icon: "$component", path: "/components" },
+        { name: component.value?.name ?? "", path: componentPath("component") }
+    ];
+    const versionValue = version.value;
+    if (versionValue != undefined && componentVersionId.value != undefined) {
+        segments.push({ name: versionValue.name, path: componentVersionPath("component-version-general") });
+    }
+    return segments;
+});
+
+const tabs = computed(() => {
+    if (componentVersionId.value != undefined) {
+        return [];
+    } else {
+        return [
+            { name: "Home", path: componentPath("component") },
+            { name: "Details", path: componentPath("component-details-general"), exact: false },
+            { name: "Versions", path: componentPath("component-versions"), exact: false },
+            { name: "Issues", path: componentPath("component-issues"), exact: false }
+        ];
+    }
+});
 
 const leftSidebarItems = computed(() => {
     if (route.path.includes("/details")) {

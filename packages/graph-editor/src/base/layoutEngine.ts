@@ -3,7 +3,7 @@ import { Graph } from "../gropiusModel.js";
 import _Elk, { ElkNode } from "elkjs";
 import { Math2D } from "../line/math.js";
 
-const Elk = _Elk as unknown as typeof _Elk.default
+const Elk = _Elk as unknown as typeof _Elk.default;
 
 const NODE_SIZE = 200;
 const NODE_PADDING = 100;
