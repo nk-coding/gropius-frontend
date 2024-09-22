@@ -22,14 +22,15 @@
             <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="<ListItem<C>>item"></slot>
             <div v-else class="placeholder-item" />
         </template>
-        <template v-if="$slots.chip" #chip="props">
-            <slot name="chip" v-bind="props" />
+        <template v-if="$slots.chip" #chip="{ props, item }">
+            <slot name="chip" v-bind="props" :item="<ListItem<T | C>>item" />
         </template>
     </v-autocomplete>
 </template>
 <script setup lang="ts" generic="T extends IdObject, C extends IdObject">
 import { IdObject } from "@/util/types";
 import { onMounted, Ref, watch, ref, PropType, computed, nextTick } from "vue";
+import ListItem from "../ListItem.vue";
 
 export interface ListItem<T> {
     raw: T;

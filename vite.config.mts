@@ -63,5 +63,15 @@ export default defineConfig({
     },
     optimizeDeps: {
         exclude: ["vuetify", "@github/task-lists-element"]
+    },
+    css: {
+        preprocessorOptions: {
+            sass: {
+                api: "modern-compiler"
+            },
+            scss: {
+                api: "modern-compiler"
+            }
+        }
     }
 });
