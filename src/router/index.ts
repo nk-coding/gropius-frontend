@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
                         component: () => import("../views/component/details/General.vue")
                     },
                     {
-                        path: "interfaces",
+                        path: "interface-specifications",
                         name: "component-details-interfaces",
                         component: () => import("../views/component/details/Interfaces.vue")
                     },
@@ -110,6 +110,49 @@ const routes: RouteRecordRaw[] = [
                         path: "danger",
                         name: "component-details-danger",
                         component: () => import("../views/component/details/Danger.vue")
+                    }
+                ]
+            },
+            {
+                path: "interface-specifications/:interfaceSpecification",
+                name: "interface-specification-versions",
+                component: () => import("../views/component/interfaces/version/Versions.vue")
+            },
+            {
+                path: "interface-specifications/:interfaceSpecification",
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "details",
+                        component: () => import("../views/RouterOnly.vue"),
+                        children: [
+                            {
+                                path: "",
+                                name: "interface-specification-details-general",
+                                component: () => import("../views/component/interfaces/details/General.vue")
+                            },
+                            {
+                                path: "danger",
+                                name: "interface-specification-details-danger",
+                                component: () => import("../views/component/interfaces/details/Danger.vue")
+                            }
+                        ]
+                    },
+                    {
+                        path: "versions/:interfaceSpecificationVersion",
+                        component: () => import("../views/RouterOnly.vue"),
+                        children: [
+                            {
+                                path: "",
+                                name: "interface-specification-version-general",
+                                component: () => import("../views/component/interfaces/version/General.vue")
+                            },
+                            {
+                                path: "danger",
+                                name: "interface-specification-version-danger",
+                                component: () => import("../views/component/interfaces/version/Danger.vue")
+                            }
+                        ]
                     }
                 ]
             },

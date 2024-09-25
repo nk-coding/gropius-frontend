@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { ClientReturnType, useClient } from "@/graphql/client";
-import { ComponentOrder, ComponentOrderField, OrderDirection } from "@/graphql/generated";
+import { ComponentOrder, ComponentOrderField } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";

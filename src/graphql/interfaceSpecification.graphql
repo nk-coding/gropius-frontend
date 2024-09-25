@@ -1,0 +1,69 @@
+query getInterfaceSpecificationList(
+    $orderBy: [InterfaceSpecificationOrder!]!
+    $count: Int!
+    $skip: Int!
+    $component: ID!
+) {
+    node(id: $component) {
+        ... on Component {
+            interfaceSpecifications(orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    id
+                    name
+                    description
+                }
+                totalCount
+            }
+        }
+    }
+}
+
+query getFilteredInterfaceSpecificationList($query: String!, $count: Int!, $component: ID!) {
+    searchInterfaceSpecifications(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
+        id
+        name
+        description
+    }
+}
+
+query getInterfaceSpecificationGeneralDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ... on InterfaceSpecification {
+            name
+            description
+            templatedFields {
+                name
+                value
+            }
+            template {
+                templateFieldSpecifications {
+                    name
+                    value
+                }
+            }
+        }
+    }
+}
+
+mutation createInterfaceSpecification($input: CreateInterfaceSpecificationInput!) {
+    createInterfaceSpecification(input: $input) {
+        interfaceSpecification {
+            id
+        }
+    }
+}
+
+mutation updateInterfaceSpecification($input: UpdateInterfaceSpecificationInput!) {
+    updateInterfaceSpecification(input: $input) {
+        interfaceSpecification {
+            id
+        }
+    }
+}
+
+mutation deleteInterfaceSpecification($id: ID!) {
+    deleteInterfaceSpecification(input: { id: $id }) {
+        __typename
+    }
+}

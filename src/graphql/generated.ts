@@ -12116,6 +12116,14 @@ export type Query = {
     searchIMSTemplates: Array<ImsTemplate>;
     /** Search for nodes of type IMS */
     searchIMSs: Array<Ims>;
+    /** Search for nodes of type InterfaceSpecificationTemplate */
+    searchInterfaceSpecificationTemplates: Array<InterfaceSpecificationTemplate>;
+    /** Search for nodes of type InterfaceSpecificationVersion */
+    searchInterfaceSpecificationVersions: Array<InterfaceSpecificationVersion>;
+    /** Search for nodes of type InterfaceSpecification */
+    searchInterfaceSpecifications: Array<InterfaceSpecification>;
+    /** Search for nodes of type Interface */
+    searchInterfaces: Array<Interface>;
     /** Search for nodes of type IssuePriority */
     searchIssuePriorities: Array<IssuePriority>;
     /** Search for nodes of type IssueRelationType */
@@ -12333,6 +12341,34 @@ export type QuerySearchImsTemplatesArgs = {
 
 export type QuerySearchImSsArgs = {
     filter?: InputMaybe<ImsFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchInterfaceSpecificationTemplatesArgs = {
+    filter?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchInterfaceSpecificationVersionsArgs = {
+    filter?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchInterfaceSpecificationsArgs = {
+    filter?: InputMaybe<InterfaceSpecificationFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchInterfacesArgs = {
+    filter?: InputMaybe<InterfaceFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -19957,6 +19993,770 @@ export type GetImsProjectTemplateQuery = {
         | null;
 };
 
+export type GetInterfaceSpecificationListQueryVariables = Exact<{
+    orderBy: Array<InterfaceSpecificationOrder> | InterfaceSpecificationOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | {
+              __typename?: "Component";
+              interfaceSpecifications: {
+                  __typename?: "InterfaceSpecificationConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "InterfaceSpecification";
+                      id: string;
+                      name: string;
+                      description: string;
+                  }>;
+              };
+          }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetFilteredInterfaceSpecificationListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredInterfaceSpecificationListQuery = {
+    __typename?: "Query";
+    searchInterfaceSpecifications: Array<{
+        __typename?: "InterfaceSpecification";
+        id: string;
+        name: string;
+        description: string;
+    }>;
+};
+
+export type GetInterfaceSpecificationGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | {
+              __typename?: "InterfaceSpecification";
+              name: string;
+              description: string;
+              id: string;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              template: {
+                  __typename?: "InterfaceSpecificationTemplate";
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+          }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
+        | null;
+};
+
+export type CreateInterfaceSpecificationMutationVariables = Exact<{
+    input: CreateInterfaceSpecificationInput;
+}>;
+
+export type CreateInterfaceSpecificationMutation = {
+    __typename?: "Mutation";
+    createInterfaceSpecification: {
+        __typename?: "CreateInterfaceSpecificationPayload";
+        interfaceSpecification: { __typename?: "InterfaceSpecification"; id: string };
+    };
+};
+
+export type UpdateInterfaceSpecificationMutationVariables = Exact<{
+    input: UpdateInterfaceSpecificationInput;
+}>;
+
+export type UpdateInterfaceSpecificationMutation = {
+    __typename?: "Mutation";
+    updateInterfaceSpecification: {
+        __typename?: "UpdateInterfaceSpecificationPayload";
+        interfaceSpecification: { __typename?: "InterfaceSpecification"; id: string };
+    };
+};
+
+export type DeleteInterfaceSpecificationMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteInterfaceSpecificationMutation = {
+    __typename?: "Mutation";
+    deleteInterfaceSpecification: { __typename: "DeleteNodePayload" };
+};
+
+export type DefaultInterfaceSpecificationTemplateInfoFragment = {
+    __typename?: "InterfaceSpecificationTemplate";
+    id: string;
+    name: string;
+    description: string;
+    templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+};
+
+export type DefaultInterfaceSpecificationVersionTemplateInfoFragment = {
+    __typename?: "InterfaceSpecificationVersionTemplate";
+    id: string;
+    name: string;
+    description: string;
+    templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+};
+
+export type SearchInterfaceSpecificationTemplatesQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchInterfaceSpecificationTemplatesQuery = {
+    __typename?: "Query";
+    searchInterfaceSpecificationTemplates: Array<{
+        __typename?: "InterfaceSpecificationTemplate";
+        id: string;
+        name: string;
+        description: string;
+        templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+    }>;
+};
+
+export type FirstInterfaceSpecificationTemplatesQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstInterfaceSpecificationTemplatesQuery = {
+    __typename?: "Query";
+    interfaceSpecificationTemplates: {
+        __typename?: "InterfaceSpecificationTemplateConnection";
+        nodes: Array<{
+            __typename?: "InterfaceSpecificationTemplate";
+            id: string;
+            name: string;
+            description: string;
+            templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+        }>;
+    };
+};
+
+export type GetInterfaceSpecificationTemplateQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationTemplateQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | {
+              __typename?: "InterfaceSpecificationTemplate";
+              id: string;
+              name: string;
+              description: string;
+              interfaceSpecificationVersionTemplate: {
+                  __typename?: "InterfaceSpecificationVersionTemplate";
+                  id: string;
+                  name: string;
+                  description: string;
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+              templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+          }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetInterfaceSpecificationVersionTemplateQueryVariables = Exact<{
+    interfaceSpecification: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationVersionTemplateQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | {
+              __typename?: "InterfaceSpecification";
+              template: {
+                  __typename?: "InterfaceSpecificationTemplate";
+                  interfaceSpecificationVersionTemplate: {
+                      __typename?: "InterfaceSpecificationVersionTemplate";
+                      id: string;
+                      name: string;
+                      description: string;
+                      templateFieldSpecifications: Array<{
+                          __typename?: "JSONField";
+                          name: string;
+                          value?: any | null;
+                      }>;
+                  };
+              };
+          }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetInterfaceSpecificationVersionListQueryVariables = Exact<{
+    orderBy: Array<InterfaceSpecificationVersionOrder> | InterfaceSpecificationVersionOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    interfaceSpecification: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationVersionListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | {
+              __typename?: "InterfaceSpecification";
+              versions: {
+                  __typename?: "InterfaceSpecificationVersionConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "InterfaceSpecificationVersion";
+                      id: string;
+                      name: string;
+                      description: string;
+                      version: string;
+                  }>;
+              };
+          }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationLayout" }
+        | { __typename?: "RelationPartnerLayout" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | { __typename?: "View" }
+        | null;
+};
+
+export type GetFilteredInterfaceSpecificationVersionListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    interfaceSpecification: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredInterfaceSpecificationVersionListQuery = {
+    __typename?: "Query";
+    searchInterfaceSpecificationVersions: Array<{
+        __typename?: "InterfaceSpecificationVersion";
+        id: string;
+        name: string;
+        description: string;
+        version: string;
+    }>;
+};
+
+export type GetInterfaceSpecificationVersionGeneralDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetInterfaceSpecificationVersionGeneralDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | {
+              __typename?: "InterfaceSpecificationVersion";
+              name: string;
+              description: string;
+              version: string;
+              id: string;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              template: {
+                  __typename?: "InterfaceSpecificationVersionTemplate";
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
+          }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
+        | null;
+};
+
+export type CreateInterfaceSpecificationVersionMutationVariables = Exact<{
+    input: CreateInterfaceSpecificationVersionInput;
+}>;
+
+export type CreateInterfaceSpecificationVersionMutation = {
+    __typename?: "Mutation";
+    createInterfaceSpecificationVersion: {
+        __typename?: "CreateInterfaceSpecificationVersionPayload";
+        interfaceSpecificationVersion: { __typename?: "InterfaceSpecificationVersion"; id: string };
+    };
+};
+
+export type UpdateInterfaceSpecificationVersionMutationVariables = Exact<{
+    input: UpdateInterfaceSpecificationVersionInput;
+}>;
+
+export type UpdateInterfaceSpecificationVersionMutation = {
+    __typename?: "Mutation";
+    updateInterfaceSpecificationVersion: {
+        __typename?: "UpdateInterfaceSpecificationVersionPayload";
+        interfaceSpecificationVersion: { __typename?: "InterfaceSpecificationVersion"; id: string };
+    };
+};
+
+export type DeleteInterfaceSpecificationVersionMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteInterfaceSpecificationVersionMutation = {
+    __typename?: "Mutation";
+    deleteInterfaceSpecificationVersion: { __typename: "DeleteNodePayload" };
+};
+
 export type GetIssueListQueryVariables = Exact<{
     orderBy: Array<IssueOrder> | IssueOrder;
     count: Scalars["Int"]["input"];
@@ -27365,6 +28165,28 @@ export const DefaultImsProjectTemplateInfoFragmentDoc = gql`
         }
     }
 `;
+export const DefaultInterfaceSpecificationTemplateInfoFragmentDoc = gql`
+    fragment DefaultInterfaceSpecificationTemplateInfo on InterfaceSpecificationTemplate {
+        id
+        name
+        description
+        templateFieldSpecifications {
+            name
+            value
+        }
+    }
+`;
+export const DefaultInterfaceSpecificationVersionTemplateInfoFragmentDoc = gql`
+    fragment DefaultInterfaceSpecificationVersionTemplateInfo on InterfaceSpecificationVersionTemplate {
+        id
+        name
+        description
+        templateFieldSpecifications {
+            name
+            value
+        }
+    }
+`;
 export const DefaultUserInfoFragmentDoc = gql`
     fragment DefaultUserInfo on User {
         id
@@ -29040,6 +29862,215 @@ export const GetImsProjectTemplateDocument = gql`
         }
     }
     ${DefaultImsProjectTemplateInfoFragmentDoc}
+`;
+export const GetInterfaceSpecificationListDocument = gql`
+    query getInterfaceSpecificationList(
+        $orderBy: [InterfaceSpecificationOrder!]!
+        $count: Int!
+        $skip: Int!
+        $component: ID!
+    ) {
+        node(id: $component) {
+            ... on Component {
+                interfaceSpecifications(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        id
+                        name
+                        description
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+`;
+export const GetFilteredInterfaceSpecificationListDocument = gql`
+    query getFilteredInterfaceSpecificationList($query: String!, $count: Int!, $component: ID!) {
+        searchInterfaceSpecifications(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
+            id
+            name
+            description
+        }
+    }
+`;
+export const GetInterfaceSpecificationGeneralDetailsDocument = gql`
+    query getInterfaceSpecificationGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on InterfaceSpecification {
+                name
+                description
+                templatedFields {
+                    name
+                    value
+                }
+                template {
+                    templateFieldSpecifications {
+                        name
+                        value
+                    }
+                }
+            }
+        }
+    }
+`;
+export const CreateInterfaceSpecificationDocument = gql`
+    mutation createInterfaceSpecification($input: CreateInterfaceSpecificationInput!) {
+        createInterfaceSpecification(input: $input) {
+            interfaceSpecification {
+                id
+            }
+        }
+    }
+`;
+export const UpdateInterfaceSpecificationDocument = gql`
+    mutation updateInterfaceSpecification($input: UpdateInterfaceSpecificationInput!) {
+        updateInterfaceSpecification(input: $input) {
+            interfaceSpecification {
+                id
+            }
+        }
+    }
+`;
+export const DeleteInterfaceSpecificationDocument = gql`
+    mutation deleteInterfaceSpecification($id: ID!) {
+        deleteInterfaceSpecification(input: { id: $id }) {
+            __typename
+        }
+    }
+`;
+export const SearchInterfaceSpecificationTemplatesDocument = gql`
+    query searchInterfaceSpecificationTemplates($query: String!, $count: Int!) {
+        searchInterfaceSpecificationTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
+            ...DefaultInterfaceSpecificationTemplateInfo
+        }
+    }
+    ${DefaultInterfaceSpecificationTemplateInfoFragmentDoc}
+`;
+export const FirstInterfaceSpecificationTemplatesDocument = gql`
+    query firstInterfaceSpecificationTemplates($count: Int!) {
+        interfaceSpecificationTemplates(
+            first: $count
+            orderBy: [{ field: NAME }]
+            filter: { isDeprecated: { eq: false } }
+        ) {
+            nodes {
+                ...DefaultInterfaceSpecificationTemplateInfo
+            }
+        }
+    }
+    ${DefaultInterfaceSpecificationTemplateInfoFragmentDoc}
+`;
+export const GetInterfaceSpecificationTemplateDocument = gql`
+    query getInterfaceSpecificationTemplate($id: ID!) {
+        node(id: $id) {
+            ... on InterfaceSpecificationTemplate {
+                ...DefaultInterfaceSpecificationTemplateInfo
+                interfaceSpecificationVersionTemplate {
+                    ...DefaultInterfaceSpecificationVersionTemplateInfo
+                }
+            }
+        }
+    }
+    ${DefaultInterfaceSpecificationTemplateInfoFragmentDoc}
+    ${DefaultInterfaceSpecificationVersionTemplateInfoFragmentDoc}
+`;
+export const GetInterfaceSpecificationVersionTemplateDocument = gql`
+    query getInterfaceSpecificationVersionTemplate($interfaceSpecification: ID!) {
+        node(id: $interfaceSpecification) {
+            ... on InterfaceSpecification {
+                template {
+                    interfaceSpecificationVersionTemplate {
+                        ...DefaultInterfaceSpecificationVersionTemplateInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultInterfaceSpecificationVersionTemplateInfoFragmentDoc}
+`;
+export const GetInterfaceSpecificationVersionListDocument = gql`
+    query getInterfaceSpecificationVersionList(
+        $orderBy: [InterfaceSpecificationVersionOrder!]!
+        $count: Int!
+        $skip: Int!
+        $interfaceSpecification: ID!
+    ) {
+        node(id: $interfaceSpecification) {
+            ... on InterfaceSpecification {
+                versions(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        id
+                        name
+                        description
+                        version
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+`;
+export const GetFilteredInterfaceSpecificationVersionListDocument = gql`
+    query getFilteredInterfaceSpecificationVersionList($query: String!, $count: Int!, $interfaceSpecification: ID!) {
+        searchInterfaceSpecificationVersions(
+            query: $query
+            first: $count
+            filter: { interfaceSpecification: { id: { eq: $interfaceSpecification } } }
+        ) {
+            id
+            name
+            description
+            version
+        }
+    }
+`;
+export const GetInterfaceSpecificationVersionGeneralDetailsDocument = gql`
+    query getInterfaceSpecificationVersionGeneralDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on InterfaceSpecificationVersion {
+                name
+                description
+                version
+                templatedFields {
+                    name
+                    value
+                }
+                template {
+                    templateFieldSpecifications {
+                        name
+                        value
+                    }
+                }
+            }
+        }
+    }
+`;
+export const CreateInterfaceSpecificationVersionDocument = gql`
+    mutation createInterfaceSpecificationVersion($input: CreateInterfaceSpecificationVersionInput!) {
+        createInterfaceSpecificationVersion(input: $input) {
+            interfaceSpecificationVersion {
+                id
+            }
+        }
+    }
+`;
+export const UpdateInterfaceSpecificationVersionDocument = gql`
+    mutation updateInterfaceSpecificationVersion($input: UpdateInterfaceSpecificationVersionInput!) {
+        updateInterfaceSpecificationVersion(input: $input) {
+            interfaceSpecificationVersion {
+                id
+            }
+        }
+    }
+`;
+export const DeleteInterfaceSpecificationVersionDocument = gql`
+    mutation deleteInterfaceSpecificationVersion($id: ID!) {
+        deleteInterfaceSpecificationVersion(input: { id: $id }) {
+            __typename
+        }
+    }
 `;
 export const GetIssueListDocument = gql`
     query getIssueList(
@@ -31185,6 +32216,262 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "getIMSProjectTemplate",
                 "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationList(
+            variables: GetInterfaceSpecificationListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationListQuery>(
+                        GetInterfaceSpecificationListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationList",
+                "query",
+                variables
+            );
+        },
+        getFilteredInterfaceSpecificationList(
+            variables: GetFilteredInterfaceSpecificationListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredInterfaceSpecificationListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredInterfaceSpecificationListQuery>(
+                        GetFilteredInterfaceSpecificationListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredInterfaceSpecificationList",
+                "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationGeneralDetails(
+            variables: GetInterfaceSpecificationGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationGeneralDetailsQuery>(
+                        GetInterfaceSpecificationGeneralDetailsDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationGeneralDetails",
+                "query",
+                variables
+            );
+        },
+        createInterfaceSpecification(
+            variables: CreateInterfaceSpecificationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateInterfaceSpecificationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateInterfaceSpecificationMutation>(
+                        CreateInterfaceSpecificationDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "createInterfaceSpecification",
+                "mutation",
+                variables
+            );
+        },
+        updateInterfaceSpecification(
+            variables: UpdateInterfaceSpecificationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateInterfaceSpecificationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateInterfaceSpecificationMutation>(
+                        UpdateInterfaceSpecificationDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "updateInterfaceSpecification",
+                "mutation",
+                variables
+            );
+        },
+        deleteInterfaceSpecification(
+            variables: DeleteInterfaceSpecificationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteInterfaceSpecificationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteInterfaceSpecificationMutation>(
+                        DeleteInterfaceSpecificationDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "deleteInterfaceSpecification",
+                "mutation",
+                variables
+            );
+        },
+        searchInterfaceSpecificationTemplates(
+            variables: SearchInterfaceSpecificationTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchInterfaceSpecificationTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchInterfaceSpecificationTemplatesQuery>(
+                        SearchInterfaceSpecificationTemplatesDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "searchInterfaceSpecificationTemplates",
+                "query",
+                variables
+            );
+        },
+        firstInterfaceSpecificationTemplates(
+            variables: FirstInterfaceSpecificationTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstInterfaceSpecificationTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstInterfaceSpecificationTemplatesQuery>(
+                        FirstInterfaceSpecificationTemplatesDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "firstInterfaceSpecificationTemplates",
+                "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationTemplate(
+            variables: GetInterfaceSpecificationTemplateQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationTemplateQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationTemplateQuery>(
+                        GetInterfaceSpecificationTemplateDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationTemplate",
+                "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationVersionTemplate(
+            variables: GetInterfaceSpecificationVersionTemplateQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationVersionTemplateQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationVersionTemplateQuery>(
+                        GetInterfaceSpecificationVersionTemplateDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationVersionTemplate",
+                "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationVersionList(
+            variables: GetInterfaceSpecificationVersionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationVersionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationVersionListQuery>(
+                        GetInterfaceSpecificationVersionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationVersionList",
+                "query",
+                variables
+            );
+        },
+        getFilteredInterfaceSpecificationVersionList(
+            variables: GetFilteredInterfaceSpecificationVersionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredInterfaceSpecificationVersionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredInterfaceSpecificationVersionListQuery>(
+                        GetFilteredInterfaceSpecificationVersionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredInterfaceSpecificationVersionList",
+                "query",
+                variables
+            );
+        },
+        getInterfaceSpecificationVersionGeneralDetails(
+            variables: GetInterfaceSpecificationVersionGeneralDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetInterfaceSpecificationVersionGeneralDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetInterfaceSpecificationVersionGeneralDetailsQuery>(
+                        GetInterfaceSpecificationVersionGeneralDetailsDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getInterfaceSpecificationVersionGeneralDetails",
+                "query",
+                variables
+            );
+        },
+        createInterfaceSpecificationVersion(
+            variables: CreateInterfaceSpecificationVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateInterfaceSpecificationVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateInterfaceSpecificationVersionMutation>(
+                        CreateInterfaceSpecificationVersionDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "createInterfaceSpecificationVersion",
+                "mutation",
+                variables
+            );
+        },
+        updateInterfaceSpecificationVersion(
+            variables: UpdateInterfaceSpecificationVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateInterfaceSpecificationVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateInterfaceSpecificationVersionMutation>(
+                        UpdateInterfaceSpecificationVersionDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "updateInterfaceSpecificationVersion",
+                "mutation",
+                variables
+            );
+        },
+        deleteInterfaceSpecificationVersion(
+            variables: DeleteInterfaceSpecificationVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteInterfaceSpecificationVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteInterfaceSpecificationVersionMutation>(
+                        DeleteInterfaceSpecificationVersionDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "deleteInterfaceSpecificationVersion",
+                "mutation",
                 variables
             );
         },

@@ -29,6 +29,10 @@ const client = useClient();
 const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
 const componentVersionId = computed(() => route.params.version as string | undefined);
+const interfaceSpecificationId = computed(() => route.params.interfaceSpecification as string | undefined);
+const interfaceSpecificationVersionId = computed(
+    () => route.params.interfaceSpecificationVersion as string | undefined
+);
 const eventBus = inject(eventBusKey);
 
 const titleSegmentDependency = ref(0);
@@ -68,6 +72,38 @@ const version = computedAsync(
     { shallow: false }
 );
 
+const interfaceSpecification = computedAsync(
+    async () => {
+        if (!interfaceSpecificationId.value) {
+            return null;
+        }
+        titleSegmentDependency.value;
+        const res = await withErrorMessage(
+            () => client.getNamedNode({ id: interfaceSpecificationId.value! }),
+            "Error loading interface specification"
+        );
+        return res.node as { id: string; name: string };
+    },
+    null,
+    { shallow: false }
+);
+
+const interfaceSpecificationVersion = computedAsync(
+    async () => {
+        if (!interfaceSpecificationVersionId.value) {
+            return null;
+        }
+        titleSegmentDependency.value;
+        const res = await withErrorMessage(
+            () => client.getNamedNode({ id: interfaceSpecificationVersionId.value! }),
+            "Error loading interface specification version"
+        );
+        return res.node as { id: string; name: string };
+    },
+    null,
+    { shallow: false }
+);
+
 provide(trackableKey, component);
 
 function componentPath(name: string): RouteLocationRaw {
@@ -84,6 +120,24 @@ function componentVersionPath(name: string): RouteLocationRaw {
     };
 }
 
+function interfaceSpecificationPath(name: string): RouteLocationRaw {
+    return {
+        name,
+        params: { trackable: componentId.value, interfaceSpecification: interfaceSpecificationId.value }
+    };
+}
+
+function interfaceSpecificationVersionPath(name: string): RouteLocationRaw {
+    return {
+        name,
+        params: {
+            trackable: componentId.value,
+            interfaceSpecification: interfaceSpecificationId.value,
+            interfaceSpecificationVersion: interfaceSpecificationVersionId.value
+        }
+    };
+}
+
 const titleSegments = computed(() => {
     const segments = [
         { icon: "$component", path: "/components" },
@@ -93,12 +147,35 @@ const titleSegments = computed(() => {
     if (versionValue != undefined && componentVersionId.value != undefined) {
         segments.push({ name: versionValue.name, path: componentVersionPath("component-version-general") });
     }
+    const interfaceSpecificationValue = interfaceSpecification.value;
+    if (interfaceSpecificationValue != undefined && interfaceSpecificationId.value != undefined) {
+        segments.push({
+            name: interfaceSpecificationValue.name,
+            path: interfaceSpecificationPath("interface-specification-versions")
+        });
+    }
+    const interfaceSpecificationVersionValue = interfaceSpecificationVersion.value;
+    if (interfaceSpecificationVersionValue != undefined && interfaceSpecificationVersionId.value != undefined) {
+        segments.push({
+            name: interfaceSpecificationVersionValue.name,
+            path: interfaceSpecificationVersionPath("interface-specification-version-general")
+        });
+    }
     return segments;
 });
 
 const tabs = computed(() => {
-    if (componentVersionId.value != undefined) {
+    if (componentVersionId.value != undefined || interfaceSpecificationVersionId.value != undefined) {
         return [];
+    } else if (interfaceSpecificationId.value != undefined) {
+        return [
+            { name: "Versions", path: interfaceSpecificationPath("interface-specification-versions") },
+            {
+                name: "Details",
+                path: interfaceSpecificationPath("interface-specification-details-general"),
+                exact: false
+            }
+        ];
     } else {
         return [
             { name: "Home", path: componentPath("component") },
@@ -110,7 +187,7 @@ const tabs = computed(() => {
 });
 
 const leftSidebarItems = computed(() => {
-    if (route.path.includes("/details")) {
+    if (route.name?.toString().startsWith("component-details")) {
         return [
             [
                 {
@@ -178,6 +255,46 @@ const leftSidebarItems = computed(() => {
                     name: "Danger",
                     color: "error",
                     to: componentPath("component-version-danger"),
+                    disabled: !(component?.value?.admin ?? false)
+                }
+            ]
+        ];
+    } else if (route.name?.toString().startsWith("interface-specification-details")) {
+        return [
+            [
+                {
+                    icon: "mdi-home",
+                    name: "General",
+                    color: "secondary",
+                    to: interfaceSpecificationPath("interface-specification-details-general")
+                }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: interfaceSpecificationPath("interface-specification-details-danger"),
+                    disabled: !(component?.value?.admin ?? false)
+                }
+            ]
+        ];
+    } else if (route.name?.toString().startsWith("interface-specification-version-")) {
+        return [
+            [
+                {
+                    icon: "mdi-home",
+                    name: "General",
+                    color: "secondary",
+                    to: interfaceSpecificationVersionPath("interface-specification-version-general")
+                }
+            ],
+            [
+                {
+                    icon: "mdi-alert",
+                    name: "Danger",
+                    color: "error",
+                    to: interfaceSpecificationVersionPath("interface-specification-version-danger"),
                     disabled: !(component?.value?.admin ?? false)
                 }
             ]
@@ -278,6 +395,32 @@ const rightSidebarItems = computed(() => {
                     color: "secondary",
                     onClick: () => {
                         eventBus?.emit("import-permission", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "component-details-interfaces") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create interface specification`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-interface-specification", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "interface-specification-versions") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create interface specification version`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-interface-specification-version", undefined);
                     }
                 }
             ]

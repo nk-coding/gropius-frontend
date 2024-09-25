@@ -1,8 +1,8 @@
 <template>
-    <div class="pa-4 h-100 overflow-y-auto" v-if="componentVersion != undefined && component != undefined">
+    <div class="pa-4 h-100 overflow-y-auto" v-if="interfaceSpecification != undefined && component != undefined">
         <DetailCompartment name="General">
             <InputWrapper
-                v-model="componentVersion.name"
+                v-model="interfaceSpecification.name"
                 v-slot="{ modelValue }"
                 @save="save({ name: $event })"
                 :readonly="!component.admin"
@@ -10,15 +10,7 @@
                 <v-text-field v-model="modelValue.value" label="Name" :readonly="!component.admin" />
             </InputWrapper>
             <InputWrapper
-                v-model="componentVersion.version"
-                v-slot="{ modelValue }"
-                @save="save({ version: $event })"
-                :readonly="!component.admin"
-            >
-                <v-text-field v-model="modelValue.value" label="Version" :readonly="!component.admin" />
-            </InputWrapper>
-            <InputWrapper
-                v-model="componentVersion.description"
+                v-model="interfaceSpecification.description"
                 v-slot="{ modelValue }"
                 @save="save({ description: $event })"
                 :readonly="!component.admin"
@@ -27,7 +19,7 @@
             </InputWrapper>
         </DetailCompartment>
         <TemplatedFieldsDetailCompartment
-            :templated-node="componentVersion"
+            :templated-node="interfaceSpecification"
             :readonly="!component.admin"
             :save="save"
             class="mt-4"
@@ -39,7 +31,7 @@ import DetailCompartment from "@/components/DetailCompartment.vue";
 import InputWrapper from "@/components/input/InputWrapper.vue";
 import TemplatedFieldsDetailCompartment from "@/components/TemplatedFieldsDetailCompartment.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { UpdateComponentVersionInput } from "@/graphql/generated";
+import { UpdateInterfaceSpecificationInput } from "@/graphql/generated";
 import { eventBusKey, trackableKey } from "@/util/keys";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
@@ -50,35 +42,35 @@ import { useRoute } from "vue-router";
 const client = useClient();
 const route = useRoute();
 const eventBus = inject(eventBusKey);
-const componentVersionId = computed(() => route.params.version as string);
+const interfaceSpecificationId = computed(() => route.params.interfaceSpecification as string);
 
 const component = inject(trackableKey);
 
-const componentVersion = computedAsync(
+const interfaceSpecification = computedAsync(
     async () => {
-        if (!componentVersionId.value) {
+        if (!interfaceSpecificationId.value) {
             return null;
         }
         const res = await withErrorMessage(
-            () => client.getComponentVersionGeneralDetails({ id: componentVersionId.value }),
-            "Error loading component version details"
+            () => client.getInterfaceSpecificationGeneralDetails({ id: interfaceSpecificationId.value }),
+            "Error loading interfaceSpecification details"
         );
-        return res.node as NodeReturnType<"getComponentVersionGeneralDetails", "ComponentVersion">;
+        return res.node as NodeReturnType<"getInterfaceSpecificationGeneralDetails", "InterfaceSpecification">;
     },
     null,
     { shallow: false }
 );
 
-async function save(input: Omit<UpdateComponentVersionInput, "id">) {
+async function save(input: Omit<UpdateInterfaceSpecificationInput, "id">) {
     await withErrorMessage(
         () =>
-            client.updateComponentVersion({
+            client.updateInterfaceSpecification({
                 input: {
-                    id: componentVersionId.value,
+                    id: interfaceSpecificationId.value,
                     ...input
                 }
             }),
-        "Error updating componentVersion details"
+        "Error updating interface specification details"
     );
     if ("name" in input) {
         eventBus?.emit("title-segment-changed");

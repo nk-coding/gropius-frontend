@@ -7,6 +7,8 @@ export type Events = {
     "create-project": undefined;
     "create-component": undefined;
     "create-component-version": undefined;
+    "create-interface-specification": undefined;
+    "create-interface-specification-version": undefined;
     "create-label": undefined;
     "import-label": undefined;
     "create-ims": undefined;
