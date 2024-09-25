@@ -17247,6 +17247,13 @@ export type GetComponentTemplateQuery = {
               id: string;
               name: string;
               description: string;
+              componentVersionTemplate: {
+                  __typename?: "ComponentVersionTemplate";
+                  id: string;
+                  name: string;
+                  description: string;
+                  templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
+              };
               templateFieldSpecifications: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
           }
         | { __typename?: "ComponentVersion" }
@@ -28470,10 +28477,14 @@ export const GetComponentTemplateDocument = gql`
         node(id: $id) {
             ... on ComponentTemplate {
                 ...DefaultComponentTemplateInfo
+                componentVersionTemplate {
+                    ...DefaultComponentVersionTemplateInfo
+                }
             }
         }
     }
     ${DefaultComponentTemplateInfoFragmentDoc}
+    ${DefaultComponentVersionTemplateInfoFragmentDoc}
 `;
 export const GetComponentVersionTemplateDocument = gql`
     query getComponentVersionTemplate($component: ID!) {

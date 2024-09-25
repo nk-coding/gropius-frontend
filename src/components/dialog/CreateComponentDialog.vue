@@ -1,10 +1,12 @@
 <template>
     <v-dialog v-model="createComponentDialog" persistent width="auto">
-        <TemplatedNodeDialogContent
+        <VersionedTemplatedNodeDialogContent
             item-name="component"
             confirmation-message="Create component"
             :form-meta="meta"
             :form-validate="validate"
+            :version-form-meta="versionMeta"
+            :version-form-validate="versionValidate"
             :submit-disabled="submitDisabled"
             color="surface-elevated-3"
             @cancel="cancelCreateComponent"
@@ -34,7 +36,41 @@
                     :model-value="templatedFields"
                 />
             </template>
-        </TemplatedNodeDialogContent>
+            <template #version="{ disabled }">
+                <div class="d-flex flex-wrap mx-n2">
+                    <v-text-field
+                        v-model="versionName"
+                        v-bind="versionNameProps"
+                        :placeholder="name"
+                        persistent-placeholder
+                        :disabled="disabled"
+                        label="Name"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    />
+                    <v-text-field
+                        v-model="version"
+                        v-bind="versionProps"
+                        :disabled="disabled"
+                        label="Version"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    />
+                </div>
+                <v-textarea
+                    v-model="versionDescription"
+                    v-bind="versionDescriptionProps"
+                    :disabled="disabled"
+                    label="Description"
+                    class="mb-1"
+                />
+            </template>
+            <template #versionTemplatedFields>
+                <TemplatedFieldsInput
+                    v-if="templateValue != undefined"
+                    :schema="templateValue.componentVersionTemplate.templateFieldSpecifications"
+                    :model-value="versionTemplatedFields"
+                />
+            </template>
+        </VersionedTemplatedNodeDialogContent>
     </v-dialog>
 </template>
 <script setup lang="ts">
@@ -47,12 +83,13 @@ import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorM
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
-import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { computedAsync } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { watch } from "vue";
 import { IdObject } from "@/util/types";
+import VersionedTemplatedNodeDialogContent from "./VersionedTemplatedNodeDialogContent.vue";
+import { ComponentVersionInput } from "@/graphql/generated";
 
 const createComponentDialog = ref(false);
 const client = useClient();
@@ -95,9 +132,38 @@ const templateValue = computedAsync(
     null,
     { shallow: false }
 );
+
+const versionSchema = toTypedSchema(
+    yup.object().shape({
+        name: yup.string().notRequired().label("Name"),
+        version: yup.string().required().label("Version"),
+        description: yup.string().notRequired().label("Description")
+    })
+);
+
+const {
+    defineField: defineVersionField,
+    resetForm: resetVersionForm,
+    handleSubmit: handleVersionSubmit,
+    meta: versionMeta,
+    validate: versionValidate
+} = useForm({
+    validationSchema: versionSchema
+});
+
+const [versionName, versionNameProps] = defineVersionField("name", fieldConfig);
+const [version, versionProps] = defineVersionField("version", fieldConfig);
+const [versionDescription, versionDescriptionProps] = defineVersionField("description", fieldConfig);
+
+const versionTemplatedFields = ref<Field[]>([]);
+
 watch(templateValue, (newValue, oldValue) => {
     if (newValue != null && newValue.id != oldValue?.id) {
         templatedFields.value = newValue.templateFieldSpecifications.map((spec) => ({
+            name: spec.name,
+            value: generateDefaultData(spec.value, spec.value)
+        }));
+        versionTemplatedFields.value = newValue.componentVersionTemplate.templateFieldSpecifications.map((spec) => ({
             name: spec.name,
             value: generateDefaultData(spec.value, spec.value)
         }));
@@ -106,23 +172,46 @@ watch(templateValue, (newValue, oldValue) => {
 
 onEvent("create-component", () => {
     resetForm();
+    resetVersionForm();
     createComponentDialog.value = true;
 });
 
-const createComponent = handleSubmit(async (state) => {
+const getComponentFields = handleSubmit(async (state) => {
+    return {
+        ...state,
+        description: state.description ?? "",
+        templatedFields: templatedFields.value
+    } as const;
+});
+
+const getVersionFields = handleVersionSubmit(async (state) => {
+    return {
+        ...state,
+        name: state.name ?? name.value!,
+        description: state.description ?? "",
+        templatedFields: templatedFields.value
+    };
+});
+
+async function createComponent(hasVersion: boolean) {
     const component = await blockWithErrorMessage(async () => {
+        const componentFields = await getComponentFields();
+        const versions: ComponentVersionInput[] = [];
+        if (hasVersion) {
+            const versionFields = await getVersionFields();
+            versions.push(versionFields!);
+        }
         const res = await client.createComponent({
             input: {
-                ...state,
-                description: state.description ?? "",
-                templatedFields: templatedFields.value
+                ...componentFields!,
+                versions: versions
             }
         });
         return res.createComponent.component;
     }, "Error creating component");
     createComponentDialog.value = false;
     emit("created-component", component);
-});
+}
 
 function cancelCreateComponent() {
     createComponentDialog.value = false;

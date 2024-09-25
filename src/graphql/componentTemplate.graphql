@@ -36,6 +36,9 @@ query getComponentTemplate($id: ID!) {
     node(id: $id) {
         ... on ComponentTemplate {
             ...DefaultComponentTemplateInfo
+            componentVersionTemplate {
+                ...DefaultComponentVersionTemplateInfo
+            }
         }
     }
 }
