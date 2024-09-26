@@ -1,14 +1,14 @@
 <template>
     <v-chip color="primary" :prepend-icon="icon" :to="location">
-        {{ affectedEntity.name }}
-        <v-tooltip v-if="affectedEntity.description" activator="parent" location="bottom">
-            {{ affectedEntity.description }}
+        {{ name }}
+        <v-tooltip v-if="description" activator="parent" location="bottom">
+            {{ description }}
         </v-tooltip>
     </v-chip>
 </template>
 <script setup lang="ts">
 import { DefaultAffectedByIssueInfoFragment } from "@/graphql/generated";
-import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
+import { affectedByIssueName, affectedByIssueIcon, affectedByIssueDescription } from "@/util/affectedByIssueUtils";
 import { computed } from "vue";
 import { PropType } from "vue";
 import { RouteLocationRaw } from "vue-router";
@@ -21,8 +21,11 @@ const props = defineProps({
 });
 
 const icon = computed(() => {
-    return mapAffectedByIssueTypeToIcon(props.affectedEntity.__typename);
+    return affectedByIssueIcon(props.affectedEntity.__typename);
 });
+
+const name = computed(() => affectedByIssueName(props.affectedEntity));
+const description = computed(() => affectedByIssueDescription(props.affectedEntity));
 
 const location = computed<RouteLocationRaw | undefined>(() => {
     const type = props.affectedEntity.__typename;

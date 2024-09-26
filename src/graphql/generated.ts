@@ -15569,12 +15569,22 @@ export type SearchAffectedByIssuesQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
     trackable: Scalars["ID"]["input"];
+    sublistCount?: InputMaybe<Scalars["Int"]["input"]>;
 }>;
 
 export type SearchAffectedByIssuesQuery = {
     __typename?: "Query";
     searchAffectedByIssues: Array<
-        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "Component";
+              name: string;
+              description: string;
+              id: string;
+              versions: {
+                  __typename?: "ComponentVersionConnection";
+                  nodes: Array<{ __typename?: "ComponentVersion"; id: string; version: string }>;
+              };
+          }
         | {
               __typename: "ComponentVersion";
               version: string;
@@ -15598,11 +15608,38 @@ export type SearchAffectedByIssuesQuery = {
               };
           }
         | { __typename: "InterfacePart"; name: string; description: string; id: string }
-        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecification";
+              name: string;
+              description: string;
+              id: string;
+              versions: {
+                  __typename?: "InterfaceSpecificationVersionConnection";
+                  nodes: Array<{
+                      __typename?: "InterfaceSpecificationVersion";
+                      id: string;
+                      version: string;
+                      interfaceDefinitions: {
+                          __typename?: "InterfaceDefinitionConnection";
+                          nodes: Array<{
+                              __typename?: "InterfaceDefinition";
+                              visibleInterface?: { __typename?: "Interface"; id: string } | null;
+                          }>;
+                      };
+                  }>;
+              };
+          }
         | {
               __typename: "InterfaceSpecificationVersion";
               version: string;
               id: string;
+              interfaceDefinitions: {
+                  __typename?: "InterfaceDefinitionConnection";
+                  nodes: Array<{
+                      __typename?: "InterfaceDefinition";
+                      visibleInterface?: { __typename?: "Interface"; id: string } | null;
+                  }>;
+              };
               interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
           }
         | { __typename: "Project"; name: string; description: string; id: string }
@@ -28801,9 +28838,50 @@ export const ViewGraphInfoFragmentDoc = gql`
     ${DefaultViewInfoFragmentDoc}
 `;
 export const SearchAffectedByIssuesDocument = gql`
-    query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
+    query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!, $sublistCount: Int) {
         searchAffectedByIssues(query: $query, first: $count, filter: { relatedTo: $trackable }) {
             ...DefaultAffectedByIssueInfo
+            ... on Component {
+                versions(first: $sublistCount) {
+                    nodes {
+                        id
+                        version
+                    }
+                }
+            }
+            ... on InterfaceSpecification {
+                versions(first: $sublistCount) {
+                    nodes {
+                        id
+                        version
+                        interfaceDefinitions(
+                            first: $sublistCount
+                            filter: {
+                                visibleInterface: {}
+                                componentVersion: { component: { id: { eq: $trackable } } }
+                            }
+                        ) {
+                            nodes {
+                                visibleInterface {
+                                    id
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ... on InterfaceSpecificationVersion {
+                interfaceDefinitions(
+                    first: $sublistCount
+                    filter: { visibleInterface: {}, componentVersion: { component: { id: { eq: $trackable } } } }
+                ) {
+                    nodes {
+                        visibleInterface {
+                            id
+                        }
+                    }
+                }
+            }
         }
     }
     ${DefaultAffectedByIssueInfoFragmentDoc}

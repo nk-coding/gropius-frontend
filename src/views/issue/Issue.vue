@@ -130,7 +130,7 @@
                                     <v-icon
                                         color="primary"
                                         class="mr-2 opacity-100"
-                                        :icon="mapAffectedByIssueTypeToIcon(onTrackable.__typename)"
+                                        :icon="affectedByIssueIcon(onTrackable.__typename)"
                                     />
                                 </template>
                                 <template #append>
@@ -356,16 +356,18 @@
                         <div v-for="(affectedEntity, index) in affectedEntities" :key="index">
                             <v-list-item
                                 class="px-0 py-2"
-                                :subtitle="affectedEntity.description || 'No description provided'"
+                                :subtitle="affectedByIssueDescription(affectedEntity) || 'No description provided'"
                             >
                                 <template #title>
-                                    <v-list-item-title class="mb-1">{{ affectedEntity.name }}</v-list-item-title>
+                                    <v-list-item-title class="mb-1">{{
+                                        affectedByIssueName(affectedEntity)
+                                    }}</v-list-item-title>
                                 </template>
                                 <template #prepend>
                                     <v-icon
                                         color="primary"
                                         class="mr-2 opacity-100"
-                                        :icon="mapAffectedByIssueTypeToIcon(affectedEntity.__typename)"
+                                        :icon="affectedByIssueIcon(affectedEntity.__typename)"
                                     />
                                 </template>
                                 <template #append>
@@ -453,9 +455,10 @@ import AffectedByIssueAutocomplete from "@/components/input/AffectedByIssueAutoc
 import LabelAutocomplete from "@/components/input/LabelAutocomplete.vue";
 import AffectedByIssue from "@/components/info/AffectedByIssue.vue";
 import TemplatedFieldEditableCompartment from "@/components/TemplatedFieldEditableCompartment.vue";
-import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
 import TrackableAutocomplete from "@/components/input/TrackableAutocomplete.vue";
 import IssueDialogs from "@/components/IssueDialogs.vue";
+import { affectedByIssueDescription, affectedByIssueIcon } from "@/util/affectedByIssueUtils";
+import { affectedByIssueName } from "@/util/affectedByIssueUtils";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 

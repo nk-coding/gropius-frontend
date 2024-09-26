@@ -1,8 +1,5 @@
 <template>
-    <DefaultIconTimelineItem
-        :icon="mapAffectedByIssueTypeToIcon(item.addedToTrackable?.__typename ?? 'Component')"
-        :item="item"
-    >
+    <DefaultIconTimelineItem :icon="affectedByIssueIcon(item.addedToTrackable?.__typename ?? 'Component')" :item="item">
         added this issue to <AffectedByIssue v-if="item.addedToTrackable" :affected-entity="item.addedToTrackable!" />
         <template v-else> a component or project </template>
     </DefaultIconTimelineItem>
@@ -12,7 +9,7 @@ import { PropType } from "vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import DefaultIconTimelineItem from "./DefaultIconTimelineItem.vue";
 import AffectedByIssue from "../info/AffectedByIssue.vue";
-import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
+import { affectedByIssueIcon } from "@/util/affectedByIssueUtils";
 
 defineProps({
     item: {

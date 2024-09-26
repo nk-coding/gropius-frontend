@@ -1,6 +1,6 @@
 <template>
     <DefaultIconTimelineItem
-        :icon="mapAffectedByIssueTypeToIcon(item.removedFromTrackable?.__typename ?? 'Component')"
+        :icon="affectedByIssueIcon(item.removedFromTrackable?.__typename ?? 'Component')"
         :item="item"
     >
         removed this issue from
@@ -13,7 +13,7 @@ import { PropType } from "vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import DefaultIconTimelineItem from "./DefaultIconTimelineItem.vue";
 import AffectedByIssue from "../info/AffectedByIssue.vue";
-import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
+import { affectedByIssueIcon } from "@/util/affectedByIssueUtils";
 
 defineProps({
     item: {

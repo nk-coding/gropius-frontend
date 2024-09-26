@@ -8,7 +8,7 @@
         >
             <div class="d-flex align-center mx-2">
                 <span class="text-subtitle-1 text-ellipses flex-grow-1 ml-2">{{
-                    selectedElementInfo.componentVersion.name
+                    selectedElementInfo.componentVersion.component.name
                 }}</span>
                 <IconButton
                     :to="{
@@ -152,7 +152,7 @@ const selectableElementLookup = computed(() => {
     const lookup = new Map<string, SelectableElementInfo>();
     if (graph != undefined) {
         graph.components.nodes.forEach((component) => {
-            const componentName = `${component.name} (${component.version})`;
+            const componentName = `${component.component.name} (${component.version})`;
             lookup.set(component.id, {
                 componentVersion: component,
                 affectedEntity: component,
@@ -167,7 +167,7 @@ const selectableElementLookup = computed(() => {
                 });
             });
             component.interfaceDefinitions.nodes.forEach((definition) => {
-                const interfaceName = `${definition.interfaceSpecificationVersion.name} (${definition.interfaceSpecificationVersion.version})`;
+                const interfaceName = `${definition.interfaceSpecificationVersion.interfaceSpecification.name} (${definition.interfaceSpecificationVersion.version})`;
                 if (definition.visibleInterface != undefined) {
                     lookup.set(definition.visibleInterface.id, {
                         componentVersion: component,

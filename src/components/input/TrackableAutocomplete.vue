@@ -6,7 +6,7 @@
                     <v-icon
                         color="primary"
                         class="opacity-100 mr-2"
-                        :icon="mapAffectedByIssueTypeToIcon(trackable.raw.__typename)"
+                        :icon="affectedByIssueIcon(trackable.raw.__typename)"
                     />
                 </template>
             </v-list-item>
@@ -20,7 +20,7 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
 import { PropType } from "vue";
-import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
+import { affectedByIssueIcon } from "@/util/affectedByIssueUtils";
 
 const props = defineProps({
     ignore: {

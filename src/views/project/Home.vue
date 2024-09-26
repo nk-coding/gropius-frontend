@@ -448,7 +448,7 @@ function extractComponent(component: GraphComponentVersionInfoFragment, remove: 
             const inter = definition.visibleInterface!;
             return {
                 id: inter.id,
-                name: definition.interfaceSpecificationVersion.name,
+                name: definition.interfaceSpecificationVersion.interfaceSpecification.name,
                 version: definition.interfaceSpecificationVersion.version,
                 style: extractShapeStyle(definition.interfaceSpecificationVersion.interfaceSpecification.template),
                 issueTypes: extractIssueTypes(inter),
@@ -460,7 +460,7 @@ function extractComponent(component: GraphComponentVersionInfoFragment, remove: 
         });
     return {
         id: component.id,
-        name: component.name,
+        name: component.component.name,
         version: component.version,
         style: extractShapeStyle(component.component.template),
         issueTypes: extractIssueTypes(component),
