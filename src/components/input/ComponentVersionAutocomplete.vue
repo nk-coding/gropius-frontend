@@ -9,11 +9,7 @@
         :initial-context="initialContext"
     >
         <template #item="{ props, item }">
-            <v-list-item
-                v-bind="props"
-                :title="`${item.raw.name} (v${item.raw.version})`"
-                :subtitle="item.raw.description"
-            />
+            <v-list-item v-bind="props" :title="`v${item.raw.version}`" />
         </template>
         <template #context-item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>

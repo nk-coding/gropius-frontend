@@ -17,9 +17,8 @@ query getComponentVersionList($orderBy: [ComponentVersionOrder!]!, $count: Int!,
             versions(orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     id
-                    name
-                    description
                     version
+                    tags
                     interfaceDefinitions(filter: { visibleInterface: {} }) {
                         totalCount
                     }
@@ -33,9 +32,8 @@ query getComponentVersionList($orderBy: [ComponentVersionOrder!]!, $count: Int!,
 query getFilteredComponentVersionList($query: String!, $count: Int!, $component: ID!) {
     searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
         id
-        name
-        description
         version
+        tags
         interfaceDefinitions(filter: { visibleInterface: {} }) {
             totalCount
         }
@@ -44,8 +42,10 @@ query getFilteredComponentVersionList($query: String!, $count: Int!, $component:
 
 fragment DefaultComponentVersionInfo on ComponentVersion {
     id
-    name
-    description
+    component {
+        name
+        description
+    }
     version
     __typename
 }
@@ -59,10 +59,9 @@ query searchComponentVersions($query: String!, $count: Int!, $component: ID!) {
 query getComponentVersionGeneralDetails($id: ID!) {
     node(id: $id) {
         id
-        ...on ComponentVersion {
-            name
-            description
+        ... on ComponentVersion {
             version
+            tags
             templatedFields {
                 name
                 value

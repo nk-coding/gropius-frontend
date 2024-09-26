@@ -63,10 +63,10 @@ const version = computedAsync(
         }
         titleSegmentDependency.value;
         const res = await withErrorMessage(
-            () => client.getNamedNode({ id: componentVersionId.value! }),
+            () => client.getVersionedNode({ id: componentVersionId.value! }),
             "Error loading project version"
         );
-        return res.node as { id: string; name: string };
+        return res.node as { id: string; version: string };
     },
     null,
     { shallow: false }
@@ -95,10 +95,10 @@ const interfaceSpecificationVersion = computedAsync(
         }
         titleSegmentDependency.value;
         const res = await withErrorMessage(
-            () => client.getNamedNode({ id: interfaceSpecificationVersionId.value! }),
+            () => client.getVersionedNode({ id: interfaceSpecificationVersionId.value! }),
             "Error loading interface specification version"
         );
-        return res.node as { id: string; name: string };
+        return res.node as { id: string; version: string };
     },
     null,
     { shallow: false }
@@ -145,7 +145,7 @@ const titleSegments = computed(() => {
     ];
     const versionValue = version.value;
     if (versionValue != undefined && componentVersionId.value != undefined) {
-        segments.push({ name: versionValue.name, path: componentVersionPath("component-version-general") });
+        segments.push({ name: `v${versionValue.version}`, path: componentVersionPath("component-version-general") });
     }
     const interfaceSpecificationValue = interfaceSpecification.value;
     if (interfaceSpecificationValue != undefined && interfaceSpecificationId.value != undefined) {
@@ -157,7 +157,7 @@ const titleSegments = computed(() => {
     const interfaceSpecificationVersionValue = interfaceSpecificationVersion.value;
     if (interfaceSpecificationVersionValue != undefined && interfaceSpecificationVersionId.value != undefined) {
         segments.push({
-            name: interfaceSpecificationVersionValue.name,
+            name: `v${interfaceSpecificationVersionValue.version}`,
             path: interfaceSpecificationVersionPath("interface-specification-version-general")
         });
     }

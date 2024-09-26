@@ -71,7 +71,6 @@ fragment GraphInfo on Project {
 }
 
 fragment GraphComponentVersionInfo on ComponentVersion {
-    name
     version
     ...GraphRelationPartnerInfo
     interfaceDefinitions {
@@ -81,8 +80,8 @@ fragment GraphComponentVersionInfo on ComponentVersion {
             }
             interfaceSpecificationVersion {
                 version
-                name
                 interfaceSpecification {
+                    name
                     template {
                         ...GraphRelationPartnerTemplateInfo
                     }
@@ -92,6 +91,7 @@ fragment GraphComponentVersionInfo on ComponentVersion {
     }
     component {
         id
+        name
         template {
             ...GraphRelationPartnerTemplateInfo
         }

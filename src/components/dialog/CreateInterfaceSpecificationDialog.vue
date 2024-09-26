@@ -36,30 +36,23 @@
                 />
             </template>
             <template #version="{ disabled }">
-                <div class="d-flex flex-wrap mx-n2">
-                    <v-text-field
-                        v-model="versionName"
-                        v-bind="versionNameProps"
-                        :placeholder="name"
-                        persistent-placeholder
-                        :disabled="disabled"
-                        label="Name"
-                        class="wrap-input mx-2 mb-1 flex-1-1-0"
-                    />
-                    <v-text-field
-                        v-model="version"
-                        v-bind="versionProps"
-                        :disabled="disabled"
-                        label="Version"
-                        class="wrap-input mx-2 mb-1 flex-1-1-0"
-                    />
-                </div>
-                <v-textarea
-                    v-model="versionDescription"
-                    v-bind="versionDescriptionProps"
+                <v-text-field
+                    v-model="version"
+                    v-bind="versionProps"
                     :disabled="disabled"
-                    label="Description"
+                    label="Version"
                     class="mb-1"
+                />
+                <v-combobox
+                    v-model="tags"
+                    v-bind="tagsProps"
+                    :disabled="disabled"
+                    label="Tags"
+                    class="mb-1"
+                    multiple
+                    chips
+                    closable-chips
+                    clearable
                 />
             </template>
             <template #versionTemplatedFields>
@@ -142,9 +135,8 @@ const templateValue = computedAsync(
 
 const versionSchema = toTypedSchema(
     yup.object().shape({
-        name: yup.string().notRequired().label("Name"),
         version: yup.string().required().label("Version"),
-        description: yup.string().notRequired().label("Description")
+        tags: yup.array(yup.string().required()).notRequired().label("Tags")
     })
 );
 
@@ -158,9 +150,8 @@ const {
     validationSchema: versionSchema
 });
 
-const [versionName, versionNameProps] = defineVersionField("name", fieldConfig);
 const [version, versionProps] = defineVersionField("version", fieldConfig);
-const [versionDescription, versionDescriptionProps] = defineVersionField("description", fieldConfig);
+const [tags, tagsProps] = defineVersionField("tags", fieldConfig);
 
 const versionTemplatedFields = ref<Field[]>([]);
 
@@ -196,8 +187,7 @@ const getInterfaceSpecificationFields = handleSubmit(async (state) => {
 const getVersionFields = handleVersionSubmit(async (state) => {
     return {
         ...state,
-        name: state.name ?? name.value!,
-        description: state.description ?? "",
+        tags: state.tags ?? [],
         templatedFields: templatedFields.value
     };
 });

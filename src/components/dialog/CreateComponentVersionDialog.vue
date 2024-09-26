@@ -11,21 +11,17 @@
             @confirm="createComponentVersion"
         >
             <template #general>
-                <div class="d-flex flex-wrap mx-n2">
-                    <v-text-field
-                        v-model="name"
-                        v-bind="nameProps"
-                        label="Name"
-                        class="wrap-input mx-2 mb-1 flex-1-1-0"
-                    />
-                    <v-text-field
-                        v-model="version"
-                        v-bind="versionProps"
-                        label="Version"
-                        class="wrap-input mx-2 mb-1 flex-1-1-0"
-                    />
-                </div>
-                <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+                <v-text-field v-model="version" v-bind="versionProps" label="Version" class="mb-1" />
+                <v-combobox
+                    v-model="tags"
+                    v-bind="tagsProps"
+                    label="Tags"
+                    class="mb-1"
+                    multiple
+                    chips
+                    closable-chips
+                    clearable
+                />
             </template>
             <template #templatedFields>
                 <TemplatedFieldsInput
@@ -69,9 +65,8 @@ const emit = defineEmits<{
 
 const schema = toTypedSchema(
     yup.object().shape({
-        name: yup.string().required().label("Name"),
         version: yup.string().required().label("Version"),
-        description: yup.string().notRequired().label("Description")
+        tags: yup.array().of(yup.string().required()).label("Tags")
     })
 );
 
@@ -79,9 +74,8 @@ const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
     validationSchema: schema
 });
 
-const [name, nameProps] = defineField("name", fieldConfig);
 const [version, versionProps] = defineField("version", fieldConfig);
-const [description, descriptionProps] = defineField("description", fieldConfig);
+const [tags, tagsProps] = defineField("tags", fieldConfig);
 
 const templatedFields = ref<Field[]>([]);
 const templateValue = computedAsync(
@@ -115,7 +109,7 @@ const createComponentVersion = handleSubmit(async (state) => {
         const res = await client.createComponentVersion({
             input: {
                 ...state,
-                description: state.description ?? "",
+                tags: state.tags ?? [],
                 templatedFields: templatedFields.value,
                 component: props.component
             }

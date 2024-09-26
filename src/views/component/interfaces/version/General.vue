@@ -5,14 +5,6 @@
     >
         <DetailCompartment name="General">
             <InputWrapper
-                v-model="interfaceSpecificationVersion.name"
-                v-slot="{ modelValue }"
-                @save="save({ name: $event })"
-                :readonly="!interfaceSpecification.admin"
-            >
-                <v-text-field v-model="modelValue.value" label="Name" :readonly="!interfaceSpecification.admin" />
-            </InputWrapper>
-            <InputWrapper
                 v-model="interfaceSpecificationVersion.version"
                 v-slot="{ modelValue }"
                 @save="save({ version: $event })"
@@ -21,12 +13,20 @@
                 <v-text-field v-model="modelValue.value" label="Version" :readonly="!interfaceSpecification.admin" />
             </InputWrapper>
             <InputWrapper
-                v-model="interfaceSpecificationVersion.description"
+                v-model="interfaceSpecificationVersion.tags"
                 v-slot="{ modelValue }"
-                @save="save({ description: $event })"
+                @save="save({ tags: $event })"
                 :readonly="!interfaceSpecification.admin"
             >
-                <v-textarea v-model="modelValue.value" label="Description" :readonly="!interfaceSpecification.admin" />
+                <v-combobox
+                    v-model="modelValue.value"
+                    label="Tags"
+                    multiple
+                    chips
+                    closable-chips
+                    clearable
+                    :readonly="!interfaceSpecification.admin"
+                />
             </InputWrapper>
         </DetailCompartment>
         <TemplatedFieldsDetailCompartment

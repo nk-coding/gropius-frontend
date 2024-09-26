@@ -11,10 +11,24 @@
     >
         <template #item="{ item }">
             <ListItem
-                :title="item.name"
-                :subtitle="item.description || 'No description provided'"
-                :italic-subtitle="!item.description"
-            />
+                :title="`v${item.version}`"
+                :subtitle="item.tags.length == 0 ? 'No tags provided' : undefined"
+                italic-subtitle
+            >
+                <template #subtitle v-if="item.tags.length > 0">
+                    <div class="d-flex flex-wrap chip-container mt-1">
+                        <v-chip
+                            v-for="(tag, index) in item.tags"
+                            :key="index"
+                            color="primary"
+                            size="small"
+                            class="flex-shrink-0"
+                        >
+                            {{ tag }}
+                        </v-chip>
+                    </div>
+                </template>
+            </ListItem>
         </template>
         <CreateInterfaceSpecificationVersionDialog
             :interfaceSpecification="interfaceSpecificationId"
@@ -46,7 +60,7 @@ const route = useRoute();
 const interfaceSpecificationId = computed(() => route.params.interfaceSpecification as string);
 
 const sortFields = {
-    Name: InterfaceSpecificationVersionOrderField.Name,
+    Version: InterfaceSpecificationVersionOrderField.Version,
     "[Default]": InterfaceSpecificationVersionOrderField.Id
 };
 
@@ -95,5 +109,10 @@ function interfaceSpecificationVersionRoute(interfaceSpecificationVersion: IdObj
 @use "@/styles/settings";
 .issue-container {
     min-width: settings.$icon-with-number-width;
+}
+
+.chip-container {
+    row-gap: 0.5rem;
+    column-gap: 0.25rem;
 }
 </style>

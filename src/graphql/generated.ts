@@ -366,14 +366,10 @@ export type AddedToTrackableEventHasPermissionArgs = {
 export type AffectedByIssue = {
     /** The issues which affect this entity */
     affectingIssues: IssueConnection;
-    /** The description of this entity. */
-    description: Scalars["String"]["output"];
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
-    /** The name of this entity. */
-    name: Scalars["String"]["output"];
 };
 
 /**
@@ -428,12 +424,8 @@ export type AffectedByIssueFilterInput = {
     affectingIssues?: InputMaybe<IssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<AffectedByIssueFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<AffectedByIssueFilterInput>;
     /** Connects all subformulas via or */
@@ -463,9 +455,7 @@ export type AffectedByIssueOrder = {
 /** Fields a list of AffectedByIssue can be sorted by */
 export enum AffectedByIssueOrderField {
     /** Order by id */
-    Id = "ID",
-    /** Order by name */
-    Name = "NAME"
+    Id = "ID"
 }
 
 /**
@@ -2210,7 +2200,7 @@ export type Component = AffectedByIssue &
     BaseNode &
     MutableTemplatedNode &
     Named &
-    NamedNode &
+    NamedAffectedByIssue &
     Node &
     TemplatedNode &
     Trackable & {
@@ -3054,8 +3044,6 @@ export enum ComponentTemplateOrderField {
 export type ComponentVersion = AffectedByIssue &
     BaseNode &
     MutableTemplatedNode &
-    Named &
-    NamedNode &
     Node &
     RelationPartner &
     TemplatedNode &
@@ -3067,8 +3055,6 @@ export type ComponentVersion = AffectedByIssue &
         aggregatedIssues: AggregatedIssueConnection;
         /** The Component which defines this ComponentVersions */
         component: Component;
-        /** The description of this entity. */
-        description: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -3081,10 +3067,10 @@ export type ComponentVersion = AffectedByIssue &
         interfaceDefinitions: InterfaceDefinitionConnection;
         /** IntraComponentDependencySpecifications associated with this ComponentVersion */
         intraComponentDependencySpecifications: IntraComponentDependencySpecificationConnection;
-        /** The name of this entity. */
-        name: Scalars["String"]["output"];
         /** Relations which use this as the start of the Relation. */
         outgoingRelations: RelationConnection;
+        /** The tags of this ComponentVersion */
+        tags: Array<Scalars["String"]["output"]>;
         /** The Template of this ComponentVersion */
         template: ComponentVersionTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -3285,8 +3271,6 @@ export type ComponentVersionFilterInput = {
     and?: InputMaybe<Array<ComponentVersionFilterInput>>;
     /** Filters for nodes where the related node match this filter */
     component?: InputMaybe<ComponentFilterInput>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filter by includingProjects */
@@ -3297,8 +3281,6 @@ export type ComponentVersionFilterInput = {
     interfaceDefinitions?: InputMaybe<InterfaceDefinitionListFilterInput>;
     /** Filter by intraComponentDependencySpecifications */
     intraComponentDependencySpecifications?: InputMaybe<IntraComponentDependencySpecificationListFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<ComponentVersionFilterInput>;
     /** Connects all subformulas via or */
@@ -3319,10 +3301,8 @@ export type ComponentVersionFilterInput = {
 
 /** Input to create a ComponentVersion */
 export type ComponentVersionInput = {
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
+    /** The tags of the created ComponentVersion */
+    tags: Array<Scalars["String"]["input"]>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created ComponentVersion */
@@ -3351,8 +3331,6 @@ export type ComponentVersionOrder = {
 export enum ComponentVersionOrderField {
     /** Order by id */
     Id = "ID",
-    /** Order by name */
-    Name = "NAME",
     /** Order by template_id */
     TemplateId = "TEMPLATE_ID",
     /** Order by template_name */
@@ -3586,10 +3564,8 @@ export type CreateComponentTemplatePayload = {
 export type CreateComponentVersionInput = {
     /** The id of the Component the created ComponentVersion is part of */
     component: Scalars["ID"]["input"];
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
+    /** The tags of the created ComponentVersion */
+    tags: Array<Scalars["String"]["input"]>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created ComponentVersion */
@@ -3734,14 +3710,10 @@ export type CreateInterfaceSpecificationTemplateInput = {
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** Style of the fill */
     fill?: InputMaybe<FillStyleInput>;
-    /** SubTemplate for all InterfacesDefinitions of a InterfaceSpecification with the created Template */
-    interfaceDefinitionTemplate: NullableSubTemplateInput;
     /** SubTemplate for all InterfaceParts of a InterfaceSpecification with the created Template */
     interfacePartTemplate: SubTemplateInput;
     /** SubTemplate for all InterfaceSpecificationVersions of a InterfaceSpecification with the created Template */
     interfaceSpecificationVersionTemplate: SubTemplateInput;
-    /** SubTemplate for all Interfaces of a InterfaceSpecification with the created Template */
-    interfaceTemplate: NullableSubTemplateInput;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The corner radius of the shape, ignored for circle/ellipse */
@@ -3760,20 +3732,18 @@ export type CreateInterfaceSpecificationTemplateInput = {
 
 export type CreateInterfaceSpecificationTemplatePayload = {
     __typename?: "CreateInterfaceSpecificationTemplatePayload";
-    /** The created InterfaceTemplate */
+    /** The created InterfaceSpecificationTemplate */
     interfaceSpecificationTemplate: InterfaceSpecificationTemplate;
 };
 
 /** Input for the createInterfaceSpecificationVersion mutation */
 export type CreateInterfaceSpecificationVersionInput = {
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
     /** The id of the InterfaceSpecification the created InterfaceSpecificationVersion is part of */
     interfaceSpecification: Scalars["ID"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
     /** Initial InterfaceParts */
     parts?: InputMaybe<Array<InterfacePartInput>>;
+    /** The tags of the created InterfaceSpecificationVersion */
+    tags: Array<Scalars["String"]["input"]>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created InterfaceSpecificationVersion */
@@ -5935,19 +5905,13 @@ export type IntFilterInput = {
  */
 export type Interface = AffectedByIssue &
     BaseNode &
-    MutableTemplatedNode &
-    Named &
-    NamedNode &
     Node &
-    RelationPartner &
-    TemplatedNode & {
+    RelationPartner & {
         __typename?: "Interface";
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
         /** AggregatedIssues on this RelationPartner. */
         aggregatedIssues: AggregatedIssueConnection;
-        /** The description of this entity. */
-        description: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5958,21 +5922,8 @@ export type Interface = AffectedByIssue &
         interfaceDefinition: InterfaceDefinition;
         /** Participants of IntraComponentDependencySpecifications where this is used. */
         intraComponentDependencyParticipants: IntraComponentDependencyParticipantConnection;
-        /** The name of this entity. */
-        name: Scalars["String"]["output"];
         /** Relations which use this as the start of the Relation. */
         outgoingRelations: RelationConnection;
-        /** The Template of this Interface. */
-        template: InterfaceTemplate;
-        /** Value of a field defined by the template. Error if such a field is not defined. */
-        templatedField?: Maybe<Scalars["JSON"]["output"]>;
-        /**
-         * All templatedFields
-         *         If `names` is provided, only those matching the name. If `prefixMatching` is true, matching is done by
-         *         prefix, otherwise by full name.
-         *
-         */
-        templatedFields: Array<JsonField>;
     };
 
 /**
@@ -6072,42 +6023,6 @@ export type InterfaceOutgoingRelationsArgs = {
 };
 
 /**
- * An interface which is part of a specific ComponentVersion.
- *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
- *     Can be used in Relations and affected by Issues.
- *     READ is granted if READ is granted on `interfaceDefinition`.
- *
- */
-export type InterfaceTemplatedFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * An interface which is part of a specific ComponentVersion.
- *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
- *     Can be used in Relations and affected by Issues.
- *     READ is granted if READ is granted on `interfaceDefinition`.
- *
- */
-export type InterfaceTemplatedFieldsArgs = {
-    names?: InputMaybe<Array<Scalars["String"]["input"]>>;
-    prefixMatching?: InputMaybe<Scalars["Boolean"]["input"]>;
-};
-
-/** The connection type for Interface. */
-export type InterfaceConnection = {
-    __typename?: "InterfaceConnection";
-    /** A list of all edges of the current page. */
-    edges: Array<InterfaceEdge>;
-    /** A list of all nodes of the current page. */
-    nodes: Array<Interface>;
-    /** Information to aid in pagination. */
-    pageInfo: PageInfo;
-    /** Identifies the total count of items in the connection. */
-    totalCount: Scalars["Int"]["output"];
-};
-
-/**
  * InterfaceDefinition on a ComponentVersion
  *     Specifies if it is visible/invisible self-defined.
  *     Specifies if it is visible/invisible derived (and by which Relations)
@@ -6115,9 +6030,7 @@ export type InterfaceConnection = {
  *
  */
 export type InterfaceDefinition = BaseNode &
-    MutableTemplatedNode &
-    Node &
-    TemplatedNode & {
+    Node & {
         __typename?: "InterfaceDefinition";
         /** The ComponentVersion using the InterfaceSpecificationVersion */
         componentVersion: ComponentVersion;
@@ -6131,17 +6044,6 @@ export type InterfaceDefinition = BaseNode &
         invisibleDerivedBy: RelationConnection;
         /** If true, `interfaceSpecificationVersion`is self-defined invisible on the `componentVersion` */
         invisibleSelfDefined: Scalars["Boolean"]["output"];
-        /** The Template of this InterfaceDefinition. */
-        template: InterfaceDefinitionTemplate;
-        /** Value of a field defined by the template. Error if such a field is not defined. */
-        templatedField?: Maybe<Scalars["JSON"]["output"]>;
-        /**
-         * All templatedFields
-         *         If `names` is provided, only those matching the name. If `prefixMatching` is true, matching is done by
-         *         prefix, otherwise by full name.
-         *
-         */
-        templatedFields: Array<JsonField>;
         /** Relations because of which `interfaceSpecificationVersion` is visible derived on `componentVersion` */
         visibleDerivedBy: RelationConnection;
         /** If visible, the created Interface */
@@ -6176,29 +6078,6 @@ export type InterfaceDefinitionInvisibleDerivedByArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<Array<RelationOrder>>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * InterfaceDefinition on a ComponentVersion
- *     Specifies if it is visible/invisible self-defined.
- *     Specifies if it is visible/invisible derived (and by which Relations)
- *     READ is granted if READ is granted on `componentVersion`
- *
- */
-export type InterfaceDefinitionTemplatedFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * InterfaceDefinition on a ComponentVersion
- *     Specifies if it is visible/invisible self-defined.
- *     Specifies if it is visible/invisible derived (and by which Relations)
- *     READ is granted if READ is granted on `componentVersion`
- *
- */
-export type InterfaceDefinitionTemplatedFieldsArgs = {
-    names?: InputMaybe<Array<Scalars["String"]["input"]>>;
-    prefixMatching?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 /**
@@ -6258,10 +6137,6 @@ export type InterfaceDefinitionFilterInput = {
     not?: InputMaybe<InterfaceDefinitionFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfaceDefinitionFilterInput>>;
-    /** Filters for nodes where the related node match this filter */
-    template?: InputMaybe<InterfaceDefinitionTemplateFilterInput>;
-    /** Filter for templated fields with matching key and values. Entries are joined by AND */
-    templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
     /** Filter by visibleDerivedBy */
     visibleDerivedBy?: InputMaybe<RelationListFilterInput>;
     /** Filters for nodes where the related node match this filter */
@@ -6294,107 +6169,9 @@ export enum InterfaceDefinitionOrderField {
     Id = "ID",
     /** Order by invisibleSelfDefined */
     InvisibleSelfDefined = "INVISIBLE_SELF_DEFINED",
-    /** Order by template_id */
-    TemplateId = "TEMPLATE_ID",
-    /** Order by template_name */
-    TemplateName = "TEMPLATE_NAME",
     /** Order by visibleSelfDefined */
     VisibleSelfDefined = "VISIBLE_SELF_DEFINED"
 }
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplate = BaseNode &
-    BaseTemplate &
-    Named &
-    NamedNode &
-    Node &
-    SubTemplate & {
-        __typename?: "InterfaceDefinitionTemplate";
-        /** The description of this entity. */
-        description: Scalars["String"]["output"];
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The name of this entity. */
-        name: Scalars["String"]["output"];
-        /** The Template this SubTemplate is part of */
-        partOf: InterfaceSpecificationTemplate;
-        /** All template field specifications, if a `namePrefix` is provided, only those matching it */
-        templateFieldSpecifications: Array<JsonField>;
-        /** Entities which use this template. */
-        usedIn: InterfaceDefinitionConnection;
-    };
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplateHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplateTemplateFieldSpecificationsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplateUsedInArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<InterfaceDefinitionFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<Array<InterfaceDefinitionOrder>>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Filter used to filter InterfaceDefinitionTemplate */
-export type InterfaceDefinitionTemplateFilterInput = {
-    /** Connects all subformulas via and */
-    and?: InputMaybe<Array<InterfaceDefinitionTemplateFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
-    /** Filter by id */
-    id?: InputMaybe<IdFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
-    /** Negates the subformula */
-    not?: InputMaybe<InterfaceDefinitionTemplateFilterInput>;
-    /** Connects all subformulas via or */
-    or?: InputMaybe<Array<InterfaceDefinitionTemplateFilterInput>>;
-};
-
-/** An edge in a connection. */
-export type InterfaceEdge = {
-    __typename?: "InterfaceEdge";
-    /** A cursor used in pagination. */
-    cursor: Scalars["String"]["output"];
-    /** The item at the end of the edge. */
-    node: Interface;
-};
 
 /** Filter used to filter Interface */
 export type InterfaceFilterInput = {
@@ -6404,8 +6181,6 @@ export type InterfaceFilterInput = {
     aggregatedIssues?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<InterfaceFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filter by incomingRelations */
@@ -6414,8 +6189,6 @@ export type InterfaceFilterInput = {
     interfaceDefinition?: InputMaybe<InterfaceDefinitionFilterInput>;
     /** Filter by intraComponentDependencyParticipants */
     intraComponentDependencyParticipants?: InputMaybe<IntraComponentDependencyParticipantListFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<InterfaceFilterInput>;
     /** Connects all subformulas via or */
@@ -6426,31 +6199,7 @@ export type InterfaceFilterInput = {
     partOfProject?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
-    /** Filters for nodes where the related node match this filter */
-    template?: InputMaybe<InterfaceTemplateFilterInput>;
-    /** Filter for templated fields with matching key and values. Entries are joined by AND */
-    templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
 };
-
-/** Defines the order of a Interface list */
-export type InterfaceOrder = {
-    /** The direction to order by, defaults to ASC */
-    direction?: InputMaybe<OrderDirection>;
-    /** The field to order by, defaults to ID */
-    field?: InputMaybe<InterfaceOrderField>;
-};
-
-/** Fields a list of Interface can be sorted by */
-export enum InterfaceOrderField {
-    /** Order by id */
-    Id = "ID",
-    /** Order by name */
-    Name = "NAME",
-    /** Order by template_id */
-    TemplateId = "TEMPLATE_ID",
-    /** Order by template_name */
-    TemplateName = "TEMPLATE_NAME"
-}
 
 /**
  * Part of an Interface(Specification).
@@ -6465,7 +6214,7 @@ export type InterfacePart = AffectedByIssue &
     BaseNode &
     MutableTemplatedNode &
     Named &
-    NamedNode &
+    NamedAffectedByIssue &
     Node &
     TemplatedNode & {
         __typename?: "InterfacePart";
@@ -6803,7 +6552,7 @@ export type InterfaceSpecification = AffectedByIssue &
     BaseNode &
     MutableTemplatedNode &
     Named &
-    NamedNode &
+    NamedAffectedByIssue &
     Node &
     TemplatedNode & {
         __typename?: "InterfaceSpecification";
@@ -7187,11 +6936,6 @@ export type InterfaceSpecificationTemplate = BaseNode &
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
         /**
-         * SubTemplate applied to all InterfaceDefinitions of InterfaceSpecifications with this Template.
-         *
-         */
-        interfaceDefinitionTemplate: InterfaceDefinitionTemplate;
-        /**
          * SubTemplate applied to all InterfaceParts of InterfaceSpecifications with this Template.
          *
          */
@@ -7201,11 +6945,6 @@ export type InterfaceSpecificationTemplate = BaseNode &
          *
          */
         interfaceSpecificationVersionTemplate: InterfaceSpecificationVersionTemplate;
-        /**
-         * SubTemplate applied to all Interfaces of InterfaceSpecifications with this Template.
-         *
-         */
-        interfaceTemplate: InterfaceTemplate;
         /** If true, this template is deprecated and cannot be used for new entities any more. */
         isDeprecated: Scalars["Boolean"]["output"];
         /** The name of this entity. */
@@ -7475,16 +7214,12 @@ export enum InterfaceSpecificationTemplateOrderField {
 export type InterfaceSpecificationVersion = AffectedByIssue &
     BaseNode &
     MutableTemplatedNode &
-    Named &
-    NamedNode &
     Node &
     TemplatedNode &
     Versioned & {
         __typename?: "InterfaceSpecificationVersion";
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
-        /** The description of this entity. */
-        description: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -7493,13 +7228,13 @@ export type InterfaceSpecificationVersion = AffectedByIssue &
         interfaceDefinitions: InterfaceDefinitionConnection;
         /** The InterfaceSpecification this is part of. */
         interfaceSpecification: InterfaceSpecification;
-        /** The name of this entity. */
-        name: Scalars["String"]["output"];
         /**
          * InterfaceParts which are part of this InterfaceSpecificationVersion
          *
          */
         parts: InterfacePartConnection;
+        /** The tags of this InterfaceSpecificationVersion */
+        tags: Array<Scalars["String"]["output"]>;
         /** The Template of this InterfaceSpecificationVersion */
         template: InterfaceSpecificationVersionTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -7646,16 +7381,12 @@ export type InterfaceSpecificationVersionFilterInput = {
     affectingIssues?: InputMaybe<IssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<InterfaceSpecificationVersionFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filter by interfaceDefinitions */
     interfaceDefinitions?: InputMaybe<InterfaceDefinitionListFilterInput>;
     /** Filters for nodes where the related node match this filter */
     interfaceSpecification?: InputMaybe<InterfaceSpecificationFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     /** Connects all subformulas via or */
@@ -7674,12 +7405,10 @@ export type InterfaceSpecificationVersionFilterInput = {
 
 /** Input to create an InterfaceSpecificationVersion */
 export type InterfaceSpecificationVersionInput = {
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
     /** Initial InterfaceParts */
     parts?: InputMaybe<Array<InterfacePartInput>>;
+    /** The tags of the created InterfaceSpecificationVersion */
+    tags: Array<Scalars["String"]["input"]>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created InterfaceSpecificationVersion */
@@ -7708,8 +7437,6 @@ export type InterfaceSpecificationVersionOrder = {
 export enum InterfaceSpecificationVersionOrderField {
     /** Order by id */
     Id = "ID",
-    /** Order by name */
-    Name = "NAME",
     /** Order by template_id */
     TemplateId = "TEMPLATE_ID",
     /** Order by template_name */
@@ -7797,91 +7524,6 @@ export type InterfaceSpecificationVersionTemplateFilterInput = {
     not?: InputMaybe<InterfaceSpecificationVersionTemplateFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfaceSpecificationVersionTemplateFilterInput>>;
-};
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplate = BaseNode &
-    BaseTemplate &
-    Named &
-    NamedNode &
-    Node &
-    SubTemplate & {
-        __typename?: "InterfaceTemplate";
-        /** The description of this entity. */
-        description: Scalars["String"]["output"];
-        /** Checks if the current user has a specific permission on this Node */
-        hasPermission: Scalars["Boolean"]["output"];
-        /** The unique id of this node */
-        id: Scalars["ID"]["output"];
-        /** The name of this entity. */
-        name: Scalars["String"]["output"];
-        /** The Template this SubTemplate is part of */
-        partOf: InterfaceSpecificationTemplate;
-        /** All template field specifications, if a `namePrefix` is provided, only those matching it */
-        templateFieldSpecifications: Array<JsonField>;
-        /** Entities which use this template. */
-        usedIn: InterfaceConnection;
-    };
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplateHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplateTemplateFieldSpecificationsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplateUsedInArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<InterfaceFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<Array<InterfaceOrder>>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Filter used to filter InterfaceTemplate */
-export type InterfaceTemplateFilterInput = {
-    /** Connects all subformulas via and */
-    and?: InputMaybe<Array<InterfaceTemplateFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
-    /** Filter by id */
-    id?: InputMaybe<IdFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
-    /** Negates the subformula */
-    not?: InputMaybe<InterfaceTemplateFilterInput>;
-    /** Connects all subformulas via or */
-    or?: InputMaybe<Array<InterfaceTemplateFilterInput>>;
 };
 
 /**
@@ -10639,18 +10281,6 @@ export type Mutation = {
      */
     updateIMSProject: UpdateImsProjectPayload;
     /**
-     * Updates the specified Interface,
-     *         requires ADMIN on the Component of the ComponentVersion of the InterfaceDefinition of the Interface  to update
-     *
-     */
-    updateInterface: UpdateInterfacePayload;
-    /**
-     * Updates the specified InterfaceDefinition,
-     *         requires ADMIN on the Component of the ComponentVersion of the InterfaceDefinition to update
-     *
-     */
-    updateInterfaceDefinition: UpdateInterfaceDefinitionPayload;
-    /**
      * Updates the specified InterfacePart,
      *         requires ADMIN on the Component of the InterfaceSpecification of the InterfacePart to update
      *
@@ -11032,14 +10662,6 @@ export type MutationUpdateImsProjectArgs = {
     input: UpdateImsProjectInput;
 };
 
-export type MutationUpdateInterfaceArgs = {
-    input: UpdateInterfaceInput;
-};
-
-export type MutationUpdateInterfaceDefinitionArgs = {
-    input: UpdateInterfaceDefinitionInput;
-};
-
 export type MutationUpdateInterfacePartArgs = {
     input: UpdateInterfacePartInput;
 };
@@ -11094,6 +10716,36 @@ export type Named = {
     description: Scalars["String"]["output"];
     /** The name of this entity. */
     name: Scalars["String"]["output"];
+};
+
+/** Affected by issue with a name and description */
+export type NamedAffectedByIssue = {
+    /** The issues which affect this entity */
+    affectingIssues: IssueConnection;
+    /** The description of this entity. */
+    description: Scalars["String"]["output"];
+    /** Checks if the current user has a specific permission on this Node */
+    hasPermission: Scalars["Boolean"]["output"];
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    /** The name of this entity. */
+    name: Scalars["String"]["output"];
+};
+
+/** Affected by issue with a name and description */
+export type NamedAffectedByIssueAffectingIssuesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<IssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<Array<IssueOrder>>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** Affected by issue with a name and description */
+export type NamedAffectedByIssueHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /** AuditedNode with a name and description */
@@ -11259,20 +10911,6 @@ export type NullableStringFilterInput = {
     matches?: InputMaybe<Scalars["String"]["input"]>;
     /** Matches Strings which start with the provided value */
     startsWith?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Input to create a SubTemplate, where all templatedFieldSpecifications must allow null as value */
-export type NullableSubTemplateInput = {
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
-    /**
-     * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
-     *         Must be disjoint with templateFieldSpecifications of templates this template extends.
-     *
-     */
-    templateFieldSpecifications?: InputMaybe<Array<JsonFieldInput>>;
 };
 
 /** Possible direction in which a list of nodes can be ordered */
@@ -11499,7 +11137,7 @@ export type PriorityChangedEventHasPermissionArgs = {
 export type Project = AffectedByIssue &
     BaseNode &
     Named &
-    NamedNode &
+    NamedAffectedByIssue &
     Node &
     Trackable & {
         __typename?: "Project";
@@ -12122,8 +11760,6 @@ export type Query = {
     searchInterfaceSpecificationVersions: Array<InterfaceSpecificationVersion>;
     /** Search for nodes of type InterfaceSpecification */
     searchInterfaceSpecifications: Array<InterfaceSpecification>;
-    /** Search for nodes of type Interface */
-    searchInterfaces: Array<Interface>;
     /** Search for nodes of type IssuePriority */
     searchIssuePriorities: Array<IssuePriority>;
     /** Search for nodes of type IssueRelationType */
@@ -12362,13 +11998,6 @@ export type QuerySearchInterfaceSpecificationVersionsArgs = {
 
 export type QuerySearchInterfaceSpecificationsArgs = {
     filter?: InputMaybe<InterfaceSpecificationFilterInput>;
-    first: Scalars["Int"]["input"];
-    query: Scalars["String"]["input"];
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QuerySearchInterfacesArgs = {
-    filter?: InputMaybe<InterfaceFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -13047,14 +12676,10 @@ export type RelationOrder = {
 export enum RelationOrderField {
     /** Order by end_id */
     EndId = "END_ID",
-    /** Order by end_name */
-    EndName = "END_NAME",
     /** Order by id */
     Id = "ID",
     /** Order by start_id */
     StartId = "START_ID",
-    /** Order by start_name */
-    StartName = "START_NAME",
     /** Order by template_id */
     TemplateId = "TEMPLATE_ID",
     /** Order by template_name */
@@ -13067,27 +12692,14 @@ export type RelationPartner = {
     affectingIssues: IssueConnection;
     /** AggregatedIssues on this RelationPartner. */
     aggregatedIssues: AggregatedIssueConnection;
-    /** The description of this entity. */
-    description: Scalars["String"]["output"];
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
     /** Relations which use this as the end of the Relation. */
     incomingRelations: RelationConnection;
-    /** The name of this entity. */
-    name: Scalars["String"]["output"];
     /** Relations which use this as the start of the Relation. */
     outgoingRelations: RelationConnection;
-    /** Value of a field defined by the template. Error if such a field is not defined. */
-    templatedField?: Maybe<Scalars["JSON"]["output"]>;
-    /**
-     * All templatedFields
-     *         If `names` is provided, only those matching the name. If `prefixMatching` is true, matching is done by
-     *         prefix, otherwise by full name.
-     *
-     */
-    templatedFields: Array<JsonField>;
 };
 
 /** Entity which can be used as start / end of Relations. Can be affected by Issues. */
@@ -13139,17 +12751,6 @@ export type RelationPartnerOutgoingRelationsArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
-/** Entity which can be used as start / end of Relations. Can be affected by Issues. */
-export type RelationPartnerTemplatedFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Entity which can be used as start / end of Relations. Can be affected by Issues. */
-export type RelationPartnerTemplatedFieldsArgs = {
-    names?: InputMaybe<Array<Scalars["String"]["input"]>>;
-    prefixMatching?: InputMaybe<Scalars["Boolean"]["input"]>;
-};
-
 /** Filter used to filter RelationPartner */
 export type RelationPartnerFilterInput = {
     /** Filter by affectingIssues */
@@ -13158,14 +12759,10 @@ export type RelationPartnerFilterInput = {
     aggregatedIssues?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<RelationPartnerFilterInput>>;
-    /** Filter by description */
-    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filter by incomingRelations */
     incomingRelations?: InputMaybe<RelationListFilterInput>;
-    /** Filter by name */
-    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<RelationPartnerFilterInput>;
     /** Connects all subformulas via or */
@@ -13176,8 +12773,6 @@ export type RelationPartnerFilterInput = {
     partOfProject?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
-    /** Filter for templated fields with matching key and values. Entries are joined by AND */
-    templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
 };
 
 /** Layout for a RelationPartner (ComponentVersion or Interface) */
@@ -15235,12 +14830,10 @@ export type UpdateComponentPermissionPayload = {
 
 /** Input for the updateComponentVersion mutation */
 export type UpdateComponentVersionInput = {
-    /** The description of the NamedNode */
-    description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
-    /** The new name of the NamedNode, must not be empty */
-    name?: InputMaybe<Scalars["String"]["input"]>;
+    /** New tags of the ComponentVersion */
+    tags?: InputMaybe<Array<Scalars["String"]["input"]>>;
     /** Values for templatedFields to update */
     templatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /** New version of the ComponentVersion */
@@ -15369,32 +14962,6 @@ export type UpdateImsProjectPayload = {
     imsProject: ImsProject;
 };
 
-/** Input for the updateInterfaceDefinition mutation */
-export type UpdateInterfaceDefinitionInput = {
-    /** The id of the node to update */
-    id: Scalars["ID"]["input"];
-    /** Values for templatedFields to update */
-    templatedFields?: InputMaybe<Array<JsonFieldInput>>;
-};
-
-export type UpdateInterfaceDefinitionPayload = {
-    __typename?: "UpdateInterfaceDefinitionPayload";
-    /** The updated InterfaceDefinition  */
-    interfaceDefinition: InterfaceDefinition;
-};
-
-/** Input for the updateInterface mutation */
-export type UpdateInterfaceInput = {
-    /** The description of the NamedNode */
-    description?: InputMaybe<Scalars["String"]["input"]>;
-    /** The id of the node to update */
-    id: Scalars["ID"]["input"];
-    /** The new name of the NamedNode, must not be empty */
-    name?: InputMaybe<Scalars["String"]["input"]>;
-    /** Values for templatedFields to update */
-    templatedFields?: InputMaybe<Array<JsonFieldInput>>;
-};
-
 /** Input for the updateInterfacePart mutation */
 export type UpdateInterfacePartInput = {
     /** The description of the NamedNode */
@@ -15413,25 +14980,12 @@ export type UpdateInterfacePartPayload = {
     interfacePart: InterfacePart;
 };
 
-export type UpdateInterfacePayload = {
-    __typename?: "UpdateInterfacePayload";
-    /** The updated Interface  */
-    interface: Interface;
-};
-
 /** Input for the updateInterfaceSpecification mutation */
 export type UpdateInterfaceSpecificationInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
-    /**
-     * Values for templatedFields of InterfaceDefinitions to update.
-     *         Only evaluated if `template` is provided!
-     *         Affect all InterfaceDefinitions of the updated InterfaceSpecification
-     *
-     */
-    interfaceDefinitionTemplatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /**
      * Values for templatedFields of InterfaceParts to update.
      *         Only evaluated if `template` is provided!
@@ -15446,13 +15000,6 @@ export type UpdateInterfaceSpecificationInput = {
      *
      */
     interfaceSpecificationVersionTemplatedFields?: InputMaybe<Array<JsonFieldInput>>;
-    /**
-     * Values for templatedFields of Interfaces to update.
-     *         Only evaluated if `template` is provided!
-     *         Affect all Interfaces of the updated InterfaceSpecification
-     *
-     */
-    interfaceTemplatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The new name of the NamedNode, must not be empty */
     name?: InputMaybe<Scalars["String"]["input"]>;
     /**
@@ -15474,12 +15021,10 @@ export type UpdateInterfaceSpecificationPayload = {
 
 /** Input for the updateInterfaceSpecificationVersion mutation */
 export type UpdateInterfaceSpecificationVersionInput = {
-    /** The description of the NamedNode */
-    description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
-    /** The new name of the NamedNode, must not be empty */
-    name?: InputMaybe<Scalars["String"]["input"]>;
+    /** New tags of the InterfaceSpecificationVersion */
+    tags?: InputMaybe<Array<Scalars["String"]["input"]>>;
     /** Values for templatedFields to update */
     templatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /** New version of the InterfaceSpecificationVersion */
@@ -15880,6 +15425,8 @@ export enum UserOrderField {
 
 /** Entity with a version */
 export type Versioned = {
+    /** The tags of this entity */
+    tags: Array<Scalars["String"]["output"]>;
     /** The version of this entity */
     version: Scalars["String"]["output"];
 };
@@ -16027,63 +15574,94 @@ export type SearchAffectedByIssuesQueryVariables = Exact<{
 export type SearchAffectedByIssuesQuery = {
     __typename?: "Query";
     searchAffectedByIssues: Array<
-        | { __typename: "Component"; id: string; name: string; description: string }
-        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-        | { __typename: "Interface"; id: string; name: string; description: string }
-        | { __typename: "InterfacePart"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-        | { __typename: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "ComponentVersion";
+              version: string;
+              id: string;
+              component: { __typename?: "Component"; name: string; description: string };
+          }
+        | {
+              __typename: "Interface";
+              id: string;
+              interfaceDefinition: {
+                  __typename?: "InterfaceDefinition";
+                  interfaceSpecificationVersion: {
+                      __typename?: "InterfaceSpecificationVersion";
+                      version: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  };
+              };
+          }
+        | { __typename: "InterfacePart"; name: string; description: string; id: string }
+        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecificationVersion";
+              version: string;
+              id: string;
+              interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+          }
+        | { __typename: "Project"; name: string; description: string; id: string }
     >;
 };
 
 type DefaultAffectedByIssueInfo_Component_Fragment = {
     __typename: "Component";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type DefaultAffectedByIssueInfo_ComponentVersion_Fragment = {
     __typename: "ComponentVersion";
+    version: string;
     id: string;
-    name: string;
-    description: string;
+    component: { __typename?: "Component"; name: string; description: string };
 };
 
 type DefaultAffectedByIssueInfo_Interface_Fragment = {
     __typename: "Interface";
     id: string;
-    name: string;
-    description: string;
+    interfaceDefinition: {
+        __typename?: "InterfaceDefinition";
+        interfaceSpecificationVersion: {
+            __typename?: "InterfaceSpecificationVersion";
+            version: string;
+            interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+        };
+    };
 };
 
 type DefaultAffectedByIssueInfo_InterfacePart_Fragment = {
     __typename: "InterfacePart";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type DefaultAffectedByIssueInfo_InterfaceSpecification_Fragment = {
     __typename: "InterfaceSpecification";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type DefaultAffectedByIssueInfo_InterfaceSpecificationVersion_Fragment = {
     __typename: "InterfaceSpecificationVersion";
+    version: string;
     id: string;
-    name: string;
-    description: string;
+    interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
 };
 
 type DefaultAffectedByIssueInfo_Project_Fragment = {
     __typename: "Project";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 export type DefaultAffectedByIssueInfoFragment =
@@ -16109,13 +15687,42 @@ export type AddAffectedEntityToIssueMutation = {
             id: string;
             createdAt: any;
             addedAffectedEntity?:
-                | { __typename: "Component"; id: string; name: string; description: string }
-                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-                | { __typename: "Interface"; id: string; name: string; description: string }
-                | { __typename: "InterfacePart"; id: string; name: string; description: string }
-                | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-                | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-                | { __typename: "Project"; id: string; name: string; description: string }
+                | { __typename: "Component"; name: string; description: string; id: string }
+                | {
+                      __typename: "ComponentVersion";
+                      version: string;
+                      id: string;
+                      component: { __typename?: "Component"; name: string; description: string };
+                  }
+                | {
+                      __typename: "Interface";
+                      id: string;
+                      interfaceDefinition: {
+                          __typename?: "InterfaceDefinition";
+                          interfaceSpecificationVersion: {
+                              __typename?: "InterfaceSpecificationVersion";
+                              version: string;
+                              interfaceSpecification: {
+                                  __typename?: "InterfaceSpecification";
+                                  name: string;
+                                  description: string;
+                              };
+                          };
+                      };
+                  }
+                | { __typename: "InterfacePart"; name: string; description: string; id: string }
+                | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+                | {
+                      __typename: "InterfaceSpecificationVersion";
+                      version: string;
+                      id: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  }
+                | { __typename: "Project"; name: string; description: string; id: string }
                 | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -16138,13 +15745,42 @@ export type RemoveAffectedEntityFromIssueMutation = {
             id: string;
             createdAt: any;
             removedAffectedEntity?:
-                | { __typename: "Component"; id: string; name: string; description: string }
-                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-                | { __typename: "Interface"; id: string; name: string; description: string }
-                | { __typename: "InterfacePart"; id: string; name: string; description: string }
-                | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-                | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-                | { __typename: "Project"; id: string; name: string; description: string }
+                | { __typename: "Component"; name: string; description: string; id: string }
+                | {
+                      __typename: "ComponentVersion";
+                      version: string;
+                      id: string;
+                      component: { __typename?: "Component"; name: string; description: string };
+                  }
+                | {
+                      __typename: "Interface";
+                      id: string;
+                      interfaceDefinition: {
+                          __typename?: "InterfaceDefinition";
+                          interfaceSpecificationVersion: {
+                              __typename?: "InterfaceSpecificationVersion";
+                              version: string;
+                              interfaceSpecification: {
+                                  __typename?: "InterfaceSpecification";
+                                  name: string;
+                                  description: string;
+                              };
+                          };
+                      };
+                  }
+                | { __typename: "InterfacePart"; name: string; description: string; id: string }
+                | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+                | {
+                      __typename: "InterfaceSpecificationVersion";
+                      version: string;
+                      id: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  }
+                | { __typename: "Project"; name: string; description: string; id: string }
                 | null;
             createdBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -16290,7 +15926,6 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -16298,7 +15933,6 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -16392,6 +16026,180 @@ export type ChangeAssignmentTypeMutation = {
     };
 };
 
+export type GetNamedNodeQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetNamedNodeQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; name: string; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; name: string; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; name: string; id: string }
+        | { __typename?: "ComponentPermission"; name: string; id: string }
+        | { __typename?: "ComponentTemplate"; name: string; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; name: string; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; name: string; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; name: string; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; name: string; id: string }
+        | { __typename?: "IMSPermission"; name: string; id: string }
+        | { __typename?: "IMSProject"; name: string; id: string }
+        | { __typename?: "IMSProjectTemplate"; name: string; id: string }
+        | { __typename?: "IMSTemplate"; name: string; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; name: string; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfacePart"; name: string; id: string }
+        | { __typename?: "InterfacePartTemplate"; name: string; id: string }
+        | { __typename?: "InterfaceSpecification"; name: string; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; name: string; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; name: string; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; name: string; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; name: string; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; name: string; id: string }
+        | { __typename?: "IssueState"; name: string; id: string }
+        | { __typename?: "IssueTemplate"; name: string; id: string }
+        | { __typename?: "IssueType"; name: string; id: string }
+        | { __typename?: "Label"; name: string; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; name: string; id: string }
+        | { __typename?: "ProjectPermission"; name: string; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
+        | { __typename?: "RelationTemplate"; name: string; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; name: string; id: string }
+        | null;
+};
+
+export type GetVersionedNodeQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetVersionedNodeQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | { __typename?: "Component"; id: string }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; version: string; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; version: string; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationLayout"; id: string }
+        | { __typename?: "RelationPartnerLayout"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | { __typename?: "View"; id: string }
+        | null;
+};
+
 export type GetComponentListQueryVariables = Exact<{
     orderBy: Array<ComponentOrder> | ComponentOrder;
     count: Scalars["Int"]["input"];
@@ -16480,7 +16288,6 @@ export type GetComponentQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -16488,7 +16295,6 @@ export type GetComponentQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -16708,7 +16514,6 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -16716,7 +16521,6 @@ export type GetComponentDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -16809,7 +16613,6 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -16817,7 +16620,6 @@ export type GetComponentGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -16964,7 +16766,6 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -16972,7 +16773,6 @@ export type GetComponentPermissionListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17116,7 +16916,6 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -17124,7 +16923,6 @@ export type FirstComponentPermissionsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17309,7 +17107,6 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -17317,7 +17114,6 @@ export type GetComponentTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17414,7 +17210,6 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -17422,7 +17217,6 @@ export type GetComponentVersionTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17503,7 +17297,6 @@ export type GetProjectComponentTemplatesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -17511,7 +17304,6 @@ export type GetProjectComponentTemplatesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17593,9 +17385,8 @@ export type FirstComponentVersionsQuery = {
                   nodes: Array<{
                       __typename: "ComponentVersion";
                       id: string;
-                      name: string;
-                      description: string;
                       version: string;
+                      component: { __typename?: "Component"; name: string; description: string };
                   }>;
               };
           }
@@ -17618,7 +17409,6 @@ export type FirstComponentVersionsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -17626,7 +17416,6 @@ export type FirstComponentVersionsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -17698,9 +17487,8 @@ export type GetComponentVersionListQuery = {
                   nodes: Array<{
                       __typename?: "ComponentVersion";
                       id: string;
-                      name: string;
-                      description: string;
                       version: string;
+                      tags: Array<string>;
                       interfaceDefinitions: { __typename?: "InterfaceDefinitionConnection"; totalCount: number };
                   }>;
               };
@@ -17724,7 +17512,6 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -17732,7 +17519,6 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -17784,9 +17570,8 @@ export type GetFilteredComponentVersionListQuery = {
     searchComponentVersions: Array<{
         __typename?: "ComponentVersion";
         id: string;
-        name: string;
-        description: string;
         version: string;
+        tags: Array<string>;
         interfaceDefinitions: { __typename?: "InterfaceDefinitionConnection"; totalCount: number };
     }>;
 };
@@ -17794,9 +17579,8 @@ export type GetFilteredComponentVersionListQuery = {
 export type DefaultComponentVersionInfoFragment = {
     __typename: "ComponentVersion";
     id: string;
-    name: string;
-    description: string;
     version: string;
+    component: { __typename?: "Component"; name: string; description: string };
 };
 
 export type SearchComponentVersionsQueryVariables = Exact<{
@@ -17810,9 +17594,8 @@ export type SearchComponentVersionsQuery = {
     searchComponentVersions: Array<{
         __typename: "ComponentVersion";
         id: string;
-        name: string;
-        description: string;
         version: string;
+        component: { __typename?: "Component"; name: string; description: string };
     }>;
 };
 
@@ -17841,9 +17624,8 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "ComponentTemplate"; id: string }
         | {
               __typename?: "ComponentVersion";
-              name: string;
-              description: string;
               version: string;
+              tags: Array<string>;
               id: string;
               templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
               template: {
@@ -17867,7 +17649,6 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -17875,7 +17656,6 @@ export type GetComponentVersionGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -18070,7 +17850,6 @@ export type GetProjectGraphQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -18078,7 +17857,6 @@ export type GetProjectGraphQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -18117,7 +17895,6 @@ export type GetProjectGraphQuery = {
                   __typename?: "ComponentVersionConnection";
                   nodes: Array<{
                       __typename: "ComponentVersion";
-                      name: string;
                       version: string;
                       id: string;
                       relateFromComponent: boolean;
@@ -18186,9 +17963,9 @@ export type GetProjectGraphQuery = {
                               interfaceSpecificationVersion: {
                                   __typename?: "InterfaceSpecificationVersion";
                                   version: string;
-                                  name: string;
                                   interfaceSpecification: {
                                       __typename?: "InterfaceSpecification";
+                                      name: string;
                                       template: {
                                           __typename?: "InterfaceSpecificationTemplate";
                                           id: string;
@@ -18209,6 +17986,7 @@ export type GetProjectGraphQuery = {
                       component: {
                           __typename?: "Component";
                           id: string;
+                          name: string;
                           template: {
                               __typename?: "ComponentTemplate";
                               id: string;
@@ -18351,7 +18129,6 @@ export type GraphInfoFragment = {
         __typename?: "ComponentVersionConnection";
         nodes: Array<{
             __typename: "ComponentVersion";
-            name: string;
             version: string;
             id: string;
             relateFromComponent: boolean;
@@ -18411,9 +18188,9 @@ export type GraphInfoFragment = {
                     interfaceSpecificationVersion: {
                         __typename?: "InterfaceSpecificationVersion";
                         version: string;
-                        name: string;
                         interfaceSpecification: {
                             __typename?: "InterfaceSpecification";
+                            name: string;
                             template: {
                                 __typename?: "InterfaceSpecificationTemplate";
                                 id: string;
@@ -18434,6 +18211,7 @@ export type GraphInfoFragment = {
             component: {
                 __typename?: "Component";
                 id: string;
+                name: string;
                 template: {
                     __typename?: "ComponentTemplate";
                     id: string;
@@ -18496,7 +18274,6 @@ export type GraphInfoFragment = {
 
 export type GraphComponentVersionInfoFragment = {
     __typename: "ComponentVersion";
-    name: string;
     version: string;
     id: string;
     relateFromComponent: boolean;
@@ -18556,9 +18333,9 @@ export type GraphComponentVersionInfoFragment = {
             interfaceSpecificationVersion: {
                 __typename?: "InterfaceSpecificationVersion";
                 version: string;
-                name: string;
                 interfaceSpecification: {
                     __typename?: "InterfaceSpecification";
+                    name: string;
                     template: {
                         __typename?: "InterfaceSpecificationTemplate";
                         id: string;
@@ -18579,6 +18356,7 @@ export type GraphComponentVersionInfoFragment = {
     component: {
         __typename?: "Component";
         id: string;
+        name: string;
         template: {
             __typename?: "ComponentTemplate";
             id: string;
@@ -18861,7 +18639,6 @@ export type GetImsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -18869,7 +18646,6 @@ export type GetImsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -18961,7 +18737,6 @@ export type GetImsGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -18969,7 +18744,6 @@ export type GetImsGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -19116,7 +18890,6 @@ export type GetImsPermissionListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19124,7 +18897,6 @@ export type GetImsPermissionListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -19268,7 +19040,6 @@ export type FirstImsPermissionsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19276,7 +19047,6 @@ export type FirstImsPermissionsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -19423,7 +19193,6 @@ export type GetImsProjectListFromImsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19431,7 +19200,6 @@ export type GetImsProjectListFromImsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -19530,7 +19298,6 @@ export type GetImsProjectListFromTrackableQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19538,7 +19305,6 @@ export type GetImsProjectListFromTrackableQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -19667,7 +19433,6 @@ export type GetImsProjectGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -19675,7 +19440,6 @@ export type GetImsProjectGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -19839,7 +19603,6 @@ export type GetImsTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19847,7 +19610,6 @@ export type GetImsTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -19944,7 +19706,6 @@ export type GetImsProjectTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -19952,7 +19713,6 @@ export type GetImsProjectTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -20048,7 +19808,6 @@ export type GetInterfaceSpecificationListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -20056,7 +19815,6 @@ export type GetInterfaceSpecificationListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -20153,7 +19911,6 @@ export type GetInterfaceSpecificationGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | {
@@ -20171,7 +19928,6 @@ export type GetInterfaceSpecificationGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -20335,7 +20091,6 @@ export type GetInterfaceSpecificationTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -20356,7 +20111,6 @@ export type GetInterfaceSpecificationTemplateQuery = {
           }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -20437,7 +20191,6 @@ export type GetInterfaceSpecificationVersionTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | {
@@ -20461,7 +20214,6 @@ export type GetInterfaceSpecificationVersionTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -20545,7 +20297,6 @@ export type GetInterfaceSpecificationVersionListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | {
@@ -20556,9 +20307,8 @@ export type GetInterfaceSpecificationVersionListQuery = {
                   nodes: Array<{
                       __typename?: "InterfaceSpecificationVersion";
                       id: string;
-                      name: string;
-                      description: string;
                       version: string;
+                      tags: Array<string>;
                   }>;
               };
           }
@@ -20566,7 +20316,6 @@ export type GetInterfaceSpecificationVersionListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -20618,9 +20367,8 @@ export type GetFilteredInterfaceSpecificationVersionListQuery = {
     searchInterfaceSpecificationVersions: Array<{
         __typename?: "InterfaceSpecificationVersion";
         id: string;
-        name: string;
-        description: string;
         version: string;
+        tags: Array<string>;
     }>;
 };
 
@@ -20664,7 +20412,6 @@ export type GetInterfaceSpecificationVersionGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -20672,9 +20419,8 @@ export type GetInterfaceSpecificationVersionGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | {
               __typename?: "InterfaceSpecificationVersion";
-              name: string;
-              description: string;
               version: string;
+              tags: Array<string>;
               id: string;
               templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
               template: {
@@ -20683,7 +20429,6 @@ export type GetInterfaceSpecificationVersionGeneralDetailsQuery = {
               };
           }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -20871,7 +20616,6 @@ export type GetIssueListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -20879,7 +20623,6 @@ export type GetIssueListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -21104,7 +20847,6 @@ export type GetIssueListOnAggregatedIssueQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -21112,7 +20854,6 @@ export type GetIssueListOnAggregatedIssueQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -21385,7 +21126,6 @@ export type GetIssueQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -21393,7 +21133,6 @@ export type GetIssueQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | {
@@ -21421,23 +21160,47 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             addedAffectedEntity?:
-                                | { __typename: "Component"; id: string; name: string; description: string }
-                                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-                                | { __typename: "Interface"; id: string; name: string; description: string }
-                                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                                | { __typename: "Component"; name: string; description: string; id: string }
+                                | {
+                                      __typename: "ComponentVersion";
+                                      version: string;
+                                      id: string;
+                                      component: { __typename?: "Component"; name: string; description: string };
+                                  }
+                                | {
+                                      __typename: "Interface";
+                                      id: string;
+                                      interfaceDefinition: {
+                                          __typename?: "InterfaceDefinition";
+                                          interfaceSpecificationVersion: {
+                                              __typename?: "InterfaceSpecificationVersion";
+                                              version: string;
+                                              interfaceSpecification: {
+                                                  __typename?: "InterfaceSpecification";
+                                                  name: string;
+                                                  description: string;
+                                              };
+                                          };
+                                      };
+                                  }
+                                | { __typename: "InterfacePart"; name: string; description: string; id: string }
                                 | {
                                       __typename: "InterfaceSpecification";
-                                      id: string;
                                       name: string;
                                       description: string;
+                                      id: string;
                                   }
                                 | {
                                       __typename: "InterfaceSpecificationVersion";
+                                      version: string;
                                       id: string;
-                                      name: string;
-                                      description: string;
+                                      interfaceSpecification: {
+                                          __typename?: "InterfaceSpecification";
+                                          name: string;
+                                          description: string;
+                                      };
                                   }
-                                | { __typename: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Project"; name: string; description: string; id: string }
                                 | null;
                             createdBy:
                                 | {
@@ -22035,23 +21798,47 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             removedAffectedEntity?:
-                                | { __typename: "Component"; id: string; name: string; description: string }
-                                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-                                | { __typename: "Interface"; id: string; name: string; description: string }
-                                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                                | { __typename: "Component"; name: string; description: string; id: string }
+                                | {
+                                      __typename: "ComponentVersion";
+                                      version: string;
+                                      id: string;
+                                      component: { __typename?: "Component"; name: string; description: string };
+                                  }
+                                | {
+                                      __typename: "Interface";
+                                      id: string;
+                                      interfaceDefinition: {
+                                          __typename?: "InterfaceDefinition";
+                                          interfaceSpecificationVersion: {
+                                              __typename?: "InterfaceSpecificationVersion";
+                                              version: string;
+                                              interfaceSpecification: {
+                                                  __typename?: "InterfaceSpecification";
+                                                  name: string;
+                                                  description: string;
+                                              };
+                                          };
+                                      };
+                                  }
+                                | { __typename: "InterfacePart"; name: string; description: string; id: string }
                                 | {
                                       __typename: "InterfaceSpecification";
-                                      id: string;
                                       name: string;
                                       description: string;
+                                      id: string;
                                   }
                                 | {
                                       __typename: "InterfaceSpecificationVersion";
+                                      version: string;
                                       id: string;
-                                      name: string;
-                                      description: string;
+                                      interfaceSpecification: {
+                                          __typename?: "InterfaceSpecification";
+                                          name: string;
+                                          description: string;
+                                      };
                                   }
-                                | { __typename: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Project"; name: string; description: string; id: string }
                                 | null;
                             createdBy:
                                 | {
@@ -22585,13 +22372,42 @@ export type GetIssueQuery = {
               affects: {
                   __typename?: "AffectedByIssueConnection";
                   nodes: Array<
-                      | { __typename: "Component"; id: string; name: string; description: string }
-                      | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-                      | { __typename: "Interface"; id: string; name: string; description: string }
-                      | { __typename: "InterfacePart"; id: string; name: string; description: string }
-                      | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-                      | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-                      | { __typename: "Project"; id: string; name: string; description: string }
+                      | { __typename: "Component"; name: string; description: string; id: string }
+                      | {
+                            __typename: "ComponentVersion";
+                            version: string;
+                            id: string;
+                            component: { __typename?: "Component"; name: string; description: string };
+                        }
+                      | {
+                            __typename: "Interface";
+                            id: string;
+                            interfaceDefinition: {
+                                __typename?: "InterfaceDefinition";
+                                interfaceSpecificationVersion: {
+                                    __typename?: "InterfaceSpecificationVersion";
+                                    version: string;
+                                    interfaceSpecification: {
+                                        __typename?: "InterfaceSpecification";
+                                        name: string;
+                                        description: string;
+                                    };
+                                };
+                            };
+                        }
+                      | { __typename: "InterfacePart"; name: string; description: string; id: string }
+                      | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+                      | {
+                            __typename: "InterfaceSpecificationVersion";
+                            version: string;
+                            id: string;
+                            interfaceSpecification: {
+                                __typename?: "InterfaceSpecification";
+                                name: string;
+                                description: string;
+                            };
+                        }
+                      | { __typename: "Project"; name: string; description: string; id: string }
                   >;
               };
               assignments: {
@@ -23039,7 +22855,6 @@ export type FirstIssuesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23047,7 +22862,6 @@ export type FirstIssuesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -23175,7 +22989,6 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23183,7 +22996,6 @@ export type FirstIssuePrioritiesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -23437,7 +23249,6 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23445,7 +23256,6 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -23626,7 +23436,6 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23634,7 +23443,6 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -23791,7 +23599,6 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23799,7 +23606,6 @@ export type GetIssueTemplateQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -23912,7 +23718,6 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -23920,7 +23725,6 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -24045,7 +23849,6 @@ export type GetLabelListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -24053,7 +23856,6 @@ export type GetLabelListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -24172,7 +23974,6 @@ export type FirstLabelsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -24180,7 +23981,6 @@ export type FirstLabelsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | {
@@ -24312,7 +24112,6 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -24320,7 +24119,6 @@ export type FirstTrackableLabelsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -24453,95 +24251,6 @@ export type AddLabelToTrackableMutation = {
     addLabelToTrackable: { __typename: "AddLabelToTrackablePayload" };
 };
 
-export type GetNamedNodeQueryVariables = Exact<{
-    id: Scalars["ID"]["input"];
-}>;
-
-export type GetNamedNodeQuery = {
-    __typename?: "Query";
-    node?:
-        | { __typename?: "AddedAffectedEntityEvent" }
-        | { __typename?: "AddedArtefactEvent" }
-        | { __typename?: "AddedLabelEvent" }
-        | { __typename?: "AddedToPinnedIssuesEvent" }
-        | { __typename?: "AddedToTrackableEvent" }
-        | { __typename?: "AggregatedIssue" }
-        | { __typename?: "AggregatedIssueRelation" }
-        | { __typename?: "Artefact" }
-        | { __typename?: "ArtefactTemplate"; id: string; name: string }
-        | { __typename?: "Assignment" }
-        | { __typename?: "AssignmentType"; id: string; name: string }
-        | { __typename?: "AssignmentTypeChangedEvent" }
-        | { __typename?: "Body" }
-        | { __typename?: "Component"; id: string; name: string }
-        | { __typename?: "ComponentPermission"; id: string; name: string }
-        | { __typename?: "ComponentTemplate"; id: string; name: string }
-        | { __typename?: "ComponentVersion"; id: string; name: string }
-        | { __typename?: "ComponentVersionTemplate"; id: string; name: string }
-        | { __typename?: "FillStyle" }
-        | { __typename?: "GlobalPermission"; id: string; name: string }
-        | { __typename?: "GropiusUser" }
-        | { __typename?: "IMS"; id: string; name: string }
-        | { __typename?: "IMSIssue" }
-        | { __typename?: "IMSIssueTemplate"; id: string; name: string }
-        | { __typename?: "IMSPermission"; id: string; name: string }
-        | { __typename?: "IMSProject"; id: string; name: string }
-        | { __typename?: "IMSProjectTemplate"; id: string; name: string }
-        | { __typename?: "IMSTemplate"; id: string; name: string }
-        | { __typename?: "IMSUser" }
-        | { __typename?: "IMSUserTemplate"; id: string; name: string }
-        | { __typename?: "IncomingRelationTypeChangedEvent" }
-        | { __typename?: "Interface"; id: string; name: string }
-        | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string; name: string }
-        | { __typename?: "InterfacePart"; id: string; name: string }
-        | { __typename?: "InterfacePartTemplate"; id: string; name: string }
-        | { __typename?: "InterfaceSpecification"; id: string; name: string }
-        | { __typename?: "InterfaceSpecificationDerivationCondition" }
-        | { __typename?: "InterfaceSpecificationTemplate"; id: string; name: string }
-        | { __typename?: "InterfaceSpecificationVersion"; id: string; name: string }
-        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string; name: string }
-        | { __typename?: "InterfaceTemplate"; id: string; name: string }
-        | { __typename?: "IntraComponentDependencyParticipant" }
-        | { __typename?: "IntraComponentDependencySpecification"; id: string; name: string }
-        | { __typename?: "Issue" }
-        | { __typename?: "IssueComment" }
-        | { __typename?: "IssuePriority"; id: string; name: string }
-        | { __typename?: "IssueRelation" }
-        | { __typename?: "IssueRelationType"; id: string; name: string }
-        | { __typename?: "IssueState"; id: string; name: string }
-        | { __typename?: "IssueTemplate"; id: string; name: string }
-        | { __typename?: "IssueType"; id: string; name: string }
-        | { __typename?: "Label" }
-        | { __typename?: "OutgoingRelationTypeChangedEvent" }
-        | { __typename?: "PriorityChangedEvent" }
-        | { __typename?: "Project"; id: string; name: string }
-        | { __typename?: "ProjectPermission"; id: string; name: string }
-        | { __typename?: "RelatedByIssueEvent" }
-        | { __typename?: "Relation" }
-        | { __typename?: "RelationCondition" }
-        | { __typename?: "RelationLayout" }
-        | { __typename?: "RelationPartnerLayout" }
-        | { __typename?: "RelationTemplate"; id: string; name: string }
-        | { __typename?: "RemovedAffectedEntityEvent" }
-        | { __typename?: "RemovedArtefactEvent" }
-        | { __typename?: "RemovedAssignmentEvent" }
-        | { __typename?: "RemovedFromPinnedIssuesEvent" }
-        | { __typename?: "RemovedFromTrackableEvent" }
-        | { __typename?: "RemovedIncomingRelationEvent" }
-        | { __typename?: "RemovedLabelEvent" }
-        | { __typename?: "RemovedOutgoingRelationEvent" }
-        | { __typename?: "RemovedTemplatedFieldEvent" }
-        | { __typename?: "StateChangedEvent" }
-        | { __typename?: "StrokeStyle" }
-        | { __typename?: "TemplateChangedEvent" }
-        | { __typename?: "TemplatedFieldChangedEvent" }
-        | { __typename?: "TitleChangedEvent" }
-        | { __typename?: "TypeChangedEvent" }
-        | { __typename?: "View"; id: string; name: string }
-        | null;
-};
-
 export type GetPermissionUserListQueryVariables = Exact<{
     orderBy: Array<GropiusUserOrder> | GropiusUserOrder;
     count: Scalars["Int"]["input"];
@@ -24624,7 +24333,6 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -24632,7 +24340,6 @@ export type GetPermissionUserListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -24804,7 +24511,6 @@ export type GetProjectQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -24812,7 +24518,6 @@ export type GetProjectQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -24906,7 +24611,6 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
         | { __typename?: "Interface"; id: string }
         | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
         | { __typename?: "InterfacePart"; id: string }
         | { __typename?: "InterfacePartTemplate"; id: string }
         | { __typename?: "InterfaceSpecification"; id: string }
@@ -24914,7 +24618,6 @@ export type GetProjectGeneralDetailsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate"; id: string }
         | { __typename?: "InterfaceSpecificationVersion"; id: string }
         | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
         | { __typename?: "IntraComponentDependencyParticipant"; id: string }
         | { __typename?: "IntraComponentDependencySpecification"; id: string }
         | { __typename?: "Issue"; id: string }
@@ -25030,7 +24733,6 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -25038,7 +24740,6 @@ export type GetProjectPermissionListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -25183,7 +24884,6 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -25191,7 +24891,6 @@ export type FirstProjectPermissionsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -25394,7 +25093,6 @@ export type GetSyncPermissionTargetQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -25402,7 +25100,6 @@ export type GetSyncPermissionTargetQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -25460,13 +25157,38 @@ type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
     id: string;
     createdAt: any;
     addedAffectedEntity?:
-        | { __typename: "Component"; id: string; name: string; description: string }
-        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-        | { __typename: "Interface"; id: string; name: string; description: string }
-        | { __typename: "InterfacePart"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-        | { __typename: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "ComponentVersion";
+              version: string;
+              id: string;
+              component: { __typename?: "Component"; name: string; description: string };
+          }
+        | {
+              __typename: "Interface";
+              id: string;
+              interfaceDefinition: {
+                  __typename?: "InterfaceDefinition";
+                  interfaceSpecificationVersion: {
+                      __typename?: "InterfaceSpecificationVersion";
+                      version: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  };
+              };
+          }
+        | { __typename: "InterfacePart"; name: string; description: string; id: string }
+        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecificationVersion";
+              version: string;
+              id: string;
+              interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+          }
+        | { __typename: "Project"; name: string; description: string; id: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -25799,13 +25521,38 @@ type DefaultTimelineItemInfo_RemovedAffectedEntityEvent_Fragment = {
     id: string;
     createdAt: any;
     removedAffectedEntity?:
-        | { __typename: "Component"; id: string; name: string; description: string }
-        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-        | { __typename: "Interface"; id: string; name: string; description: string }
-        | { __typename: "InterfacePart"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-        | { __typename: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "ComponentVersion";
+              version: string;
+              id: string;
+              component: { __typename?: "Component"; name: string; description: string };
+          }
+        | {
+              __typename: "Interface";
+              id: string;
+              interfaceDefinition: {
+                  __typename?: "InterfaceDefinition";
+                  interfaceSpecificationVersion: {
+                      __typename?: "InterfaceSpecificationVersion";
+                      version: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  };
+              };
+          }
+        | { __typename: "InterfacePart"; name: string; description: string; id: string }
+        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecificationVersion";
+              version: string;
+              id: string;
+              interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+          }
+        | { __typename: "Project"; name: string; description: string; id: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -26349,13 +26096,38 @@ export type AddedAffectedEntityEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     addedAffectedEntity?:
-        | { __typename: "Component"; id: string; name: string; description: string }
-        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-        | { __typename: "Interface"; id: string; name: string; description: string }
-        | { __typename: "InterfacePart"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-        | { __typename: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "ComponentVersion";
+              version: string;
+              id: string;
+              component: { __typename?: "Component"; name: string; description: string };
+          }
+        | {
+              __typename: "Interface";
+              id: string;
+              interfaceDefinition: {
+                  __typename?: "InterfaceDefinition";
+                  interfaceSpecificationVersion: {
+                      __typename?: "InterfaceSpecificationVersion";
+                      version: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  };
+              };
+          }
+        | { __typename: "InterfacePart"; name: string; description: string; id: string }
+        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecificationVersion";
+              version: string;
+              id: string;
+              interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+          }
+        | { __typename: "Project"; name: string; description: string; id: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -26738,13 +26510,38 @@ export type RemovedAffectedEntityEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     removedAffectedEntity?:
-        | { __typename: "Component"; id: string; name: string; description: string }
-        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
-        | { __typename: "Interface"; id: string; name: string; description: string }
-        | { __typename: "InterfacePart"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
-        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
-        | { __typename: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; name: string; description: string; id: string }
+        | {
+              __typename: "ComponentVersion";
+              version: string;
+              id: string;
+              component: { __typename?: "Component"; name: string; description: string };
+          }
+        | {
+              __typename: "Interface";
+              id: string;
+              interfaceDefinition: {
+                  __typename?: "InterfaceDefinition";
+                  interfaceSpecificationVersion: {
+                      __typename?: "InterfaceSpecificationVersion";
+                      version: string;
+                      interfaceSpecification: {
+                          __typename?: "InterfaceSpecification";
+                          name: string;
+                          description: string;
+                      };
+                  };
+              };
+          }
+        | { __typename: "InterfacePart"; name: string; description: string; id: string }
+        | { __typename: "InterfaceSpecification"; name: string; description: string; id: string }
+        | {
+              __typename: "InterfaceSpecificationVersion";
+              version: string;
+              id: string;
+              interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+          }
+        | { __typename: "Project"; name: string; description: string; id: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -26981,51 +26778,57 @@ export type IssueTypeTimelineInfoFragment = {
 
 type AffectedByIssueTimelineInfo_Component_Fragment = {
     __typename: "Component";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type AffectedByIssueTimelineInfo_ComponentVersion_Fragment = {
     __typename: "ComponentVersion";
+    version: string;
     id: string;
-    name: string;
-    description: string;
+    component: { __typename?: "Component"; name: string; description: string };
 };
 
 type AffectedByIssueTimelineInfo_Interface_Fragment = {
     __typename: "Interface";
     id: string;
-    name: string;
-    description: string;
+    interfaceDefinition: {
+        __typename?: "InterfaceDefinition";
+        interfaceSpecificationVersion: {
+            __typename?: "InterfaceSpecificationVersion";
+            version: string;
+            interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
+        };
+    };
 };
 
 type AffectedByIssueTimelineInfo_InterfacePart_Fragment = {
     __typename: "InterfacePart";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type AffectedByIssueTimelineInfo_InterfaceSpecification_Fragment = {
     __typename: "InterfaceSpecification";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 type AffectedByIssueTimelineInfo_InterfaceSpecificationVersion_Fragment = {
     __typename: "InterfaceSpecificationVersion";
+    version: string;
     id: string;
-    name: string;
-    description: string;
+    interfaceSpecification: { __typename?: "InterfaceSpecification"; name: string; description: string };
 };
 
 type AffectedByIssueTimelineInfo_Project_Fragment = {
     __typename: "Project";
-    id: string;
     name: string;
     description: string;
+    id: string;
 };
 
 export type AffectedByIssueTimelineInfoFragment =
@@ -27398,7 +27201,6 @@ export type GetUserQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -27406,7 +27208,6 @@ export type GetUserQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -27525,7 +27326,6 @@ export type GetViewListQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -27533,7 +27333,6 @@ export type GetViewListQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -27688,7 +27487,6 @@ export type GetViewQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -27696,7 +27494,6 @@ export type GetViewQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -27825,7 +27622,6 @@ export type FirstViewsQuery = {
         | { __typename?: "IncomingRelationTypeChangedEvent" }
         | { __typename?: "Interface" }
         | { __typename?: "InterfaceDefinition" }
-        | { __typename?: "InterfaceDefinitionTemplate" }
         | { __typename?: "InterfacePart" }
         | { __typename?: "InterfacePartTemplate" }
         | { __typename?: "InterfaceSpecification" }
@@ -27833,7 +27629,6 @@ export type FirstViewsQuery = {
         | { __typename?: "InterfaceSpecificationTemplate" }
         | { __typename?: "InterfaceSpecificationVersion" }
         | { __typename?: "InterfaceSpecificationVersionTemplate" }
-        | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
         | { __typename?: "Issue" }
@@ -27950,8 +27745,10 @@ export const DefaultComponentVersionTemplateInfoFragmentDoc = gql`
 export const DefaultComponentVersionInfoFragmentDoc = gql`
     fragment DefaultComponentVersionInfo on ComponentVersion {
         id
-        name
-        description
+        component {
+            name
+            description
+        }
         version
         __typename
     }
@@ -28057,7 +27854,6 @@ export const GraphRelationPartnerTemplateInfoFragmentDoc = gql`
 `;
 export const GraphComponentVersionInfoFragmentDoc = gql`
     fragment GraphComponentVersionInfo on ComponentVersion {
-        name
         version
         ...GraphRelationPartnerInfo
         interfaceDefinitions {
@@ -28067,8 +27863,8 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
                 }
                 interfaceSpecificationVersion {
                     version
-                    name
                     interfaceSpecification {
+                        name
                         template {
                             ...GraphRelationPartnerTemplateInfo
                         }
@@ -28078,6 +27874,7 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
         }
         component {
             id
+            name
             template {
                 ...GraphRelationPartnerTemplateInfo
             }
@@ -28332,8 +28129,35 @@ export const TimelineItemInfoFragmentDoc = gql`
 export const DefaultAffectedByIssueInfoFragmentDoc = gql`
     fragment DefaultAffectedByIssueInfo on AffectedByIssue {
         id
-        name
-        description
+        ... on Named {
+            name
+            description
+        }
+        ... on ComponentVersion {
+            version
+            component {
+                name
+                description
+            }
+        }
+        ... on InterfaceSpecificationVersion {
+            version
+            interfaceSpecification {
+                name
+                description
+            }
+        }
+        ... on Interface {
+            interfaceDefinition {
+                interfaceSpecificationVersion {
+                    version
+                    interfaceSpecification {
+                        name
+                        description
+                    }
+                }
+            }
+        }
         __typename
     }
 `;
@@ -29056,6 +28880,26 @@ export const ChangeAssignmentTypeDocument = gql`
     }
     ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
 `;
+export const GetNamedNodeDocument = gql`
+    query getNamedNode($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Named {
+                name
+            }
+        }
+    }
+`;
+export const GetVersionedNodeDocument = gql`
+    query getVersionedNode($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Versioned {
+                version
+            }
+        }
+    }
+`;
 export const GetComponentListDocument = gql`
     query getComponentList($orderBy: [ComponentOrder!]!, $count: Int!, $skip: Int!) {
         components(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -29362,9 +29206,8 @@ export const GetComponentVersionListDocument = gql`
                 versions(orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         id
-                        name
-                        description
                         version
+                        tags
                         interfaceDefinitions(filter: { visibleInterface: {} }) {
                             totalCount
                         }
@@ -29379,9 +29222,8 @@ export const GetFilteredComponentVersionListDocument = gql`
     query getFilteredComponentVersionList($query: String!, $count: Int!, $component: ID!) {
         searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
             id
-            name
-            description
             version
+            tags
             interfaceDefinitions(filter: { visibleInterface: {} }) {
                 totalCount
             }
@@ -29401,9 +29243,8 @@ export const GetComponentVersionGeneralDetailsDocument = gql`
         node(id: $id) {
             id
             ... on ComponentVersion {
-                name
-                description
                 version
+                tags
                 templatedFields {
                     name
                     value
@@ -30001,9 +29842,8 @@ export const GetInterfaceSpecificationVersionListDocument = gql`
                 versions(orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         id
-                        name
-                        description
                         version
+                        tags
                     }
                     totalCount
                 }
@@ -30019,9 +29859,8 @@ export const GetFilteredInterfaceSpecificationVersionListDocument = gql`
             filter: { interfaceSpecification: { id: { eq: $interfaceSpecification } } }
         ) {
             id
-            name
-            description
             version
+            tags
         }
     }
 `;
@@ -30030,9 +29869,8 @@ export const GetInterfaceSpecificationVersionGeneralDetailsDocument = gql`
         node(id: $id) {
             id
             ... on InterfaceSpecificationVersion {
-                name
-                description
                 version
+                tags
                 templatedFields {
                     name
                     value
@@ -30633,16 +30471,6 @@ export const AddLabelToTrackableDocument = gql`
         }
     }
 `;
-export const GetNamedNodeDocument = gql`
-    query getNamedNode($id: ID!) {
-        node(id: $id) {
-            ... on NamedNode {
-                id
-                name
-            }
-        }
-    }
-`;
 export const GetPermissionUserListDocument = gql`
     query getPermissionUserList($orderBy: [GropiusUserOrder!]!, $count: Int!, $skip: Int!, $permission: ID!) {
         node(id: $permission) {
@@ -31175,6 +31003,36 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "changeAssignmentType",
                 "mutation",
+                variables
+            );
+        },
+        getNamedNode(
+            variables: GetNamedNodeQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetNamedNodeQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetNamedNodeQuery>(GetNamedNodeDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getNamedNode",
+                "query",
+                variables
+            );
+        },
+        getVersionedNode(
+            variables: GetVersionedNodeQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetVersionedNodeQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetVersionedNodeQuery>(GetVersionedNodeDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getVersionedNode",
+                "query",
                 variables
             );
         },
@@ -33134,21 +32992,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "addLabelToTrackable",
                 "mutation",
-                variables
-            );
-        },
-        getNamedNode(
-            variables: GetNamedNodeQueryVariables,
-            requestHeaders?: GraphQLClientRequestHeaders
-        ): Promise<GetNamedNodeQuery> {
-            return withWrapper(
-                (wrappedRequestHeaders) =>
-                    client.request<GetNamedNodeQuery>(GetNamedNodeDocument, variables, {
-                        ...requestHeaders,
-                        ...wrappedRequestHeaders
-                    }),
-                "getNamedNode",
-                "query",
                 variables
             );
         },

@@ -2,14 +2,6 @@
     <div class="pa-4 h-100 overflow-y-auto" v-if="componentVersion != undefined && component != undefined">
         <DetailCompartment name="General">
             <InputWrapper
-                v-model="componentVersion.name"
-                v-slot="{ modelValue }"
-                @save="save({ name: $event })"
-                :readonly="!component.admin"
-            >
-                <v-text-field v-model="modelValue.value" label="Name" :readonly="!component.admin" />
-            </InputWrapper>
-            <InputWrapper
                 v-model="componentVersion.version"
                 v-slot="{ modelValue }"
                 @save="save({ version: $event })"
@@ -18,12 +10,20 @@
                 <v-text-field v-model="modelValue.value" label="Version" :readonly="!component.admin" />
             </InputWrapper>
             <InputWrapper
-                v-model="componentVersion.description"
+                v-model="componentVersion.tags"
                 v-slot="{ modelValue }"
-                @save="save({ description: $event })"
+                @save="save({ tags: $event })"
                 :readonly="!component.admin"
             >
-                <v-textarea v-model="modelValue.value" label="Description" :readonly="!component.admin" />
+                <v-combobox
+                    v-model="modelValue.value"
+                    label="Tags"
+                    multiple
+                    chips
+                    closable-chips
+                    clearable
+                    :readonly="!component.admin"
+                />
             </InputWrapper>
         </DetailCompartment>
         <TemplatedFieldsDetailCompartment

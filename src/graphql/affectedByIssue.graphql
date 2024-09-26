@@ -6,8 +6,35 @@ query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
 
 fragment DefaultAffectedByIssueInfo on AffectedByIssue {
     id
-    name
-    description
+    ... on Named {
+        name
+        description
+    }
+    ...on ComponentVersion {
+        version
+        component {
+            name
+            description
+        }
+    }
+    ...on InterfaceSpecificationVersion {
+        version
+        interfaceSpecification {
+            name
+            description
+        }
+    }
+    ...on Interface {
+        interfaceDefinition {
+            interfaceSpecificationVersion {
+                version
+                interfaceSpecification {
+                    name
+                    description
+                }
+            }
+        }
+    }
     __typename
 }
 

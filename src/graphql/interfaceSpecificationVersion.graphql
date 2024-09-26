@@ -9,9 +9,8 @@ query getInterfaceSpecificationVersionList(
             versions(orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     id
-                    name
-                    description
                     version
+                    tags
                 }
                 totalCount
             }
@@ -26,9 +25,8 @@ query getFilteredInterfaceSpecificationVersionList($query: String!, $count: Int!
         filter: { interfaceSpecification: { id: { eq: $interfaceSpecification } } }
     ) {
         id
-        name
-        description
         version
+        tags
     }
 }
 
@@ -36,9 +34,8 @@ query getInterfaceSpecificationVersionGeneralDetails($id: ID!) {
     node(id: $id) {
         id
         ... on InterfaceSpecificationVersion {
-            name
-            description
             version
+            tags
             templatedFields {
                 name
                 value

@@ -8,10 +8,23 @@
     >
         <template #item="{ item }">
             <ListItem
-                :title="item.name"
-                :subtitle="item.description || 'No description provided'"
-                :italic-subtitle="!item.description"
+                :title="`v${item.version}`"
+                :subtitle="item.tags.length == 0 ? 'No tags provided' : undefined"
+                italic-subtitle
             >
+                <template #subtitle v-if="item.tags.length > 0">
+                    <div class="d-flex flex-wrap chip-container mt-1">
+                        <v-chip
+                            v-for="(tag, index) in item.tags"
+                            :key="index"
+                            color="primary"
+                            size="small"
+                            class="flex-shrink-0"
+                        >
+                            {{ tag }}
+                        </v-chip>
+                    </div>
+                </template>
                 <template #append>
                     <div class="text-medium-emphasis mr-2">v{{ item.version }}</div>
                     <div class="text-medium-emphasis issue-container">
@@ -45,7 +58,7 @@ const route = useRoute();
 const trackableId = computed(() => route.params.trackable as string);
 
 const sortFields = {
-    Name: ComponentVersionOrderField.Name,
+    Version: ComponentVersionOrderField.Version,
     "[Default]": ComponentVersionOrderField.Id
 };
 
@@ -94,5 +107,10 @@ function componentVersionRoute(componentVersion: IdObject): RouteLocationRaw {
 @use "@/styles/settings";
 .issue-container {
     min-width: settings.$icon-with-number-width;
+}
+
+.chip-container {
+    row-gap: 0.5rem;
+    column-gap: 0.25rem;
 }
 </style>
