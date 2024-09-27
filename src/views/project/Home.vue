@@ -105,7 +105,9 @@
     <CreateViewDialog
         :project="trackableId"
         :templates="componentTemplates"
-        :initial-templates="[...componentTemplateFilter]"
+        :initial-templates="
+            componentTemplateFilter.size == componentTemplates.length ? [] : [...componentTemplateFilter]
+        "
         :layouts="cachedNewLayout"
         @created-view="view = $event.id"
     />
@@ -229,6 +231,8 @@ async function layoutGraph(graphLayout: GraphLayoutSource) {
     }
 }
 
+const componentTemplateFilter = ref<Set<string>>(new Set());
+
 watch(originalGraph, async (value) => {
     if (view.value === undefined) {
         view.value = value?.defaultView?.id ?? null;
@@ -244,16 +248,18 @@ watch(originalGraph, async (value) => {
 });
 
 watch(currentView, async (value) => {
-    if (value != undefined && value.filterByTemplate.nodes.length > 0) {
-        componentTemplateFilter.value = new Set(value.filterByTemplate.nodes.map((template) => template.id));
+    if (value != undefined) {
+        if (value.filterByTemplate.nodes.length > 0) {
+            componentTemplateFilter.value = new Set(value.filterByTemplate.nodes.map((template) => template.id));
+        } else {
+            componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
+        }
         await layoutGraph(value);
     } else {
         componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
         await layoutGraph(originalGraph.value!);
     }
 });
-
-const componentTemplateFilter = ref<Set<string>>(new Set());
 
 const hasFilterChanges = computed(() => {
     const view = currentView.value;
@@ -544,10 +550,14 @@ eventBus?.on("add-component-version-to-project", () => {
 async function addComponentVersion(componentVersion: IdObject) {
     showAddComponentVersionDialog.value = false;
     await withErrorMessage(async () => {
-        await client.addComponentVersionToProject({
+        const res = await client.addComponentVersionToProject({
             componentVersion: componentVersion.id,
             project: trackableId.value
         });
+        const newTemplate = res.addComponentVersionToProject.componentVersion.component.template.id;
+        if (!componentTemplateFilter.value.has(newTemplate)) {
+            componentTemplateFilter.value.add(newTemplate);
+        }
     }, "Error adding component version to project");
     graphVersionCounter.value++;
 }
@@ -688,12 +698,24 @@ async function updateLayoutOrView() {
     const layoutDiff = computeLayoutDiff(currentView.value ?? originalGraph.value!);
     if (view.value != undefined) {
         await withErrorMessage(async () => {
+            let filterByTemplate: string[] | undefined = undefined;
+            if (hasFilterChanges.value) {
+                if (componentTemplateFilter.value.size != componentTemplates.value.length) {
+                    filterByTemplate = [...componentTemplateFilter.value];
+                } else {
+                    filterByTemplate = [];
+                }
+            }
             await client.updateView({
                 input: {
                     id: view.value!,
-                    ...layoutDiff
+                    ...layoutDiff,
+                    filterByTemplate
                 }
             });
+            currentView.value!.filterByTemplate.nodes = componentTemplates.value.filter((template) =>
+                componentTemplateFilter.value.has(template.id)
+            );
         }, "Error updating view");
     } else {
         await withErrorMessage(async () => {

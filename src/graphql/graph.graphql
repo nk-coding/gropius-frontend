@@ -30,8 +30,12 @@ query getProjectGraph($project: ID!) {
 
 mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
     addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
-        project {
-            id
+        componentVersion {
+            component {
+                template {
+                    id
+                }
+            }
         }
     }
 }

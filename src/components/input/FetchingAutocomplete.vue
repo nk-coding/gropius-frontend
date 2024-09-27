@@ -125,7 +125,7 @@ watch(
     () => props.initialItems,
     (initialItems) => {
         if (!contextMode.value) {
-            items.value.push(...initialItems);
+            items.value.push(...initialItems.filter((item) => !items.value.some((it) => it.id == item.id)));
         }
     }
 );
@@ -216,6 +216,7 @@ function selectedElement(value: any) {
         } else if (value.length == 1) {
             context.value = item as C;
             items.value = [context.value as C];
+            console.log(items.value.map((it) => it.id));
         } else {
             if (item != undefined) {
                 emit("selected-item", item as T);

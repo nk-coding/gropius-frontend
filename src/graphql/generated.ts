@@ -18122,7 +18122,10 @@ export type AddComponentVersionToProjectMutation = {
     __typename?: "Mutation";
     addComponentVersionToProject: {
         __typename?: "AddComponentVersionToProjectPayload";
-        project: { __typename?: "Project"; id: string };
+        componentVersion: {
+            __typename?: "ComponentVersion";
+            component: { __typename?: "Component"; template: { __typename?: "ComponentTemplate"; id: string } };
+        };
     };
 };
 
@@ -29439,8 +29442,12 @@ export const GetProjectGraphDocument = gql`
 export const AddComponentVersionToProjectDocument = gql`
     mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
         addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
-            project {
-                id
+            componentVersion {
+                component {
+                    template {
+                        id
+                    }
+                }
             }
         }
     }
