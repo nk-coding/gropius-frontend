@@ -237,8 +237,17 @@ watch(originalGraph, async (value) => {
     if (view.value === undefined) {
         view.value = value?.defaultView?.id ?? null;
     }
-    if (value != undefined && value.defaultView == undefined && componentTemplateFilter.value.size == 0) {
-        componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
+    if (value != undefined && value.defaultView == undefined) {
+        if (componentTemplateFilter.value.size == 0) {
+            componentTemplateFilter.value = new Set(componentTemplates.value.map((template) => template.id));
+        } else {
+            const currentFilter = componentTemplateFilter.value;
+            componentTemplateFilter.value = new Set(
+                componentTemplates.value
+                    .filter((template) => currentFilter.has(template.id))
+                    .map((template) => template.id)
+            );
+        }
     }
     if (layout.value == undefined) {
         if (value?.defaultView == undefined) {
@@ -610,6 +619,9 @@ async function deleteRelation(relation: string) {
         await client.deleteRelation({
             id: relation
         });
+        if (layout.value != undefined) {
+            delete layout.value[relation];
+        }
     }, "Error deleting relation");
     graphVersionCounter.value++;
 }

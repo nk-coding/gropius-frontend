@@ -73,6 +73,7 @@ export class ElementMoveHandler extends MoveHandler {
             }
             const [startSegments, startPoint] = this.projectPointOnElement(
                 Math2D.sub(pointToProject, offset),
+                undefined,
                 true,
                 segmentLayout,
                 elementLine
@@ -95,6 +96,7 @@ export class ElementMoveHandler extends MoveHandler {
             }
             const [endSegments] = this.projectPointOnElement(
                 Math2D.sub(pointToProject, offset),
+                undefined,
                 false,
                 segmentLayout,
                 elementLine

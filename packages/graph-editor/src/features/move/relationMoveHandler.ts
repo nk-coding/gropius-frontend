@@ -38,6 +38,7 @@ export class RelationMoveHandler extends MoveHandler {
             replacedStartSegments = this.segment + 1;
             const [segments, projectedPoint] = this.projectPointOnElement(
                 Math2D.add(RelationPath.segmentEnd(movedSegment), moveVector),
+                this.segment == 1 ? this.path.segments[0] : undefined,
                 true,
                 vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL,
                 this.startLine
@@ -50,6 +51,7 @@ export class RelationMoveHandler extends MoveHandler {
             endSegments.push(
                 ...this.projectPointOnElement(
                     Math2D.add(movedSegment.start, moveVector),
+                    this.segment == segmentCount - 2 ? this.path.segments.at(-1) : undefined,
                     false,
                     vertical ? SegmentLayout.HORIZONTAL_VERTICAL : SegmentLayout.VERTICAL_HORIZONTAL,
                     this.endLine

@@ -4,7 +4,7 @@ import { SegmentLayout } from "../../line/model/segmentLayout.js";
 import { roundToPrecision } from "../../base/roundToPrecision.js";
 import { LineEngine } from "../../line/engine/lineEngine.js";
 import { Line } from "../../line/model/line.js";
-import { RelationPath } from "../../smodel/relationPath.js";
+import { RelationPath, RelationPathSegment } from "../../smodel/relationPath.js";
 
 export type BaseSegment =
     | {
@@ -33,13 +33,14 @@ export abstract class MoveHandler {
 
     protected projectPointOnElement(
         point: Point,
+        oldSegment: RelationPathSegment | undefined,
         start: boolean,
         layout: SegmentLayout,
         elementLine: Line
     ): [BaseSegment[], Point] {
         const roundedPoint = { x: roundToPrecision(point.x), y: roundToPrecision(point.y) };
         const projection = LineEngine.DEFAULT.projectPointOrthogonalWithPrecision(roundedPoint, elementLine, layout);
-        const projectedPoint = projection.point;
+        let projectedPoint = projection.point;
         const result: BaseSegment[] = [];
         if (projectedPoint.x == roundedPoint.x) {
             if (start) {
@@ -54,6 +55,17 @@ export abstract class MoveHandler {
                 result.push({ x: projectedPoint.x });
             }
         } else {
+            if (oldSegment != undefined) {
+                const oldStart = start ? oldSegment.start : RelationPath.segmentEnd(oldSegment);
+                const oldEnd = start ? RelationPath.segmentEnd(oldSegment) : oldSegment.start;
+                const horizontal = oldSegment.x != undefined;
+                const newEnd = start ? roundedPoint : roundedPoint;
+                const oldVector = horizontal ? oldStart.x - oldEnd.x : oldStart.y - oldEnd.y;
+                const newVector = horizontal ? oldStart.x - newEnd.x : oldStart.y - newEnd.y;
+                if (Math.sign(oldVector) == Math.sign(newVector)) {
+                    projectedPoint = oldStart;
+                }
+            }
             if (start) {
                 if (layout == SegmentLayout.HORIZONTAL_VERTICAL) {
                     result.push({ x: roundedPoint.x }, { y: roundedPoint.y });
