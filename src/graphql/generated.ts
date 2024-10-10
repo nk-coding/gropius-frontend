@@ -20054,6 +20054,17 @@ export type AddInterfaceSpecificationVersionToComponentVersionMutation = {
     };
 };
 
+export type RemoveInterfaceSpecificationVersionFromComponentVersionMutationVariables = Exact<{
+    input: RemoveInterfaceSpecificationVersionFromComponentVersionInput;
+}>;
+
+export type RemoveInterfaceSpecificationVersionFromComponentVersionMutation = {
+    __typename?: "Mutation";
+    removeInterfaceSpecificationVersionFromComponentVersion: {
+        __typename: "RemoveInterfaceSpecificationVersionFromComponentVersionPayload";
+    };
+};
+
 export type GetInterfaceSpecificationListQueryVariables = Exact<{
     orderBy: Array<InterfaceSpecificationOrder> | InterfaceSpecificationOrder;
     count: Scalars["Int"]["input"];
@@ -30507,6 +30518,15 @@ export const AddInterfaceSpecificationVersionToComponentVersionDocument = gql`
         }
     }
 `;
+export const RemoveInterfaceSpecificationVersionFromComponentVersionDocument = gql`
+    mutation removeInterfaceSpecificationVersionFromComponentVersion(
+        $input: RemoveInterfaceSpecificationVersionFromComponentVersionInput!
+    ) {
+        removeInterfaceSpecificationVersionFromComponentVersion(input: $input) {
+            __typename
+        }
+    }
+`;
 export const GetInterfaceSpecificationListDocument = gql`
     query getInterfaceSpecificationList(
         $orderBy: [InterfaceSpecificationOrder!]!
@@ -33003,6 +33023,22 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addInterfaceSpecificationVersionToComponentVersion",
+                "mutation",
+                variables
+            );
+        },
+        removeInterfaceSpecificationVersionFromComponentVersion(
+            variables: RemoveInterfaceSpecificationVersionFromComponentVersionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveInterfaceSpecificationVersionFromComponentVersionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveInterfaceSpecificationVersionFromComponentVersionMutation>(
+                        RemoveInterfaceSpecificationVersionFromComponentVersionDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "removeInterfaceSpecificationVersionFromComponentVersion",
                 "mutation",
                 variables
             );

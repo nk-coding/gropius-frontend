@@ -61,3 +61,9 @@ mutation addInterfaceSpecificationVersionToComponentVersion($input: AddInterface
         __typename
     }
 }
+
+mutation removeInterfaceSpecificationVersionFromComponentVersion($input: RemoveInterfaceSpecificationVersionFromComponentVersionInput!) {
+    removeInterfaceSpecificationVersionFromComponentVersion(input: $input) {
+        __typename
+    }
+}

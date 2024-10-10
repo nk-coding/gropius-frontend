@@ -87,6 +87,10 @@ const props = defineProps({
     component: {
         type: String,
         required: true
+    },
+    componentTemplate: {
+        type: String,
+        required: false
     }
 });
 
@@ -116,20 +120,9 @@ const [interfaceSpecificationVersion, interfaceSpecificationVersionProps] = defi
 const [visible, visibleProps] = defineField("visible", fieldConfig);
 const [invisible, invisibleProps] = defineField("invisible", fieldConfig);
 
-const componentTemplateInfo = computedAsync(
-    async () => {
-        const templateRes = await withErrorMessage(async () => {
-            return client.getComponentTemplateDetails({ id: props.component });
-        }, "Error loading component template info");
-        return templateRes.node as NodeReturnType<"getComponentTemplateDetails", "Component">;
-    },
-    null,
-    { shallow: false }
-);
-
 const interfaceSpecificationVisibilityInfo = computedAsync(
     async () => {
-        if (componentTemplateInfo.value == null || interfaceSpecification.value == null) {
+        if (props.componentTemplate == undefined || interfaceSpecification.value == null) {
             return {
                 visible: true,
                 invisible: true
@@ -139,7 +132,7 @@ const interfaceSpecificationVisibilityInfo = computedAsync(
             await withErrorMessage(async () => {
                 return client.getInterfaceSpecificationVisibilityInfo({
                     id: interfaceSpecification.value!,
-                    componentTemplate: componentTemplateInfo.value!.template.id
+                    componentTemplate: props.componentTemplate!
                 });
             }, "Error loading interface specification visibility info")
         ).node as NodeReturnType<"getInterfaceSpecificationVisibilityInfo", "InterfaceSpecification">;
@@ -169,12 +162,12 @@ watch(
 watch(
     () => interfaceSpecificationVisibilityInfo.value,
     () => {
-        if (!interfaceSpecificationVisibilityInfo.value.visible) {
+        if (!interfaceSpecificationVisibilityInfo.value.visible && visible.value) {
             setValues({
                 visible: false
             });
         }
-        if (!interfaceSpecificationVisibilityInfo.value.invisible) {
+        if (!interfaceSpecificationVisibilityInfo.value.invisible && invisible.value) {
             setValues({
                 invisible: false
             });
