@@ -21,6 +21,7 @@ export type Events = {
     "create-strategy-instance": undefined;
     "create-auth-client": undefined;
     "create-view": undefined;
+    "add-interface-specification-version-to-component-version": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {

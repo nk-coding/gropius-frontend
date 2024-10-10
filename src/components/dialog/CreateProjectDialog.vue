@@ -39,7 +39,7 @@ import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm, useIsFormDirty } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
-import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";

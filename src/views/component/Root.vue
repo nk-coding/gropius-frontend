@@ -425,6 +425,20 @@ const rightSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name == "component-version-interfaces") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Add interface specification version`,
+                    color: "secondary",
+                    disabled: !(component?.value?.admin ?? false),
+                    onClick: () => {
+                        eventBus?.emit("add-interface-specification-version-to-component-version", undefined);
+                    }
+                }
+            ]
+        ];
     } else {
         return [];
     }

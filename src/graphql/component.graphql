@@ -56,6 +56,17 @@ query getComponentDetails($id: ID!) {
     }
 }
 
+query getComponentTemplateDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on Component {
+            template {
+                id
+            }
+        }
+    }
+}
+
 query getComponentGeneralDetails($id: ID!) {
     node(id: $id) {
         id

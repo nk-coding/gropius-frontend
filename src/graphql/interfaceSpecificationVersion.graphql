@@ -50,6 +50,35 @@ query getInterfaceSpecificationVersionGeneralDetails($id: ID!) {
     }
 }
 
+fragment DefaultInterfaceSpecificationVersionInfo on InterfaceSpecificationVersion {
+    id
+    interfaceSpecification {
+        name
+        description
+    }
+    version
+    __typename
+}
+
+query searchInterfaceSpecificationVersions($query: String!, $count: Int!, $interfaceSpecification: ID!) {
+    searchInterfaceSpecificationVersions(query: $query, first: $count, filter: { interfaceSpecification: { id: { eq: $interfaceSpecification } } }) {
+        ...DefaultInterfaceSpecificationVersionInfo
+    }
+}
+
+query firstInterfaceSpecificationVersions($interfaceSpecification: ID!, $count: Int!) {
+    node(id: $interfaceSpecification) {
+        id
+        ... on InterfaceSpecification {
+            versions(first: $count) {
+                nodes {
+                    ...DefaultInterfaceSpecificationVersionInfo
+                }
+            }
+        }
+    }
+}
+
 mutation createInterfaceSpecificationVersion($input: CreateInterfaceSpecificationVersionInput!) {
     createInterfaceSpecificationVersion(input: $input) {
         interfaceSpecificationVersion {
