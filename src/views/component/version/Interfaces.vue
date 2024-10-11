@@ -60,7 +60,10 @@
                         <v-icon icon="mdi-delete" />
                         <ConfirmationDialog
                             :title="`Delete interface definition?`"
-                            :message="`Are you sure you want to delete the interface definition? This will delete all adjacent relations.`"
+                            message="
+                                Are you sure you want to delete the interface definition?
+                                This will delete all adjacent relations, and potentially stop interfaces from propagating to other components.
+                            "
                             confirm-text="Delete"
                             @confirm="
                                 deleteInterfaceDefinition(

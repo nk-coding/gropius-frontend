@@ -16,25 +16,35 @@
             </div>
             <div class="ma-3" v-if="cachedModel != null">
                 <v-switch
-                    v-model="cachedModel.visibleSelfDefined"
-                    @update:model-value="
-                        updateInterfaceDefinition(cachedModel.interfaceSpecificationVersion, true, $event ?? false)
-                    "
+                    :model-value="cachedModel.visibleSelfDefined"
+                    @update:model-value="toggleVisible($event ?? false)"
                     label="Visible"
                     class="mb-1"
                     :disabled="!interfaceSpecificationVisibilityInfo.visible"
                 />
                 <v-switch
-                    v-model="cachedModel.invisibleSelfDefined"
-                    @update:model-value="
-                        updateInterfaceDefinition(cachedModel.interfaceSpecificationVersion, false, $event ?? false)
-                    "
+                    :model-value="cachedModel.invisibleSelfDefined"
+                    @update:model-value="toggleInvisible($event ?? false)"
                     label="Invisible"
                     class="mb-1"
                     :disabled="!interfaceSpecificationVisibilityInfo.invisible"
                 />
             </div>
         </v-card>
+        <ConfirmationDialog
+            v-model="visibleConfirmationDialog"
+            title="Disable visible?"
+            message="This will delete all adjacent relations, and potentially stop interfaces from propagating to other components."
+            :activator="undefined"
+            @confirm="updateValue(true, false)"
+        />
+        <ConfirmationDialog
+            v-model="invisibleConfirmationDialog"
+            title="Disable invisible?"
+            message="This will potentially stop interfaces from propagating to other components."
+            :activator="undefined"
+            @confirm="updateValue(false, false)"
+        />
     </v-dialog>
 </template>
 <script setup lang="ts">
@@ -42,7 +52,8 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { useCachedRef } from "@/util/useCachedRef";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
-import { computed, PropType } from "vue";
+import { computed, PropType, ref } from "vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 const props = defineProps({
     updateInterfaceDefinition: {
@@ -68,6 +79,8 @@ const model = defineModel({
 });
 
 const cachedModel = useCachedRef(model);
+const visibleConfirmationDialog = ref(false);
+const invisibleConfirmationDialog = ref(false);
 
 const editInterfaceDefinitionDialog = computed({
     get: () => model.value != null,
@@ -107,6 +120,31 @@ const interfaceSpecificationVisibilityInfo = computedAsync(
     },
     { shallow: false }
 );
+
+function toggleVisible(value: boolean) {
+    if (!value) {
+        visibleConfirmationDialog.value = true;
+    } else {
+        updateValue(true, true);
+    }
+}
+
+function toggleInvisible(value: boolean) {
+    if (!value) {
+        invisibleConfirmationDialog.value = true;
+    } else {
+        updateValue(false, true);
+    }
+}
+
+function updateValue(visible: boolean, value: boolean) {
+    if (visible) {
+        cachedModel.value!.visibleSelfDefined = value;
+    } else {
+        cachedModel.value!.invisibleSelfDefined = value;
+    }
+    props.updateInterfaceDefinition(cachedModel.value!.interfaceSpecificationVersion, visible, value);
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
