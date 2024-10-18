@@ -30,6 +30,6 @@ const imsProjectId = computed(() => route.params.project as string);
 
 async function deleteIMSProject() {
     await client.deleteIMSProject({ id: imsProjectId.value });
-    router.push({ name: "ims-projects", params: { trackable: route.params.trackable } });
+    router.push({ name: "ims", params: { trackable: route.params.ims } });
 }
 </script>
