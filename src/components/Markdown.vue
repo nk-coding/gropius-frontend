@@ -1,5 +1,8 @@
 <template>
-    <div class="markdown-editor-viewer">
+    <div class="markdown-editor-viewer" :class="{
+        dark: theme.current.value.dark,
+        light: !theme.current.value.dark
+    }">
         <task-lists
             sortable
             :disabled="!editable"
@@ -34,6 +37,7 @@ import type { Root } from "mdast";
 import { SKIP, visit } from "unist-util-visit";
 import { shallowRef } from "vue";
 import { useAppStore } from "@/store/app";
+import "github-markdown-css/github-markdown.css";
 
 interface RequiredPosition {
     start: Required<Point>;
@@ -293,16 +297,6 @@ function removeIndentation(lines: string[], diff: number): string {
 }
 </script>
 <style lang="scss">
-.v-theme--light {
-    .markdown-editor-viewer {
-        @import "github-markdown-css/github-markdown-light";
-    }
-}
-.v-theme--dark {
-    .markdown-editor-viewer {
-        @import "github-markdown-css/github-markdown-dark";
-    }
-}
 
 .markdown-body {
     background: none !important;
