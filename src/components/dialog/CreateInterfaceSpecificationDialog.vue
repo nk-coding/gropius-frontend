@@ -8,6 +8,7 @@
             :version-form-meta="versionMeta"
             :version-form-validate="versionValidate"
             :submit-disabled="submitDisabled"
+            :force-version="forceCreateVersion"
             color="surface-elevated-3"
             @cancel="cancelCreateInterfaceSpecification"
             @confirm="createInterfaceSpecification"
@@ -91,11 +92,24 @@ const props = defineProps({
     component: {
         type: String,
         required: true
+    },
+    initialName: {
+        type: String,
+        required: false
+    },
+    forceCreateVersion: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 
 const emit = defineEmits<{
-    (event: "created-interface-specification", interfaceSpecification: IdObject): void;
+    (
+        event: "created-interface-specification",
+        interfaceSpecification: IdObject,
+        interfaceSpecificationVersion: IdObject | undefined
+    ): void;
 }>();
 
 const schema = toTypedSchema(
@@ -109,6 +123,15 @@ const schema = toTypedSchema(
 const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
     validationSchema: schema
 });
+
+watch(
+    () => props.initialName,
+    (newValue) => {
+        if (newValue != undefined) {
+            name.value = newValue;
+        }
+    }
+);
 
 const [name, nameProps] = defineField("name", fieldConfig);
 const [template, templateProps] = defineField("template", fieldConfig);
@@ -193,7 +216,7 @@ const getVersionFields = handleVersionSubmit(async (state) => {
 });
 
 async function createInterfaceSpecification(hasVersion: boolean) {
-    const interfaceSpecification = await blockWithErrorMessage(async () => {
+    const interfaceSpecificationAndVersion = await blockWithErrorMessage(async () => {
         const interfaceSpecificationFields = await getInterfaceSpecificationFields();
         const versions: InterfaceSpecificationVersionInput[] = [];
         if (hasVersion) {
@@ -207,10 +230,13 @@ async function createInterfaceSpecification(hasVersion: boolean) {
                 component: props.component
             }
         });
-        return res.createInterfaceSpecification.interfaceSpecification;
+        return [
+            res.createInterfaceSpecification.interfaceSpecification,
+            res.createInterfaceSpecification.interfaceSpecification.versions.nodes[0]
+        ] as const;
     }, "Error creating interfaceSpecification");
     createInterfaceSpecificationDialog.value = false;
-    emit("created-interface-specification", interfaceSpecification);
+    emit("created-interface-specification", ...interfaceSpecificationAndVersion);
 }
 
 function cancelCreateInterfaceSpecification() {

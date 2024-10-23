@@ -11,7 +11,7 @@
                         label="Interface Specification"
                         class="mb-1"
                     />
-                    <InterfaceSpecificationVersionAutocomplete
+                    <InterfaceSpecificationVersionModelAutocomplete
                         v-model="interfaceSpecificationVersion"
                         v-bind="interfaceSpecificationVersionProps"
                         :interface-specification="interfaceSpecification"
@@ -67,7 +67,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { IdObject } from "@/util/types";
-import InterfaceSpecificationVersionAutocomplete from "../input/InterfaceSpecificationVersionAutocomplete.vue";
+import InterfaceSpecificationVersionModelAutocomplete from "../input/InterfaceSpecificationVersionModelAutocomplete.vue";
 import InterfaceSpecificationAutocomplete from "../input/InterfaceSpecificationAutocomplete.vue";
 import { computedAsync } from "@vueuse/core";
 

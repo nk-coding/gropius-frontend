@@ -28,6 +28,15 @@
                         class="d-block mt-2"
                         icon
                         color="primary-container"
+                        @mouseup="$emit('addInterface', selected.id)"
+                    >
+                        <v-icon icon="$interface" />
+                        <v-tooltip activator="parent">Add interface</v-tooltip>
+                    </SmallFAB>
+                    <SmallFAB
+                        class="d-block mt-2"
+                        icon
+                        color="primary-container"
                         :disabled="!selected.contextMenu.data.remove"
                         @mouseup="$emit('removeComponent', selected!.id)"
                     >
@@ -102,6 +111,7 @@ const emit = defineEmits<{
     (event: "removeComponent", value: string): void;
     (event: "createRelation", value: CreateRelationContext): void;
     (event: "deleteRelation", value: string): void;
+    (event: "addInterface", value: string): void;
 }>();
 
 class ModelSource extends GraphModelSource {

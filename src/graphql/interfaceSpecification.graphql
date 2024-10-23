@@ -89,6 +89,11 @@ mutation createInterfaceSpecification($input: CreateInterfaceSpecificationInput!
     createInterfaceSpecification(input: $input) {
         interfaceSpecification {
             id
+            versions {
+                nodes {
+                    id
+                }
+            }
         }
     }
 }

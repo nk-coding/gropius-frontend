@@ -20515,7 +20515,14 @@ export type CreateInterfaceSpecificationMutation = {
     __typename?: "Mutation";
     createInterfaceSpecification: {
         __typename?: "CreateInterfaceSpecificationPayload";
-        interfaceSpecification: { __typename?: "InterfaceSpecification"; id: string };
+        interfaceSpecification: {
+            __typename?: "InterfaceSpecification";
+            id: string;
+            versions: {
+                __typename?: "InterfaceSpecificationVersionConnection";
+                nodes: Array<{ __typename?: "InterfaceSpecificationVersion"; id: string }>;
+            };
+        };
     };
 };
 
@@ -30636,6 +30643,11 @@ export const CreateInterfaceSpecificationDocument = gql`
         createInterfaceSpecification(input: $input) {
             interfaceSpecification {
                 id
+                versions {
+                    nodes {
+                        id
+                    }
+                }
             }
         }
     }

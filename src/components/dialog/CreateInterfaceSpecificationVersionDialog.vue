@@ -56,6 +56,10 @@ const props = defineProps({
     interfaceSpecification: {
         type: String,
         required: true
+    },
+    initialVersion: {
+        type: String,
+        required: false
     }
 });
 
@@ -73,6 +77,15 @@ const schema = toTypedSchema(
 const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
     validationSchema: schema
 });
+
+watch(
+    () => props.initialVersion,
+    (newValue) => {
+        if (newValue != undefined) {
+            version.value = newValue;
+        }
+    }
+);
 
 const [version, versionProps] = defineField("version", fieldConfig);
 const [tags, tagsProps] = defineField("tags", fieldConfig);

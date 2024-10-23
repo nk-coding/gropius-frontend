@@ -8,6 +8,7 @@
         @remove-component="removeComponentVersion"
         @create-relation="beginCreateRelation"
         @delete-relation="deleteRelation"
+        @add-interface="addInterface"
     >
         <div class="w-100 h-100 d-flex">
             <div class="flex-grow-1 d-flex flex-column">
@@ -83,7 +84,6 @@
                 auto-select-first
                 bg-color="background"
                 menu-mode="repeating"
-                hide-no-data
                 create-new
                 create-new-context
                 @selected-item="addComponentVersion"
@@ -106,6 +106,30 @@
             />
         </v-sheet>
     </v-dialog>
+    <v-dialog
+        v-if="interfaceSpecificationComponent != undefined"
+        v-model="showAddInterfaceDialog"
+        :scrim="false"
+        width="auto"
+        class="autocomplete-dialog"
+    >
+        <v-sheet :elevation="10">
+            <InterfaceSpecificationVersionAutocomplete
+                hide-details
+                autofocus
+                auto-select-first
+                bg-color="background"
+                menu-mode="repeating"
+                create-new
+                create-new-context
+                :menu-delay="350"
+                :component="interfaceSpecificationComponent.component"
+                @selected-item="addInterfaceSpecificationVersion"
+                @create-new="createInterfaceSpecificationVersion"
+                @create-new-context="createInterfaceSpecification"
+            />
+        </v-sheet>
+    </v-dialog>
     <CreateViewDialog
         :project="trackableId"
         :templates="componentTemplates"
@@ -124,6 +148,18 @@
         :component="componentVersionComponent"
         :initial-version="initialComponentVersionVersion"
         @created-component-version="addComponentVersion"
+    />
+    <CreateInterfaceSpecificationDialog
+        v-if="interfaceSpecificationComponent != undefined"
+        :component="interfaceSpecificationComponent.component"
+        :initial-name="initialInterfaceSpecificationName"
+        force-create-version
+        @created-interface-specification="(_, version) => addInterfaceSpecificationVersion(version!)"
+    />
+    <CreateInterfaceSpecificationVersionDialog
+        :interface-specification="interfaceSpecificationVersionInterfaceSpecificaton"
+        :initial-version="initialInterfaceSpecificationVersionVersion"
+        @created-interface-specification-version="addInterfaceSpecificationVersion"
     />
 </template>
 <script lang="ts" setup>
@@ -170,6 +206,9 @@ import ViewAutocomplete from "@/components/input/ViewAutocomplete.vue";
 import CreateViewDialog from "@/components/dialog/CreateViewDialog.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
 import CreateComponentVersionDialog from "@/components/dialog/CreateComponentVersionDialog.vue";
+import InterfaceSpecificationVersionAutocomplete from "@/components/input/InterfaceSpecificationVersionAutocomplete.vue";
+import CreateInterfaceSpecificationDialog from "@/components/dialog/CreateInterfaceSpecificationDialog.vue";
+import CreateInterfaceSpecificationVersionDialog from "@/components/dialog/CreateInterfaceSpecificationVersionDialog.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 type GraphLayoutSource = Pick<ProjectGraph, "relationLayouts" | "relationPartnerLayouts">;
@@ -307,6 +346,7 @@ const hasFilterChanges = computed(() => {
 interface RelationPartnerLookupEntry {
     template: string;
     componentVersion: string;
+    component: string;
 }
 
 const relationPartnerLookup = computed<Map<string, RelationPartnerLookupEntry>>(() => {
@@ -315,13 +355,15 @@ const relationPartnerLookup = computed<Map<string, RelationPartnerLookupEntry>>(
         originalGraph.value.components.nodes.forEach((component) => {
             res.set(component.id, {
                 template: component.component.template.id,
-                componentVersion: component.id
+                componentVersion: component.id,
+                component: component.component.id
             });
             component.interfaceDefinitions.nodes.forEach((definition) => {
                 if (definition.visibleInterface != undefined) {
                     res.set(definition.visibleInterface.id, {
                         template: definition.interfaceSpecificationVersion.interfaceSpecification.template.id,
-                        componentVersion: component.id
+                        componentVersion: component.id,
+                        component: component.component.id
                     });
                 }
             });
@@ -337,9 +379,11 @@ const selectedElement = ref<SelectedElement<ContextMenuData> | undefined>(undefi
 
 const showAddComponentVersionDialog = ref(false);
 const showSelectRelationTemplateDialog = ref(false);
+const showAddInterfaceDialog = ref(false);
 const initialComponentName = ref("");
 const componentVersionComponent = ref("");
 const initialComponentVersionVersion = ref("");
+const interfaceSpecificationComponent = ref<{ component: string; version: string }>();
 const initialInterfaceSpecificationName = ref("");
 const interfaceSpecificationVersionInterfaceSpecificaton = ref("");
 const initialInterfaceSpecificationVersionVersion = ref("");
@@ -606,6 +650,42 @@ async function createComponentVersion(version: string, component: IdObject) {
     eventBus?.emit("create-component-version");
 }
 
+function addInterface(componentVersion: string) {
+    interfaceSpecificationComponent.value = {
+        component: relationPartnerLookup.value.get(componentVersion)!.component,
+        version: componentVersion
+    };
+    showAddInterfaceDialog.value = true;
+}
+
+async function addInterfaceSpecificationVersion(interfaceSpecificationVersion: IdObject) {
+    showAddInterfaceDialog.value = false;
+    await withErrorMessage(async () => {
+        await client.addInterfaceSpecificationVersionToComponentVersion({
+            input: {
+                interfaceSpecificationVersion: interfaceSpecificationVersion.id,
+                componentVersion: interfaceSpecificationComponent.value!.version,
+                visible: true,
+                invisible: false
+            }
+        });
+    }, "Error adding interface specification version to component");
+    graphVersionCounter.value++;
+}
+
+async function createInterfaceSpecification(name: string) {
+    showAddInterfaceDialog.value = false;
+    initialInterfaceSpecificationName.value = name;
+    eventBus?.emit("create-interface-specification");
+}
+
+async function createInterfaceSpecificationVersion(version: string, interfaceSpecification: IdObject) {
+    showAddInterfaceDialog.value = false;
+    interfaceSpecificationVersionInterfaceSpecificaton.value = interfaceSpecification.id;
+    initialInterfaceSpecificationVersionVersion.value = version;
+    eventBus?.emit("create-interface-specification-version");
+}
+
 async function removeComponentVersion(componentVersion: string) {
     await withErrorMessage(async () => {
         await client.removeComponentVersionFromProject({
@@ -792,7 +872,7 @@ function createView() {
 
 .autocomplete-dialog {
     :deep(.v-overlay__content) {
-        top: 120px;
+        top: 175px;
     }
 
     .v-sheet {
