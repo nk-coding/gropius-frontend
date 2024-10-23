@@ -25,8 +25,8 @@ export function useClient() {
             return await action();
         } catch (err) {
             if (
-                (err as ClientError).response?.status >= 400 ||
-                ((err as ClientError).response?.errors?.[0] as any | undefined)?.extensions?.status >= 400
+                isRepeatableError((err as ClientError).response?.status) ||
+                isRepeatableError(((err as ClientError).response?.errors?.[0] as any | undefined)?.extensions?.status)
             ) {
                 await store.forceTokenRefresh();
                 try {
@@ -43,6 +43,10 @@ export function useClient() {
             }
         }
     });
+}
+
+function isRepeatableError(err: number) {
+    return err === 401 || err === 403;
 }
 
 export type Client = ReturnType<typeof useClient>;
