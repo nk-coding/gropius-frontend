@@ -17,16 +17,17 @@
 import { onEvent } from "@/util/eventBus";
 import { useClient } from "@/graphql/client";
 import { ref } from "vue";
-import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 import { IdObject } from "@/util/types";
+import { DefaultLabelInfoFragment } from "@/graphql/generated";
 
 const createLabelDialog = ref(false);
 const client = useClient();
 const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
-    (event: "created-label", label: IdObject): void;
+    (event: "created-label", label: DefaultLabelInfoFragment): void;
 }>();
 
 const props = defineProps({

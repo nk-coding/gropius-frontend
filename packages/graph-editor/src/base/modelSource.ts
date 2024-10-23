@@ -29,6 +29,7 @@ import { CreateRelationAction } from "../features/connect/createRelationAction.j
 import { ConnectAction } from "../features/connect/connectAction.js";
 import { CancelConnectAction } from "../features/connect/cancelConnectAction.js";
 import { roundToPrecision } from "./roundToPrecision.js";
+import { NavigationAction } from "../features/navigation/navigationAction.js";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -40,6 +41,8 @@ export abstract class GraphModelSource extends LocalModelSource {
 
     protected abstract handleCreateRelation(context: CreateRelationContext): void;
 
+    protected abstract navigateToElement(element: string): void;
+
     override initialize(registry: ActionHandlerRegistry): void {
         super.initialize(registry);
 
@@ -48,6 +51,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         registry.register(SelectAllAction.KIND, this);
         registry.register(CreateRelationAction.KIND, this);
         registry.register(CancelConnectAction.KIND, this);
+        registry.register(NavigationAction.KIND, this);
     }
 
     override handle(action: Action): void {
@@ -88,6 +92,10 @@ export abstract class GraphModelSource extends LocalModelSource {
             case CancelConnectAction.KIND: {
                 const cancelConnectAction = action as CancelConnectAction;
                 this.handleCancelConnect(cancelConnectAction);
+                break;
+            }
+            case NavigationAction.KIND: {
+                this.navigateToElement((action as NavigationAction).element);
                 break;
             }
             default: {

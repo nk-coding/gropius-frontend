@@ -112,20 +112,25 @@ const emit = defineEmits<{
     (event: "createRelation", value: CreateRelationContext): void;
     (event: "deleteRelation", value: string): void;
     (event: "addInterface", value: string): void;
+    (event: "navigateTo", value: string): void;
 }>();
 
 class ModelSource extends GraphModelSource {
-    protected handleCreateRelation(context: CreateRelationContext): void {
+    protected override handleCreateRelation(context: CreateRelationContext): void {
         emit("createRelation", context);
     }
 
-    protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
+    protected override layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
         localLayout.value = resultingLayout;
         emit("update:layout", resultingLayout);
     }
 
-    protected handleSelectionChanged(selectedElements: SelectedElement<any>[]): void {
+    protected override handleSelectionChanged(selectedElements: SelectedElement<any>[]): void {
         selecteds.value = selectedElements;
+    }
+
+    protected override navigateToElement(element: string): void {
+        emit("navigateTo", element);
     }
 }
 

@@ -87,7 +87,7 @@ mutation removeLabelFromIssue($issue: ID!, $label: ID!) {
 mutation createLabel($input: CreateLabelInput!) {
     createLabel(input: $input) {
         label {
-            id
+            ...DefaultLabelInfo
         }
     }
 }

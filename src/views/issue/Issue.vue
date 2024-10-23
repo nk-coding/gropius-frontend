@@ -198,8 +198,11 @@
                             label="Add label"
                             autofocus
                             auto-select-first
+                            create-new
                             @selected-item="addLabel"
+                            @create-new="eventBus?.emit('create-label')"
                         />
+                        <CreateLabelDialog :trackable="trackable!.id" @created-label="addLabel" />
                     </template>
                 </EditableCompartment>
                 <v-divider class="mx-2" />
@@ -440,7 +443,7 @@ import {
     GropiusUserFilterInput,
     OutgoingRelationTimelineInfoFragment
 } from "@/graphql/generated";
-import { issueKey, trackableKey } from "@/util/keys";
+import { eventBusKey, issueKey, trackableKey } from "@/util/keys";
 import IssueTypeAutocomplete from "@/components/input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vue";
 import IssuePriorityAutocomplete from "@/components/input/IssuePriorityAutocomplete.vue";
@@ -459,6 +462,7 @@ import TrackableAutocomplete from "@/components/input/TrackableAutocomplete.vue"
 import IssueDialogs from "@/components/IssueDialogs.vue";
 import { affectedByIssueDescription, affectedByIssueIcon } from "@/util/affectedByIssueUtils";
 import { affectedByIssueName } from "@/util/affectedByIssueUtils";
+import CreateLabelDialog from "@/components/dialog/CreateLabelDialog.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -468,6 +472,7 @@ const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
 const selectedItem = computed(() => route.query.item as string | undefined);
 const trackable = inject(trackableKey);
+const eventBus = inject(eventBusKey);
 
 const evaluating = ref(false);
 const isReady = computed(() => !evaluating.value && issue.value != null);

@@ -83,8 +83,10 @@ fragment GraphComponentVersionInfo on ComponentVersion {
                 ...GraphRelationPartnerInfo
             }
             interfaceSpecificationVersion {
+                id
                 version
                 interfaceSpecification {
+                    id
                     name
                     template {
                         ...GraphRelationPartnerTemplateInfo

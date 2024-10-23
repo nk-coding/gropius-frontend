@@ -9,6 +9,7 @@
         @create-relation="beginCreateRelation"
         @delete-relation="deleteRelation"
         @add-interface="addInterface"
+        @navigate-to="navigateTo"
     >
         <div class="w-100 h-100 d-flex">
             <div class="flex-grow-1 d-flex flex-column">
@@ -193,7 +194,7 @@ import {
     SelectedElement
 } from "@gropius/graph-editor";
 import { computed, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onEvent } from "@/util/eventBus";
 import FilterChip from "@/components/input/FilterChip.vue";
 import ComponentVersionAutocomplete from "@/components/input/ComponentVersionAutocomplete.vue";
@@ -215,6 +216,7 @@ type GraphLayoutSource = Pick<ProjectGraph, "relationLayouts" | "relationPartner
 
 const client = useClient();
 const route = useRoute();
+const router = useRouter();
 const eventBus = inject(eventBusKey);
 
 const trackableId = computed(() => route.params.trackable as string);
@@ -345,8 +347,8 @@ const hasFilterChanges = computed(() => {
 
 interface RelationPartnerLookupEntry {
     template: string;
-    componentVersion: string;
-    component: string;
+    componentVersion: ProjectGraph["components"]["nodes"][number];
+    interfaceDefinition?: ProjectGraph["components"]["nodes"][number]["interfaceDefinitions"]["nodes"][number];
 }
 
 const relationPartnerLookup = computed<Map<string, RelationPartnerLookupEntry>>(() => {
@@ -355,15 +357,14 @@ const relationPartnerLookup = computed<Map<string, RelationPartnerLookupEntry>>(
         originalGraph.value.components.nodes.forEach((component) => {
             res.set(component.id, {
                 template: component.component.template.id,
-                componentVersion: component.id,
-                component: component.component.id
+                componentVersion: component
             });
             component.interfaceDefinitions.nodes.forEach((definition) => {
                 if (definition.visibleInterface != undefined) {
                     res.set(definition.visibleInterface.id, {
                         template: definition.interfaceSpecificationVersion.interfaceSpecification.template.id,
-                        componentVersion: component.id,
-                        component: component.component.id
+                        componentVersion: component,
+                        interfaceDefinition: definition
                     });
                 }
             });
@@ -652,7 +653,7 @@ async function createComponentVersion(version: string, component: IdObject) {
 
 function addInterface(componentVersion: string) {
     interfaceSpecificationComponent.value = {
-        component: relationPartnerLookup.value.get(componentVersion)!.component,
+        component: relationPartnerLookup.value.get(componentVersion)!.componentVersion.component.id,
         version: componentVersion
     };
     showAddInterfaceDialog.value = true;
@@ -865,6 +866,28 @@ function createView() {
         relationPartnerLayouts: { nodes: [] }
     });
     eventBus?.emit("create-view");
+}
+
+function navigateTo(id: string) {
+    const lookupInfo = relationPartnerLookup.value.get(id)!;
+    if (lookupInfo.interfaceDefinition != undefined) {
+        const interfaceDefinition = lookupInfo.interfaceDefinition;
+        router.push({
+            name: "interface-specification-version-general",
+            params: {
+                trackable: lookupInfo.componentVersion.component.id,
+                interfaceSpecification: interfaceDefinition.interfaceSpecificationVersion.interfaceSpecification.id,
+                interfaceSpecificationVersion: interfaceDefinition.interfaceSpecificationVersion.id
+            }
+        });
+    } else {
+        router.push({
+            name: "component",
+            params: {
+                trackable: lookupInfo.componentVersion.component.id
+            }
+        });
+    }
 }
 </script>
 <style scoped lang="scss">

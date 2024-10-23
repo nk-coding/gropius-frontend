@@ -18100,9 +18100,11 @@ export type GetProjectGraphQuery = {
                               } | null;
                               interfaceSpecificationVersion: {
                                   __typename?: "InterfaceSpecificationVersion";
+                                  id: string;
                                   version: string;
                                   interfaceSpecification: {
                                       __typename?: "InterfaceSpecification";
+                                      id: string;
                                       name: string;
                                       template: {
                                           __typename?: "InterfaceSpecificationTemplate";
@@ -18328,9 +18330,11 @@ export type GraphInfoFragment = {
                     } | null;
                     interfaceSpecificationVersion: {
                         __typename?: "InterfaceSpecificationVersion";
+                        id: string;
                         version: string;
                         interfaceSpecification: {
                             __typename?: "InterfaceSpecification";
+                            id: string;
                             name: string;
                             template: {
                                 __typename?: "InterfaceSpecificationTemplate";
@@ -18473,9 +18477,11 @@ export type GraphComponentVersionInfoFragment = {
             } | null;
             interfaceSpecificationVersion: {
                 __typename?: "InterfaceSpecificationVersion";
+                id: string;
                 version: string;
                 interfaceSpecification: {
                     __typename?: "InterfaceSpecification";
+                    id: string;
                     name: string;
                     template: {
                         __typename?: "InterfaceSpecificationTemplate";
@@ -24892,7 +24898,10 @@ export type CreateLabelMutationVariables = Exact<{
 
 export type CreateLabelMutation = {
     __typename?: "Mutation";
-    createLabel: { __typename?: "CreateLabelPayload"; label: { __typename?: "Label"; id: string } };
+    createLabel: {
+        __typename?: "CreateLabelPayload";
+        label: { __typename?: "Label"; id: string; name: string; description: string; color: string };
+    };
 };
 
 export type UpdateLabelMutationVariables = Exact<{
@@ -28535,8 +28544,10 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
                     ...GraphRelationPartnerInfo
                 }
                 interfaceSpecificationVersion {
+                    id
                     version
                     interfaceSpecification {
+                        id
                         name
                         template {
                             ...GraphRelationPartnerTemplateInfo
@@ -31358,10 +31369,11 @@ export const CreateLabelDocument = gql`
     mutation createLabel($input: CreateLabelInput!) {
         createLabel(input: $input) {
             label {
-                id
+                ...DefaultLabelInfo
             }
         }
     }
+    ${DefaultLabelInfoFragmentDoc}
 `;
 export const UpdateLabelDocument = gql`
     mutation updateLabel($input: UpdateLabelInput!) {

@@ -64,6 +64,11 @@ class ModelSource extends GraphModelSource {
         console.log("Selection changed:", selectedElements);
         // Add custom logic for handling selected elements
     }
+
+    protected navigateToElement(element: string): void {
+        console.log("Navigate to element:", element);
+        // Add custom logic for navigating to elements
+    }
 }
 
 // Create an instance of the editor

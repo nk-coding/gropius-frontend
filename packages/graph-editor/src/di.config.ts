@@ -49,6 +49,7 @@ import { ContextMenuView } from "./views/contextMenuView.js";
 import { connectModule } from "./features/connect/di.config.js";
 import { connectFeature } from "./features/connect/connectFeature.js";
 import { issueHighlightableFeature } from "./features/issueRelationHighlight/issueHighlightableFeature.js";
+import { navigationModule } from "./features/navigation/di.config.js";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -92,7 +93,15 @@ export function createContainer(widgetId: string): Container {
         exclude: [sprottyUpdateModule, sprottyMoveModule, sprottyZOrderModule, decorationModule, undoRedoModule]
     });
 
-    container.load(zorderModule, updateModule, boundsModule, moveModule, hoverHighlightModule, connectModule);
+    container.load(
+        zorderModule,
+        updateModule,
+        boundsModule,
+        moveModule,
+        hoverHighlightModule,
+        connectModule,
+        navigationModule
+    );
 
     container.load(diagramModule);
 
