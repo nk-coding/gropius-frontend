@@ -8,6 +8,7 @@
             :version-form-meta="versionMeta"
             :version-form-validate="versionValidate"
             :submit-disabled="submitDisabled"
+            :force-version="forceCreateVersion"
             color="surface-elevated-3"
             @cancel="cancelCreateComponent"
             @confirm="createComponent"
@@ -84,12 +85,24 @@ import { IdObject } from "@/util/types";
 import VersionedTemplatedNodeDialogContent from "./VersionedTemplatedNodeDialogContent.vue";
 import { ComponentVersionInput } from "@/graphql/generated";
 
+const props = defineProps({
+    initialName: {
+        type: String,
+        required: false
+    },
+    forceCreateVersion: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
+});
+
 const createComponentDialog = ref(false);
 const client = useClient();
 const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
-    (event: "created-component", component: IdObject): void;
+    (event: "created-component", component: IdObject, componentVersion: IdObject | undefined): void;
 }>();
 
 const schema = toTypedSchema(
@@ -104,6 +117,15 @@ const schema = toTypedSchema(
 const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
     validationSchema: schema
 });
+
+watch(
+    () => props.initialName,
+    (newValue) => {
+        if (newValue != undefined) {
+            name.value = newValue;
+        }
+    }
+);
 
 const [name, nameProps] = defineField("name", fieldConfig);
 const [template, templateProps] = defineField("template", fieldConfig);
@@ -184,7 +206,7 @@ const getVersionFields = handleVersionSubmit(async (state) => {
 });
 
 async function createComponent(hasVersion: boolean) {
-    const component = await blockWithErrorMessage(async () => {
+    const componentAndVersion = await blockWithErrorMessage(async () => {
         const componentFields = await getComponentFields();
         const versions: ComponentVersionInput[] = [];
         if (hasVersion) {
@@ -197,10 +219,10 @@ async function createComponent(hasVersion: boolean) {
                 versions: versions
             }
         });
-        return res.createComponent.component;
+        return [res.createComponent.component, res.createComponent.component.versions.nodes[0]] as const;
     }, "Error creating component");
     createComponentDialog.value = false;
-    emit("created-component", component);
+    emit("created-component", ...componentAndVersion);
 }
 
 function cancelCreateComponent() {

@@ -107,6 +107,11 @@ mutation createComponent($input: CreateComponentInput!) {
     createComponent(input: $input) {
         component {
             id
+            versions {
+                nodes {
+                    id
+                }
+            }
         }
     }
 }

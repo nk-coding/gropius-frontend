@@ -84,7 +84,11 @@
                 bg-color="background"
                 menu-mode="repeating"
                 hide-no-data
+                create-new
+                create-new-context
                 @selected-item="addComponentVersion"
+                @create-new="createComponentVersion"
+                @create-new-context="createComponent"
             />
         </v-sheet>
     </v-dialog>
@@ -110,6 +114,16 @@
         "
         :layouts="cachedNewLayout"
         @created-view="view = $event.id"
+    />
+    <CreateComponentDialog
+        :initial-name="initialComponentName"
+        force-create-version
+        @created-component="(_, version) => addComponentVersion(version!)"
+    />
+    <CreateComponentVersionDialog
+        :component="componentVersionComponent"
+        :initial-version="initialComponentVersionVersion"
+        @created-component-version="addComponentVersion"
     />
 </template>
 <script lang="ts" setup>
@@ -154,6 +168,8 @@ import { IdObject } from "@/util/types";
 import ProjectSidebar from "@/components/ProjectSidebar.vue";
 import ViewAutocomplete from "@/components/input/ViewAutocomplete.vue";
 import CreateViewDialog from "@/components/dialog/CreateViewDialog.vue";
+import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
+import CreateComponentVersionDialog from "@/components/dialog/CreateComponentVersionDialog.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 type GraphLayoutSource = Pick<ProjectGraph, "relationLayouts" | "relationPartnerLayouts">;
@@ -321,6 +337,12 @@ const selectedElement = ref<SelectedElement<ContextMenuData> | undefined>(undefi
 
 const showAddComponentVersionDialog = ref(false);
 const showSelectRelationTemplateDialog = ref(false);
+const initialComponentName = ref("");
+const componentVersionComponent = ref("");
+const initialComponentVersionVersion = ref("");
+const initialInterfaceSpecificationName = ref("");
+const interfaceSpecificationVersionInterfaceSpecificaton = ref("");
+const initialInterfaceSpecificationVersionVersion = ref("");
 const createRelationContext = ref<CreateRelationContext | undefined>(undefined);
 const relationTemplateFilter = computed<RelationTemplateFilterInput | undefined>(() => {
     if (createRelationContext.value == undefined) {
@@ -569,6 +591,19 @@ async function addComponentVersion(componentVersion: IdObject) {
         }
     }, "Error adding component version to project");
     graphVersionCounter.value++;
+}
+
+async function createComponent(name: string) {
+    showAddComponentVersionDialog.value = false;
+    initialComponentName.value = name;
+    eventBus?.emit("create-component");
+}
+
+async function createComponentVersion(version: string, component: IdObject) {
+    showAddComponentVersionDialog.value = false;
+    componentVersionComponent.value = component.id;
+    initialComponentVersionVersion.value = version;
+    eventBus?.emit("create-component-version");
 }
 
 async function removeComponentVersion(componentVersion: string) {

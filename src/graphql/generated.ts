@@ -16818,7 +16818,17 @@ export type CreateComponentMutationVariables = Exact<{
 
 export type CreateComponentMutation = {
     __typename?: "Mutation";
-    createComponent: { __typename?: "CreateComponentPayload"; component: { __typename?: "Component"; id: string } };
+    createComponent: {
+        __typename?: "CreateComponentPayload";
+        component: {
+            __typename?: "Component";
+            id: string;
+            versions: {
+                __typename?: "ComponentVersionConnection";
+                nodes: Array<{ __typename?: "ComponentVersion"; id: string }>;
+            };
+        };
+    };
 };
 
 export type UpdateComponentMutationVariables = Exact<{
@@ -29752,6 +29762,11 @@ export const CreateComponentDocument = gql`
         createComponent(input: $input) {
             component {
                 id
+                versions {
+                    nodes {
+                        id
+                    }
+                }
             }
         }
     }

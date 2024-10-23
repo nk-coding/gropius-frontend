@@ -1,8 +1,11 @@
 <template>
-    <div class="markdown-editor-viewer" :class="{
-        dark: theme.current.value.dark,
-        light: !theme.current.value.dark
-    }">
+    <div
+        class="markdown-editor-viewer"
+        :class="{
+            dark: theme.current.value.dark,
+            light: !theme.current.value.dark
+        }"
+    >
         <task-lists
             sortable
             :disabled="!editable"
@@ -297,7 +300,6 @@ function removeIndentation(lines: string[], diff: number): string {
 }
 </script>
 <style lang="scss">
-
 .markdown-body {
     background: none !important;
     font-family: "Roboto", sans-serif !important;

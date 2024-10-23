@@ -13,8 +13,9 @@
         @update:focused="resetFromFocus"
     >
         <template #item="{ props, item }">
+            <v-list-item v-if="item.value == 'new'" v-bind="props" title="Create new" append-icon="mdi-plus" />
             <slot
-                v-if="!contextSearchMode && item.value != context?.id"
+                v-else-if="!contextSearchMode && item.value != context?.id"
                 name="item"
                 :props="props"
                 :item="<ListItem<T>>item"
@@ -30,12 +31,15 @@
 <script setup lang="ts" generic="T extends IdObject, C extends IdObject">
 import { IdObject } from "@/util/types";
 import { onMounted, Ref, watch, ref, PropType, computed, nextTick } from "vue";
-import ListItem from "../ListItem.vue";
 
 export interface ListItem<T> {
     raw: T;
     value: string;
     title: string;
+}
+
+interface NewItem {
+    id: "new";
 }
 
 const props = defineProps({
@@ -73,6 +77,14 @@ const props = defineProps({
     initialContext: {
         type: Object as PropType<C>,
         required: false
+    },
+    createNew: {
+        type: Boolean,
+        default: false
+    },
+    createNewContext: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -83,6 +95,8 @@ const model = defineModel({
 
 const emit = defineEmits<{
     (event: "selected-item", value: T): void;
+    (event: "create-new", value: string, context: C | undefined): void;
+    (event: "create-new-context", value: string): void;
 }>();
 
 const context = ref(props.initialContext ? transformToContextItem(props.initialContext as C) : undefined) as Ref<
@@ -91,6 +105,15 @@ const context = ref(props.initialContext ? transformToContextItem(props.initialC
 const contextMode = computed(() => props.mode == "add-context");
 const contextSearchMode = computed(() => {
     return contextMode.value && context.value == undefined;
+});
+const createNewItem = computed<[NewItem] | []>(() => {
+    if (props.mode == "model") {
+        return [];
+    }
+    if ((contextSearchMode.value && props.createNewContext) || (!contextSearchMode.value && props.createNew)) {
+        return [{ id: "new" }];
+    }
+    return [];
 });
 const initialContextModel = computed(() => {
     if (contextMode.value) {
@@ -103,8 +126,17 @@ const initialContextModel = computed(() => {
         return [];
     }
 });
-
-const items = ref(contextMode.value ? initialContextModel.value : props.initialItems) as Ref<(T | C)[]>;
+const initialItems = computed(() => {
+    const items = [];
+    items.push(...createNewItem.value);
+    if (contextMode.value) {
+        items.push(...initialContextModel.value);
+    } else {
+        items.push(...props.initialItems);
+    }
+    return [...props.initialItems, ...createNewItem.value];
+});
+const items = ref(contextMode.value ? initialContextModel.value : props.initialItems) as Ref<(T | C | NewItem)[]>;
 const search = ref<undefined | string>("");
 const menu = ref<boolean>(!!props.menuMode && !props.menuDelay);
 const updatedModelValue = ref(false);
@@ -162,15 +194,15 @@ async function updateSearch(search: string) {
         if (!newItems.some((item) => item.id == proxiedModel.value)) {
             const currentModelItem = items.value.find((item) => item.id == proxiedModel.value);
             if (currentModelItem != undefined) {
-                newItems.push(currentModelItem);
+                newItems.push(currentModelItem as T);
             }
         }
     }
 
     if (contextMode.value && !contextSearchMode.value) {
-        items.value = [context.value as C, ...newItems];
+        items.value = [...createNewItem.value, context.value as C, ...newItems];
     } else {
-        items.value = newItems;
+        items.value = [...createNewItem.value, ...newItems];
     }
 }
 
@@ -206,7 +238,11 @@ function selectedElement(value: any) {
         resetSearch();
     } else if (props.mode == "add") {
         if (item != undefined) {
-            emit("selected-item", item as T);
+            if (item.id == "new") {
+                emit("create-new", search.value ?? "", undefined);
+            } else {
+                emit("selected-item", item as T);
+            }
         }
         proxiedModel.value = undefined;
         search.value = "";
@@ -214,10 +250,17 @@ function selectedElement(value: any) {
         if (value.length == 0) {
             context.value = undefined;
         } else if (value.length == 1) {
-            context.value = item as C;
-            items.value = [context.value as C];
+            if (id == "new") {
+                emit("create-new-context", search.value ?? "");
+                (proxiedModel.value as string[]).pop();
+            } else {
+                context.value = item as C;
+                items.value = [context.value as C, ...createNewItem.value];
+            }
         } else {
-            if (item != undefined) {
+            if (id == "new") {
+                emit("create-new", search.value ?? "", untransformContextItem(context.value as C));
+            } else if (item != undefined) {
                 emit("selected-item", item as T);
             }
             (proxiedModel.value as string[]).pop();

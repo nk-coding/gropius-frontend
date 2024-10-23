@@ -21,8 +21,8 @@
             </template>
             <template v-slot:item.3>
                 <v-form v-model="form3Valid">
-                    <v-checkbox v-model="enableVersion" label="Create version" />
-                    <slot name="version" :disabled="!enableVersion" />
+                    <v-checkbox v-if="!forceVersion" v-model="enableVersion" label="Create version" />
+                    <slot name="version" :disabled="!versionEnabled" />
                 </v-form>
             </template>
             <template v-slot:item.4>
@@ -45,7 +45,7 @@
                 />
             </DefaultButton>
             <DefaultButton variant="text" color="primary" @click="next" :disabled="submitDisabled && step == 2">
-                {{ (step == 3 && !enableVersion) || step == 4 ? confirmationMessage : "Next" }}
+                {{ (step == 3 && !versionEnabled) || step == 4 ? confirmationMessage : "Next" }}
             </DefaultButton>
         </v-card-actions>
     </v-card>
@@ -88,6 +88,10 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    forceVersion: {
+        type: Boolean,
+        required: true
     }
 });
 
@@ -102,6 +106,7 @@ const form2Valid = ref(true);
 const form3Valid = ref(true);
 const form4Valid = ref(true);
 const enableVersion = ref(false);
+const versionEnabled = computed(() => enableVersion.value || props.forceVersion);
 
 const isDirty = computed(() => {
     return step.value > 1 || props.formMeta.dirty;
@@ -124,7 +129,7 @@ function next() {
             form2.value.validate();
         }
     } else if (step.value == 3) {
-        if (!enableVersion.value) {
+        if (!versionEnabled.value) {
             emit("confirm", false);
         } else if (props.versionFormMeta.valid) {
             step.value = step.value + 1;
