@@ -13,7 +13,7 @@
             <PaginatedList
                 name="issues"
                 :item-manager="itemManager"
-                :sort-fields="sortFields"
+                :sort-fields="issueSortFields"
                 :to="(issue: Issue) => issueRoute(issue)"
                 :sort-ascending-initially="false"
                 :dependencies="[stateFilterInput]"
@@ -43,6 +43,7 @@ import {
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
 import { useAppStore } from "@/store/app";
+import { issueSortFields } from "@/util/issueSortFields";
 
 type Issue = ParticipatingIssueListItemInfoFragment;
 
@@ -89,16 +90,6 @@ const stateFilterInput = computed(() => {
     const state = issueStateIndices.value[0] == 0;
     return { isOpen: { eq: state } };
 });
-
-const sortFields = {
-    Updated: IssueOrderField.LastUpdatedAt,
-    Created: IssueOrderField.CreatedAt,
-    Title: IssueOrderField.Title,
-    Priority: [IssueOrderField.PriorityValue, IssueOrderField.PriorityId],
-    State: [IssueOrderField.StateIsOpen, IssueOrderField.StateName, IssueOrderField.StateId],
-    Type: [IssueOrderField.TypeName, IssueOrderField.TypeId],
-    Template: [IssueOrderField.TemplateName, IssueOrderField.TemplateId]
-};
 
 const itemManager: ItemManager<Issue, IssueOrderField> = {
     fetchItems: async function (

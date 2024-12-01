@@ -22,15 +22,15 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
-import { IssueListItemInfoFragment, IssueOrder, IssueOrderField } from "@/graphql/generated";
+import { IssueOrder, IssueOrderField, ProjectComponentIssueListItemInfoFragment } from "@/graphql/generated";
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
 import { IdObject } from "@/util/types";
 import IssueDialogs from "@/components/IssueDialogs.vue";
 import { issueSortFields } from "@/util/issueSortFields";
 
-type Trackable = NodeReturnType<"getIssueList", "Component">;
-type Issue = IssueListItemInfoFragment;
+type Project = NodeReturnType<"getComponentIssueList", "Project">;
+type Issue = ProjectComponentIssueListItemInfoFragment;
 
 const client = useClient();
 const router = useRouter();
@@ -71,30 +71,32 @@ const itemManager: ItemManager<Issue, IssueOrderField> = {
         page: number
     ): Promise<[Issue[], number]> {
         if (filter == undefined) {
-            const res = await client.getIssueList({
+            const res = await client.getComponentIssueList({
                 orderBy,
                 count,
                 skip: page * count,
-                trackable: trackableId.value,
+                project: trackableId.value,
                 filter: { state: stateFilterInput.value }
             });
-            const issues = (res.node as Trackable).issues;
+            const issues = (res.node as Project).componentIssues;
             return [issues.nodes, issues.totalCount];
         } else {
-            const res = await client.getFilteredIssueList({
+            const res = await client.getComponentFilteredIssueList({
                 query: filter,
                 count,
-                filter: { trackables: { any: { id: { eq: trackableId.value } } }, state: stateFilterInput.value }
+                project: trackableId.value,
+                filter: { state: stateFilterInput.value }
             });
             return [res.searchIssues, res.searchIssues.length];
         }
     }
 };
 
-function issueRoute(issue: IdObject): RouteLocationRaw {
+function issueRoute(issue: Issue): RouteLocationRaw {
+    const trackable = issue.trackables.nodes[0];
     return {
-        name: (route.name as string).slice(0, -1),
-        params: { issue: issue.id, trackable: trackableId.value }
+        name: trackable.__typename == "Component" ? "component-issue" : "project-issue",
+        params: { issue: issue.id, trackable: trackable.id }
     };
 }
 </script>

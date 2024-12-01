@@ -146,6 +146,7 @@
         @created-component="(_, version) => addComponentVersion(version!)"
     />
     <CreateComponentVersionDialog
+        v-if="componentVersionComponent"
         :component="componentVersionComponent"
         :initial-version="initialComponentVersionVersion"
         @created-component-version="addComponentVersion"
@@ -158,6 +159,7 @@
         @created-interface-specification="(_, version) => addInterfaceSpecificationVersion(version!)"
     />
     <CreateInterfaceSpecificationVersionDialog
+        v-if="interfaceSpecificationVersionInterfaceSpecificaton"
         :interface-specification="interfaceSpecificationVersionInterfaceSpecificaton"
         :initial-version="initialInterfaceSpecificationVersionVersion"
         @created-interface-specification-version="addInterfaceSpecificationVersion"

@@ -1,15 +1,28 @@
-query getIssueList(
-    $orderBy: [IssueOrder!]!
-    $count: Int!
-    $skip: Int!
-    $filter: IssueFilterInput
-    $trackable: ID!
-) {
+query getIssueList($orderBy: [IssueOrder!]!, $count: Int!, $skip: Int!, $filter: IssueFilterInput, $trackable: ID!) {
     node(id: $trackable) {
         ... on Trackable {
             issues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     ...IssueListItemInfo
+                }
+                totalCount
+            }
+        }
+    }
+}
+
+query getComponentIssueList(
+    $orderBy: [IssueOrder!]!
+    $count: Int!
+    $skip: Int!
+    $filter: IssueFilterInput
+    $project: ID!
+) {
+    node(id: $project) {
+        ... on Project {
+            componentIssues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    ...ProjectComponentIssueListItemInfo
                 }
                 totalCount
             }
@@ -37,12 +50,18 @@ query getIssueListOnAggregatedIssue(
 }
 
 query getFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterInput) {
+    searchIssues(query: $query, first: $count, filter: $filter) {
+        ...IssueListItemInfo
+    }
+}
+
+query getComponentFilteredIssueList($query: String!, $count: Int!, $project: ID!, $filter: IssueFilterInput!) {
     searchIssues(
         query: $query
         first: $count
-        filter: $filter
+        filter: { and: [$filter], trackables: { any: { isComponentAnd: { versions: { any: { partOfProject: $project } } } } } }
     ) {
-        ...IssueListItemInfo
+        ...ProjectComponentIssueListItemInfo
     }
 }
 
@@ -243,6 +262,19 @@ fragment IssueListItemInfo on Issue {
 fragment ParticipatingIssueListItemInfo on Issue {
     ...IssueListItemInfo
     trackables(first: 1) {
+        nodes {
+            __typename
+            id
+            name
+            description
+        }
+        totalCount
+    }
+}
+
+fragment ProjectComponentIssueListItemInfo on Issue {
+    ...IssueListItemInfo
+    trackables(filter: { isComponentAnd: { versions: { any: { partOfProject: $project } } } }) {
         nodes {
             __typename
             id
