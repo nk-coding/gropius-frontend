@@ -3,35 +3,44 @@
         <div class="header d-flex align-center my-2">
             <div class="ml-5">
                 <router-link to="/">
-                    <v-btn class="d-flex" variant="text" icon size="small">
+                    <DefaultButton class="d-flex" variant="text" icon size="small">
                         <img src="@/assets/logo.svg" width="40" />
-                    </v-btn>
+                    </DefaultButton>
                 </router-link>
             </div>
             <slot name="header-title">
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
                     <span v-if="index != 0" class="text-h6">/</span>
                     <router-link :to="segment.path">
-                        <v-btn variant="text" class="px-1" min-width="0" rounded="lger">
+                        <DefaultButton variant="text" class="px-1" min-width="0" rounded="lger">
                             <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
                             <v-icon v-else :icon="segment.icon" size="large" />
-                        </v-btn>
+                        </DefaultButton>
                     </router-link>
                 </div>
             </slot>
             <slot name="header-content">
-                <v-tabs v-if="tabs.length > 0" color="primary" density="compact" class="ml-5">
-                    <v-tab
+                <div v-if="tabs.length > 0" class="ml-5">
+                    <router-link
                         v-for="(tab, index) in tabs"
                         :key="`${index}-${tab.name}`"
-                        :value="tab.name"
                         :to="tab.path"
-                        >{{ tab.name }}</v-tab
+                        v-slot="{ isActive }"
+                        custom
                     >
-                </v-tabs>
+                        <DefaultButton
+                            :value="tab.name"
+                            :to="tab.path"
+                            variant="text"
+                            :color="isActive ? 'primary' : 'default'"
+                        >
+                            {{ tab.name }}
+                        </DefaultButton>
+                    </router-link>
+                </div>
             </slot>
             <v-spacer />
-            <div class="mr-5">
+            <div class="mr-5 d-flex">
                 <v-btn icon variant="tonal" size="small" @click="toggleDarkMode()">
                     <v-icon :icon="lightMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" size="large" />
                     <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
